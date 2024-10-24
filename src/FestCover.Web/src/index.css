@@ -1,0 +1,45 @@
+@import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css");
+
+body {
+  height: 100% !important;
+  background-color: #f8f8ff !important;
+  font-family: Inter !important;
+}
+.form-control {
+  background-color: rgb(235, 232, 232) !important;
+}
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 30px rgb(235, 232, 232) inset !important;
+}
+input:-webkit-autofill {
+  -webkit-text-fill-color: rgb(0, 0, 0) !important;
+}
+.off-white {
+  background-color: #faf9f6 !important;
+}
+.btn-blue {
+  background-color: #a1e1e0 !important;
+  border-color: #a1e1e0 !important;
+  color: #000000 !important;
+}
+.btn-blue:hover {
+  background-color: #91d1d0 !important;
+  border-color: #91d1d0 !important;
+  color: #000000 !important;
+}
+.btn-blue:focus,
+.btn-blue:active {
+  background-color: #81c1c0 !important;
+  border-color: #81c1c0 !important;
+  color: #000000 !important;
+  box-shadow: 0 0 0 0.25rem rgba(161, 225, 224, 0.5) !important;
+}
+
+.card-img-top {
+  width: 100%;
+  min-height: 15vw;
+  object-fit: cover;
+}
