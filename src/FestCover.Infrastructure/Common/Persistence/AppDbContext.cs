@@ -104,6 +104,7 @@ namespace FestCover.Infrastructure.Common.Persistence
             var hasher = new PasswordHasher<User>();
             var userId = Guid.Parse("F69B50AA-DE02-423B-ABC4-0BA2FB3EB64D");
             var user2Id = Guid.Parse("613DE40E-809C-47C2-8F8B-005EFFFFF05E");
+            var user3Id = Guid.Parse("AA14ED43-7698-408E-8B35-3E556E79BD18");
             modelBuilder.Entity<User>().HasData(new User
             {
                 UserName = "JoelFerreira",
@@ -130,6 +131,19 @@ namespace FestCover.Infrastructure.Common.Persistence
                 PasswordHash = hasher.HashPassword(null, "milliondollaridea$1"),
                 Email = "mirandajp@gmail.com",
             });
+            modelBuilder.Entity<User>().HasData(new User
+            {
+                UserName = "IsabelKiala",
+                Id = user3Id,
+                NormalizedUserName = "ISABELKIALA",
+                EmailConfirmed = true,
+                PhoneNumber = "+351960180464",
+                SecurityStamp = Guid.NewGuid().ToString(),
+                NormalizedEmail = "ISABELKIALA@GMAIL.COM",
+                ConcurrencyStamp = Guid.NewGuid().ToString(),
+                PasswordHash = hasher.HashPassword(null, "isabelKiala4880"),
+                Email = "isabelkiala@gmail.com",
+            });
             modelBuilder.Entity<IdentityUserRole<Guid>>().HasData(new IdentityUserRole<Guid>
             {
                 UserId = userId,
@@ -139,6 +153,12 @@ namespace FestCover.Infrastructure.Common.Persistence
             modelBuilder.Entity<IdentityUserRole<Guid>>().HasData(new IdentityUserRole<Guid>
             {
                 UserId = user2Id,
+                RoleId = adminRoleId,
+
+            });
+            modelBuilder.Entity<IdentityUserRole<Guid>>().HasData(new IdentityUserRole<Guid>
+            {
+                UserId = user3Id,
                 RoleId = adminRoleId,
 
             });
