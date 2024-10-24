@@ -71,21 +71,6 @@ export const AlbumList = ({ albums, edit }: AlbumListProps) => {
                       </ul>
                     </div>
                   </div>
-                  {/* <div className="row">
-                    <div className="col ">
-                      <button className="btn btn-outline-dark w-100">
-                        Delete
-                      </button>
-                    </div>
-                    <div className="col">
-                      <button
-                        // to={`details/${album.id}`}
-                        className="btn btn-dark w-100"
-                      >
-                        Edit
-                      </button>
-                    </div>
-                  </div> */}
                 </div>
               </div>
             </div>

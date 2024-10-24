@@ -217,9 +217,9 @@ export const AlbumDetailPage = () => {
   return (
     <>
       <div className="container">
-        <div className="row mt-3">
+        <div className="row mt-3 ">
           <div className="col ">
-            <div className="card rounded-3 border-0  " aria-hidden="true">
+            <div className="card rounded-3 border-0   " aria-hidden="true">
               <div className="card-body">
                 <div className="row">
                   <div className="col">
@@ -243,12 +243,14 @@ export const AlbumDetailPage = () => {
             </div>
           </div>
         </div>
-        <div className="row mt-3">
-          <div className="col ">
-            <AlbumContentList
-              albumId={id}
-              albumContents={albumContentsQuery.data}
-            />
+        <div className="">
+          <div className="row mt-3">
+            <div className="col ">
+              <AlbumContentList
+                albumId={id}
+                albumContents={albumContentsQuery.data}
+              />
+            </div>
           </div>
         </div>
         {show && (

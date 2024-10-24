@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { useAlbums } from "../api/get-Albums";
-import { Link } from "react-router-dom";
 import { AlbumModal } from "../components/album-modal";
 import { AlbumList } from "../components/album-list";
 import { AlbumModel } from "../types";
@@ -290,10 +289,10 @@ export const AlbumsPage = () => {
             <AlbumList edit={editAlbum} albums={albumsQuery.data} />
           </div>
         </div>
+        {show && (
+          <AlbumModal show={show} album={album} handleClose={handleClose} />
+        )}
       </div>
-      {show && (
-        <AlbumModal show={show} album={album} handleClose={handleClose} />
-      )}
     </>
   );
 };

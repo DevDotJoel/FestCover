@@ -31,7 +31,7 @@ namespace FestCover.Api.Controllers
 
             return result.Match(
                 authResult => Ok(new { authResult.AccessToken }),
-                errors => Problem(errors));
+                Problem);
 
 
         }
