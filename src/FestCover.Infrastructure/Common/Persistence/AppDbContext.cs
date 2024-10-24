@@ -54,10 +54,9 @@ namespace FestCover.Infrastructure.Common.Persistence
             if (!string.IsNullOrEmpty(TenantId))
             {
                 var currentUser = UserId.Create(Guid.Parse(TenantId));
-                modelBuilder.Entity<Album>().HasQueryFilter(q => q.UserId == currentUser);
+                modelBuilder.Entity<Album>().HasQueryFilter(q => q.UserId == currentUser && !q.IsDeleted);
 
             }
-            modelBuilder.Entity<Album>().HasQueryFilter(q => !q.IsDeleted);
             modelBuilder.Entity<AlbumContent>().HasQueryFilter(q => !q.IsDeleted);
         }
         public void IdentityConfigurations(ModelBuilder modelBuilder)

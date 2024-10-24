@@ -1,12 +1,16 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useLogout } from "../../../libs/auth";
+import { queryClient } from "../../../libs/react-query";
 
 export const SideNav = () => {
   const navigate = useNavigate();
+
+  const currentQueryClient = queryClient;
   const logoutQuery = useLogout();
   function logOut() {
     logoutQuery.mutate({});
+    currentQueryClient.clear();
     navigate("/auth/login");
   }
   return (

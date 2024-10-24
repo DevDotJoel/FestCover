@@ -23,8 +23,17 @@ namespace FestCover.Api.Controllers
         {
 
             var result = await _identityService.LoginJwtAsync(loginRequest.Email, loginRequest.Password);
-            SetTokensInsideCookie(result.Value.RefreshToken, HttpContext);
-            return result.Match(data => Ok(new { data.AccessToken }), Problem);
+            if(!result.IsError)
+            {
+                SetTokensInsideCookie(result.Value.RefreshToken, HttpContext);
+
+            }
+
+            return result.Match(
+                authResult => Ok(new { authResult.AccessToken }),
+                errors => Problem(errors));
+
+
         }
 
         [HttpGet("logOut")]
