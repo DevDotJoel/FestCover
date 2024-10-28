@@ -20,6 +20,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using FestCover.Infrastructure.Common.Services;
 
 namespace FestCover.Infrastructure
 {
@@ -36,7 +37,7 @@ namespace FestCover.Infrastructure
             });
 
             services.AddPersistance(configuration).AddAuth(configuration);
-
+            services.AddScoped<IImageService, ImageService>();
 
             return services;
         }

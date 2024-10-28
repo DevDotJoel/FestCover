@@ -1,4 +1,5 @@
 ﻿
+using Azure;
 using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
 using ErrorOr;
@@ -19,30 +20,53 @@ namespace FestCover.Infrastructure.Storage
         {
             try
             {
+                // Get the container client
                 var containerClient = _blobServiceClient.GetBlobContainerClient(container);
-                var result = await containerClient.ExistsAsync();
-                if (!result)
+
+                // Check if the container exists and create if not
+                if (!await containerClient.ExistsAsync())
                 {
-                    var acessPolicyType = PublicAccessType.Blob;
-                    await containerClient.CreateIfNotExistsAsync(acessPolicyType);
+                    await containerClient.CreateIfNotExistsAsync(PublicAccessType.Blob);  // Adjust access type as needed
                 }
-                BlobHttpHeaders blobHttpHeaders = new BlobHttpHeaders();
-                blobHttpHeaders.ContentType = contentType;
+
+                // Get the blob client for the specific file path
+                var blobClient = containerClient.GetBlobClient(path);
+
+                // Create Blob HTTP Headers
+                var blobHttpHeaders = new BlobHttpHeaders
+                {
+                    ContentType = contentType
+                };
+
+                // Upload the file using a MemoryStream
                 using (var fileStream = new MemoryStream(file))
                 {
-                    await containerClient.UploadBlobAsync(path, fileStream);
-                    var blobClient = containerClient.GetBlobClient(path);
-                    blobClient.SetHttpHeaders(blobHttpHeaders);
+                    // Upload the blob with headers set in the same operation
+                    await blobClient.UploadAsync(fileStream, new BlobUploadOptions
+                    {
+                        HttpHeaders = blobHttpHeaders
+                    });
+
+                    // Get the blob URL after upload
                     var blobUrl = blobClient.Uri.ToString();
                     return blobUrl;
                 }
             }
+            catch (RequestFailedException ex) when (ex.Status == 404)
+            {
+                // Handle specific Azure request failures (e.g., container not found)
+                return Error.Failure(description: "Container not found: " + ex.Message);
+            }
+            catch (RequestFailedException ex)
+            {
+                // Handle other Azure-specific errors
+                return Error.Failure(description: "Blob service error: " + ex.Message);
+            }
             catch (Exception ex)
             {
-
-                return Error.Failure(description: ex.Message);
+                // Handle any other general exceptions
+                return Error.Failure(description: "An unexpected error occurred: " + ex.Message);
             }
-
         }
 
         public async Task<ErrorOr<Success>> RemoveFile(string path)

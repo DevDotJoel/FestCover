@@ -20,7 +20,10 @@ namespace FestCover.Domain.Albums
         private readonly List<AlbumContentId> _albumContentIds = new();
         public string Name { get; private set; }
         public string Description { get; private set; }
-        public string AlbumUrlImage { get; set; }
+        public string OriginalAlbumUrlImage { get; private set; }
+        public string SmallAlbumUrlImage { get; private set; }
+        public string MediumAlbumUrlImage { get; private set; }
+        public string LargeAlbumUrlImage { get; private set; }
         public string Key { get; set; }
         public IReadOnlyList<AlbumContentId> AlbumContentIds => _albumContentIds.AsReadOnly();
         public UserId UserId { get; private set; }
@@ -46,9 +49,21 @@ namespace FestCover.Domain.Albums
             _albumContentIds.Add(albumContentId);
             return Result.Success;
         }
-        public void SetAlbumUrlImage(string albumUrlImage)
+        public void SetOriginalAlbumUrlImage(string originalAlbumUrlImage)
         {
-            AlbumUrlImage = albumUrlImage;
+            OriginalAlbumUrlImage = originalAlbumUrlImage;
+        }
+        public void SetSmallAlbumUrlImage(string smallAlbumUrlImage)
+        {
+            SmallAlbumUrlImage = smallAlbumUrlImage;
+        }
+        public void SetMediumAlbumUrlImage(string mediumAlbumUrlImage)
+        {
+            MediumAlbumUrlImage = mediumAlbumUrlImage;
+        }
+        public void SetLargeAlbumUrlImage(string largeAlbumUrlImage)
+        {
+            LargeAlbumUrlImage = largeAlbumUrlImage;
         }
         public static Album Create(string name,string description,AlbumId? albumId=null)
         {

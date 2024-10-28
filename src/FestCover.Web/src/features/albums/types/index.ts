@@ -3,6 +3,10 @@ export interface AlbumModel {
   name: string;
   description: string;
   albumUrlImage: string;
+  originalAlbumUrlImage: string;
+  smallAlbumUrlImage: string;
+  mediumAlbumUrlImage: string;
+  largeAlbumUrlImage: string;
 }
 
 export interface AlbumContentModel {
