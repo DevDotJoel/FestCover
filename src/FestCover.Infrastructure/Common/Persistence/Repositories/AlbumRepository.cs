@@ -13,8 +13,8 @@ namespace FestCover.Infrastructure.Common.Persistence.Repositories
 {
     public class AlbumRepository : IAlbumRepository
     {
-        private readonly AppDbContext _context;
-        public AlbumRepository(AppDbContext context)
+        private readonly FestCoverDbContext _context;
+        public AlbumRepository(FestCoverDbContext context)
         {
             _context = context;
             

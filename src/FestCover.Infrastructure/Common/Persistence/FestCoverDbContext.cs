@@ -13,17 +13,17 @@ using System.Reflection.Emit;
 
 namespace FestCover.Infrastructure.Common.Persistence
 {
-    public class AppDbContext : IdentityDbContext<User, Role, Guid>
+    public class FestCoverDbContext : IdentityDbContext<User, Role, Guid>
     {
         private readonly IUserService _tenant;
         public string TenantId { get; set; }
         private readonly PublishDomainEventsInterceptor _publishDomainEventsInterceptor;
         private readonly AuditInterceptor _auditInterceptor;
-        public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
+        public FestCoverDbContext(DbContextOptions<FestCoverDbContext> options) : base(options)
         {
 
         }
-        public AppDbContext(DbContextOptions<AppDbContext> options,
+        public FestCoverDbContext(DbContextOptions<FestCoverDbContext> options,
             PublishDomainEventsInterceptor publishDomainEventsInterceptor,
             AuditInterceptor auditInterceptor,
             IUserService tenant
@@ -40,7 +40,7 @@ namespace FestCover.Infrastructure.Common.Persistence
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Ignore<List<IDomainEvent>>().ApplyConfigurationsFromAssembly(typeof(AppDbContext).Assembly);
+            modelBuilder.Ignore<List<IDomainEvent>>().ApplyConfigurationsFromAssembly(typeof(FestCoverDbContext).Assembly);
             base.OnModelCreating(modelBuilder);
             SeedRolesConfig(modelBuilder);
             IdentityConfigurations(modelBuilder);
@@ -162,6 +162,12 @@ namespace FestCover.Infrastructure.Common.Persistence
                 RoleId = adminRoleId,
 
             });
+            //modelBuilder.Entity<IdentityUserRole<Guid>>().HasData(new IdentityUserRole<Guid>
+            //{
+            //    UserId = user4Id,
+            //    RoleId = adminRoleId,
+
+            //});
         }
     }
 }

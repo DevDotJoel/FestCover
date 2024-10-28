@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace FestCover.Infrastructure.Migrations
 {
-    [DbContext(typeof(AppDbContext))]
+    [DbContext(typeof(FestCoverDbContext))]
     [Migration("20241023142742_AddedMirandaUser")]
     partial class AddedMirandaUser
     {
