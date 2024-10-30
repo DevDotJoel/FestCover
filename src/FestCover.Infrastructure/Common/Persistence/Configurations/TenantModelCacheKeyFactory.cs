@@ -9,7 +9,7 @@ namespace FestCover.Infrastructure.Common.Persistence.Configurations
         public object Create(DbContext context, bool designTime) =>
        context switch
        {
-           AppDbContext appContext => (context.GetType(), appContext.TenantId, designTime),
+           FestCoverDbContext appContext => (context.GetType(), appContext.TenantId, designTime),
            _ => context.GetType()
        };
 

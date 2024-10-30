@@ -27,10 +27,18 @@ export const AlbumList = ({ albums, edit }: AlbumListProps) => {
               <div className="card rounded-3 border-0 mt-5 ">
                 <img
                   onClick={() => navigate(`details/${album.id}`)}
-                  src={album.albumUrlImage}
+                  src={album.mediumAlbumUrlImage}
                   className="card-img-top"
-                  alt="..."
-                  width={200}
+                  srcSet={`
+                    ${album.smallAlbumUrlImage} 150w, 
+                    ${album.mediumAlbumUrlImage} 500w, 
+                    ${album.largeAlbumUrlImage} 1000w, 
+                    ${album.originalAlbumUrlImage} 2000w
+                  `}
+                  sizes="(max-width: 600px) 150px, 
+                  (max-width: 1200px) 500px, 
+                  (max-width: 1800px) 1000px, 
+                  2000px"
                 />
                 <div className="card-body">
                   <h5 className="card-title">{album.name}</h5>

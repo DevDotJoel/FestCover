@@ -162,6 +162,12 @@ namespace FestCover.Infrastructure.Common.Persistence
                 RoleId = adminRoleId,
 
             });
+            //modelBuilder.Entity<IdentityUserRole<Guid>>().HasData(new IdentityUserRole<Guid>
+            //{
+            //    UserId = user4Id,
+            //    RoleId = adminRoleId,
+
+            //});
         }
     }
 }

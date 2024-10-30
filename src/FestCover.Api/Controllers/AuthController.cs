@@ -35,6 +35,17 @@ namespace FestCover.Api.Controllers
 
 
         }
+        [AllowAnonymous]
+        [HttpPost("register")]
+        public async Task<IActionResult> Registe(RegisterUserRequest registerUserRequest)
+        {
+
+            var result = await _identityService.Register(registerUserRequest.Username,registerUserRequest.Email,registerUserRequest.Password,registerUserRequest.Password2);
+          
+            return result.Match (_=>NoContent(), Problem);
+
+
+        }
 
         [HttpGet("logOut")]
         public async Task<IActionResult> Logout()

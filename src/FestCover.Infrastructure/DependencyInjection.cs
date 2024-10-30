@@ -20,6 +20,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using FestCover.Infrastructure.Common.Services;
 
 namespace FestCover.Infrastructure
 {
@@ -36,13 +37,13 @@ namespace FestCover.Infrastructure
             });
 
             services.AddPersistance(configuration).AddAuth(configuration);
-
+            services.AddScoped<IImageService, ImageService>();
 
             return services;
         }
         public static IServiceCollection AddPersistance(this IServiceCollection services, ConfigurationManager configuration)
         {
-            services.AddDbContext<AppDbContext>(options => options.UseSqlServer("name=ConnectionStrings:DefaultConnection"));
+            services.AddDbContext<FestCoverDbContext>(options => options.UseSqlServer("name=ConnectionStrings:DefaultConnection"));
             services.AddScoped<IAlbumRepository, AlbumRepository>();
             services.AddScoped<IAlbumContentRepository, AlbumContentRepository>();
             services.AddScoped<PublishDomainEventsInterceptor>();
@@ -56,7 +57,7 @@ namespace FestCover.Infrastructure
         {
             services.AddScoped<IIdentityService, IdentityService>();
             services.AddScoped<ITokenClaimService, TokenClaimService>();
-            services.AddIdentity<User, Role>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<AppDbContext>().AddTokenProvider<DataProtectorTokenProvider<User>>(TokenOptions.DefaultProvider).
+            services.AddIdentity<User, Role>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<FestCoverDbContext>().AddTokenProvider<DataProtectorTokenProvider<User>>(TokenOptions.DefaultProvider).
                 AddUserManager<UserManager<User>>().AddRoleManager<RoleManager<Role>>();
             services.Configure<IdentityOptions>(options =>
             {

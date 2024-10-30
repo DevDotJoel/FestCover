@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FestCover.Infrastructure.Migrations
 {
     [DbContext(typeof(FestCoverDbContext))]
-    [Migration("20241023142742_AddedMirandaUser")]
-    partial class AddedMirandaUser
+    [Migration("20241028150200_MinorUpdatev5")]
+    partial class MinorUpdatev5
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -59,10 +59,6 @@ namespace FestCover.Infrastructure.Migrations
                     b.Property<Guid>("Id")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("AlbumUrlImage")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
 
@@ -77,10 +73,26 @@ namespace FestCover.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("LargeAlbumUrlImage")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime>("LastModifiedDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("MediumAlbumUrlImage")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("OriginalAlbumUrlImage")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SmallAlbumUrlImage")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -212,16 +224,16 @@ namespace FestCover.Infrastructure.Migrations
                         {
                             Id = new Guid("f69b50aa-de02-423b-abc4-0ba2fb3eb64d"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "90750a0a-a0c1-4e4a-9cbb-def864d51eb1",
+                            ConcurrencyStamp = "7edf22d2-302e-4b72-bb47-1886bf79b6f8",
                             Email = "j141996@hotmail.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "J141996@HOTMAIL.COM",
                             NormalizedUserName = "JOELFERREIRA",
-                            PasswordHash = "AQAAAAIAAYagAAAAED2WFD8w8QOhfC4istp1QhaEWRSikDTIO1GDbPGHiZr+tUSgrZ/w/UAGpWQiVqf0hw==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEBLBWCkByc8aNm3lkTXdM56LmIVOp3XQFUgQOEo0hLm88uw5/L8G4JQODk6KPnBuiw==",
                             PhoneNumber = "+351960180464",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "f9058ad7-ce9f-4c4e-b5eb-3b962e1f0fcd",
+                            SecurityStamp = "2df6e633-af52-4101-b2e8-d8a641b1a786",
                             TwoFactorEnabled = false,
                             UserName = "JoelFerreira"
                         },
@@ -229,18 +241,35 @@ namespace FestCover.Infrastructure.Migrations
                         {
                             Id = new Guid("613de40e-809c-47c2-8f8b-005efffff05e"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "545602ee-939b-4e8d-ad9c-7160554901b1",
+                            ConcurrencyStamp = "cbf3d579-3273-4cb6-9eb2-39fc16fa477b",
                             Email = "mirandajp@gmail.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "MIRANDAJP@GMAIL.COM",
                             NormalizedUserName = "JOAOMIRANDA",
-                            PasswordHash = "AQAAAAIAAYagAAAAEGzbyt6KAr1CVBcVt8vHeeT54hSsBEyqTkjefRfjbNaPLLOxJM8PoIEQrjQCA0Werg==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEIhpu/NEY6idjKMhwbj0QwB1JClYO49KgPxCujWSNdMhrQJIBbkRehlSmgABvhW58g==",
                             PhoneNumber = "+351960180464",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "dd997f96-0f5a-49c0-a125-e2666713415f",
+                            SecurityStamp = "077fe7d6-3d7f-47e2-a692-bc8d2002741a",
                             TwoFactorEnabled = false,
                             UserName = "JoaoMiranda"
+                        },
+                        new
+                        {
+                            Id = new Guid("aa14ed43-7698-408e-8b35-3e556e79bd18"),
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "98a0daeb-2e59-4e4e-8e68-d54832220b12",
+                            Email = "isabelkiala@gmail.com",
+                            EmailConfirmed = true,
+                            LockoutEnabled = false,
+                            NormalizedEmail = "ISABELKIALA@GMAIL.COM",
+                            NormalizedUserName = "ISABELKIALA",
+                            PasswordHash = "AQAAAAIAAYagAAAAEP0vylne89vbXZS5kExF5Yvsm62a0UZ+mLKDKC+YJM+6KhYqe5t2+7jSRSiUUHcddA==",
+                            PhoneNumber = "+351960180464",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "4cb53199-9578-4d73-bd6e-48371a44fb3d",
+                            TwoFactorEnabled = false,
+                            UserName = "IsabelKiala"
                         });
                 });
 
@@ -336,6 +365,11 @@ namespace FestCover.Infrastructure.Migrations
                         new
                         {
                             UserId = new Guid("613de40e-809c-47c2-8f8b-005efffff05e"),
+                            RoleId = new Guid("d67c7fbd-69bb-4926-acb6-f393143c16b3")
+                        },
+                        new
+                        {
+                            UserId = new Guid("aa14ed43-7698-408e-8b35-3e556e79bd18"),
                             RoleId = new Guid("d67c7fbd-69bb-4926-acb6-f393143c16b3")
                         });
                 });
