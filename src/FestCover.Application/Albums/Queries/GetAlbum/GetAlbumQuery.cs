@@ -9,5 +9,5 @@ using System.Threading.Tasks;
 
 namespace FestCover.Application.Albums.Queries.GetAlbum
 {
-    public record GetAlbumQuery (string AlbumId):IRequest<ErrorOr<AlbumDetailModel>>;
+    public record GetAlbumQuery (string AlbumId):IRequest<ErrorOr<AlbumModel>>;
 }

@@ -6,13 +6,14 @@ using System.Threading.Tasks;
 
 namespace FestCover.Application.Common.Models.Albums
 {
-    public class AlbumDetailModel
-    {
-        public string Id { get; set; }
-        public string EventId { get; set; }
-        public string Name { get; set; }
-        public string Description { get; set; }
-        public string AlbumUrlImage { get; set; }
-        public List<AlbumContentModel> AlbumContents { get; set; }
-    }
+    public record AlbumDetailModel(
+    string Id,
+    string Name,
+    string OriginalAlbumUrlImage,
+    string SmallAlbumUrlImage,
+    string MediumAlbumUrlImage,
+    string LargeAlbumUrlImage,
+    List<AlbumContentModel> Contents
+);
+
 }

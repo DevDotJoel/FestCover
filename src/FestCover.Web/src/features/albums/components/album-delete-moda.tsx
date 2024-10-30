@@ -32,10 +32,29 @@ export const AlbumDeleteModal = ({
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <p>
-            Are you sure you want to delete the album {"  "}
-            {album.name}?
-          </p>
+          <div className="row">
+            <div className="col">
+              <img
+                src={album.mediumAlbumUrlImage}
+                className="card-img-top"
+                srcSet={`
+                    ${album.smallAlbumUrlImage} 150w, 
+                    ${album.mediumAlbumUrlImage} 500w, 
+                    ${album.largeAlbumUrlImage} 1000w, 
+                    ${album.originalAlbumUrlImage} 2000w
+                  `}
+                sizes="(max-width: 600px) 150px, 
+                  (max-width: 1200px) 500px, 
+                  (max-width: 1800px) 1000px, 
+                  2000px"
+              />
+            </div>
+          </div>
+          <div className="row mt-2">
+            <div className="col">
+              Are you sure you want to delete the album <b>{album.name}</b> ?
+            </div>
+          </div>
         </Modal.Body>
         <Modal.Footer className="justify-content-between">
           <button

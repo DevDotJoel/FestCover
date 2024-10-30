@@ -39,7 +39,7 @@ export const AlbumForm = ({ submit, album, disableFields }: AlbumFormsType) => {
           id: album.id,
           name: album.name,
           description: album.description,
-          albumPreview: album.mediumAlbumUrlImage,
+          albumPreview: album.originalAlbumUrlImage,
         }
       : undefined,
     resolver: zodResolver(currentSchema),

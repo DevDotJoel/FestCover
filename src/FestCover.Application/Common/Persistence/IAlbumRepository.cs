@@ -10,5 +10,6 @@ namespace FestCover.Application.Common.Persistence
 {
     public interface IAlbumRepository : IBaseRepository<AlbumId, Album>
     {
+        Task<Album> GetAlbumByKey(string key);
     }
 }

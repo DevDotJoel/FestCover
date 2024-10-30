@@ -44,5 +44,6 @@ namespace FestCover.Api.Controllers
             var result = await _mediator.Send(command);
             return result.Match(_ => NoContent(), Problem);
         }
+   
     }
 }

@@ -30,6 +30,11 @@ namespace FestCover.Infrastructure.Common.Persistence.Repositories
             return await _context.Albums.AnyAsync(album => album.Id == id);
         }
 
+        public async Task<Album> GetAlbumByKey(string key)
+        {
+            return await _context.Albums.Where(album => album.Key == key).AsNoTracking().FirstOrDefaultAsync();
+        }
+
         public  async Task<List<Album>> GetAllAsync(CancellationToken cancellationToken)
         {
             return await _context.Albums.AsNoTracking().ToListAsync(cancellationToken);

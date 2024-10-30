@@ -8,7 +8,7 @@ using FestCover.Domain.Common.DomainErrors;
 
 namespace FestCover.Application.Albums.Queries.GetAlbum
 {
-    public class GetAlbumQueryHandler : IRequestHandler<GetAlbumQuery, ErrorOr<AlbumDetailModel>>
+    public class GetAlbumQueryHandler : IRequestHandler<GetAlbumQuery, ErrorOr<AlbumModel>>
     {
         private readonly IMapper _mapper;
         private readonly IAlbumRepository _albumRepository;
@@ -17,7 +17,7 @@ namespace FestCover.Application.Albums.Queries.GetAlbum
             _mapper = mapper;
             _albumRepository = albumRepository;
         }
-        public async Task<ErrorOr<AlbumDetailModel>> Handle(GetAlbumQuery request, CancellationToken cancellationToken)
+        public async Task<ErrorOr<AlbumModel>> Handle(GetAlbumQuery request, CancellationToken cancellationToken)
         {
             var getAlbumIdResult = AlbumId.Create(request.AlbumId);
             if (getAlbumIdResult.IsError)
@@ -29,7 +29,7 @@ namespace FestCover.Application.Albums.Queries.GetAlbum
                 return Errors.Album.NotFound;
             }
             var album = await _albumRepository.GetByIdAsync(getAlbumIdResult.Value, cancellationToken);
-            return _mapper.Map<AlbumDetailModel>(album);
+            return _mapper.Map<AlbumModel>(album);
         }
     }
 }

@@ -19,8 +19,4 @@
     <ProjectReference Include="..\FestCover.Domain\FestCover.Domain.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Common\Mapping\" />
-  </ItemGroup>
-
 </Project>

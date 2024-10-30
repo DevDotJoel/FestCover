@@ -1,15 +1,14 @@
 ﻿using MapsterMapper;
 using MediatR;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using FestCover.Application.Albums.Commands.CreateAlbum;
 using FestCover.Application.Albums.Commands.UpdateAlbum;
 using FestCover.Application.Albums.Queries.GetAlbum;
 using FestCover.Application.Albums.Queries.ListAlbum;
 using FestCover.Contracts.Albums;
-using FestCover.Application.AlbumContents.Commands.CreateAlbumContent;
 using FestCover.Application.Albums.Commands.DeleteAlbum;
+using FestCover.Application.Albums.Queries.GetAlbumByKey;
+using Microsoft.AspNetCore.Authorization;
 
 
 namespace FestCover.Api.Controllers
@@ -59,6 +58,14 @@ namespace FestCover.Api.Controllers
             var command= new DeleteAlbumCommand(albumId);
             var result = await _mediator.Send(command);
             return result.Match(_=> NoContent(), Problem);
+        }
+        [AllowAnonymous]
+        [HttpGet("public/{key}")]
+        public async Task<IActionResult> ListAlbumContentsByKey(string key)
+        {
+            var query = new GetAlbumByKeyQuery(key);
+            var result = await _mediator.Send(query);
+            return result.Match(Ok, Problem);
         }
     }
 }

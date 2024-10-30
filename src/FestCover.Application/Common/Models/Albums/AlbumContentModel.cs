@@ -9,7 +9,10 @@ namespace FestCover.Application.Common.Models.Albums
     public record AlbumContentModel
     (
      string Id,
-     string? PhoneNumber,
-     string Url
+     string OriginalAlbumContentUrlImage,
+     string SmallAlbumContentUrlImage,
+     string MediumAlbumContentUrlImage,
+     string LargeAlbumContentUrlImage,
+     string? PhoneNumber = null
     );
 }

@@ -1,6 +1,7 @@
 export interface AlbumModel {
   id: string;
   name: string;
+  key:string;
   description: string;
   albumUrlImage: string;
   originalAlbumUrlImage: string;
@@ -11,9 +12,11 @@ export interface AlbumModel {
 
 export interface AlbumContentModel {
   id: string;
-  albumId: string;
   phoneNumber: string;
-  url: string;
+  originalAlbumContentUrlImage: string;
+  smallAlbumContentUrlImage: string;
+  mediumAlbumContentUrlImage: string;
+  largeAlbumContentUrlImage: string;
 }
 
 export interface CreateAlbumModel {

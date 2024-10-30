@@ -35,19 +35,29 @@ export const AlbumContentList = ({
   return (
     <>
       <div className="row  row-cols-sm-4 ">
-        {albumContents.map((albumContent: AlbumContentModel) => {
+        {albumContents?.map((albumContent: AlbumContentModel) => {
           return (
             <div key={albumContent.id} className="col-12 col-sm-3">
               <div className="card rounded-3 border-0 mt-1">
                 <img
                   onClick={() => {
-                    setContentSelected(albumContent.url);
+                    setContentSelected(
+                      albumContent.originalAlbumContentUrlImage
+                    );
                     handleShowContent();
                   }}
-                  src={albumContent.url}
+                  src={albumContent.mediumAlbumContentUrlImage}
                   className="card-img-top"
-                  alt="..."
-                  width={200}
+                  srcSet={`
+                    ${albumContent.smallAlbumContentUrlImage} 150w, 
+                    ${albumContent.mediumAlbumContentUrlImage} 500w, 
+                    ${albumContent.largeAlbumContentUrlImage} 1000w, 
+                    ${albumContent.originalAlbumContentUrlImage} 2000w
+                  `}
+                  sizes="(max-width: 600px) 150px, 
+                  (max-width: 1200px) 500px, 
+                  (max-width: 1800px) 1000px, 
+                  2000px"
                 />
                 <div className="card-body">
                   <div className="row">
@@ -92,7 +102,11 @@ export const AlbumContentList = ({
       )}
       {showContent && (
         <ContentSlider
-          contents={[...albumContents.map((content) => content.url)]}
+          contents={[
+            ...albumContents.map(
+              (content) => content.originalAlbumContentUrlImage
+            ),
+          ]}
           show={showContent}
           contentSelected={contentSelected}
           handleClose={handleContentClose}
