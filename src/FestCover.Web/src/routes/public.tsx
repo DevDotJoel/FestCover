@@ -2,6 +2,7 @@ import { Suspense } from "react";
 import { Navigate, Outlet } from "react-router";
 import { lazyImport } from "../utils/lazyImport";
 import { PublicLayout } from "../components/ui/layout/public.layout";
+import { PublicRoutes } from "../features/public/routes";
 
 const { AuthRoutes } = lazyImport(
   () => import("../features/auth"),
@@ -11,6 +12,7 @@ const { HomeRoutes } = lazyImport(
   () => import("../features/home"),
   "HomeRoutes"
 );
+
 export const PublicApp = () => {
   return (
     <>
@@ -30,6 +32,10 @@ export const publicRoutes = [
       {
         path: "/home",
         element: <HomeRoutes />,
+      },
+      {
+        path: "/public/*",
+        element: <PublicRoutes />,
       },
       {
         path: "/auth/*",

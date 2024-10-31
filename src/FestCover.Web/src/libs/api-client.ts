@@ -27,13 +27,8 @@ api.interceptors.response.use(
   async (error) => {
     const message = error.response?.data?.title;
     const originalRequest = error?.config;
-    toast.error(message);
-    // useNotifications.getState().addNotification({
-    //   type: "error",
-    //   title: "Error",
-    //   message,
-    // });
-    if (error.response?.status === 401) {
+    console.log(error.response?.status)
+    if (error.response?.status == 401) {
       try {
         const accessToken = localStorage.getItem("accessToken");
         if (accessToken != null) {

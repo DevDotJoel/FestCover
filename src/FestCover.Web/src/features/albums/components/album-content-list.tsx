@@ -91,7 +91,17 @@ export const AlbumContentList = ({
           );
         })}
       </div>
-
+      {albumContents.length === 0 && (
+        <div className="card rounded-3 border-0 mt-1">
+          <div className="card-body">
+            <div className="row">
+              <div className="col d-flex justify-content-center">
+                <h5>No content yet... start by adding 😊</h5>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
       {show && (
         <AlbumContentDeleteModal
           albumContent={albumContentToDelete}

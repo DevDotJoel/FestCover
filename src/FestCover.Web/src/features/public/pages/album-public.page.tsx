@@ -1,19 +1,15 @@
-import { useState } from "react";
+import React from "react";
 import { useParams } from "react-router";
-import { useAlbumContents } from "../api/get-Album-Contents";
-import { AlbumContentList } from "../components/album-content-list";
-import { AlbumContentModal } from "../components/album-content-modal";
-export const AlbumDetailPage = () => {
+import { usePublicAlbum } from "../api/get-public-albums";
+import { AlbumPublicContentList } from "../../albums/components/album-public-content-list";
+
+export const AlbumPublicPage = () => {
   const { id } = useParams();
-  const albumContentsQuery = useAlbumContents({
-    albumId: id ?? "",
+  const publicAlbumQuery = usePublicAlbum({
+    key: id ?? "",
   });
-  const [show, setShow] = useState(false);
-  const handleClose = () => {
-    setShow(false);
-  };
-  const handleShow = () => setShow(true);
-  if (albumContentsQuery.isLoading) {
+
+  if (publicAlbumQuery.isLoading) {
     return (
       <>
         <div className="container">
@@ -210,33 +206,45 @@ export const AlbumDetailPage = () => {
       </>
     );
   }
-  if (albumContentsQuery.error || !albumContentsQuery.data) {
+  if (publicAlbumQuery.error || !publicAlbumQuery.data) {
     return null;
   }
 
   return (
     <>
-      <div className="container">
+      <div className="container-fluid">
         <div className="row mt-3 ">
-          <div className="col ">
-            <div className="card rounded-3 border-0   " aria-hidden="true">
+          <div className="col">
+            <div className="card rounded-4 border-0">
               <div className="card-body">
                 <div className="row">
-                  <div className="col">
-                    <h2>
-                      <b>Album Contents</b>
-                    </h2>
-                    <div className="text-muted">List your album content</div>
-                  </div>
-                  <div className="col d-flex justify-content-end mt-2">
+                  <div className="col-4 ">
+                    <img
+                      src={publicAlbumQuery.data.originalAlbumUrlImage}
+                      className="img-fluid rounded-circle"
+                    />
+                    {/* <div className="col d-flex justify-content-end mt-2">
                     <div>
-                      <button
-                        onClick={handleShow}
-                        className="btn btn-blue rounded-5"
-                      >
+                      <button className="btn btn-blue rounded-5">
                         <i className="bi bi-plus-lg"></i> Content
                       </button>
                     </div>
+                  </div> */}
+                  </div>
+                  <div className="col">
+                    <h4 className=" mt-3">{publicAlbumQuery.data.name}</h4>
+                  </div>
+                </div>
+                <div className="row mt-2">
+                  <div className="col">
+                    <button className="btn btn-blue rounded-5 w-100">
+                      Back
+                    </button>
+                  </div>
+                  <div className="col">
+                    <button className="btn btn-blue rounded-5 w-100">
+                      Add Content
+                    </button>
                   </div>
                 </div>
               </div>
@@ -245,19 +253,11 @@ export const AlbumDetailPage = () => {
         </div>
         <div className="row mt-3">
           <div className="col ">
-            <AlbumContentList
-              albumId={id}
-              albumContents={albumContentsQuery.data}
+            <AlbumPublicContentList
+              albumContents={publicAlbumQuery.data.contents}
             />
           </div>
         </div>
-        {show && (
-          <AlbumContentModal
-            albumId={id}
-            show={show}
-            handleClose={handleClose}
-          />
-        )}
       </div>
     </>
   );

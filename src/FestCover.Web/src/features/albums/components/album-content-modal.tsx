@@ -50,7 +50,7 @@ export const AlbumContentModal = ({
           <button
             disabled={createAlbumContentMutation.isPending}
             onClick={handleClose}
-            className="btn btn-dark rounded-5"
+            className="btn btn-blue rounded-5"
           >
             Close
           </button>
@@ -58,7 +58,7 @@ export const AlbumContentModal = ({
           <button
             disabled={createAlbumContentMutation.isPending}
             form="album-content-form"
-            className="btn btn-dark rounded-5"
+            className="btn btn-blue rounded-5"
           >
             Save
           </button>

@@ -34,3 +34,14 @@ export interface CreateAlbumContentModel {
   albumId: string;
   albumContentImage: File;
 }
+
+export interface AlbumDetailModel{
+  id: string;
+  name: string;
+  albumUrlImage: string;
+  originalAlbumUrlImage: string;
+  smallAlbumUrlImage: string;
+  mediumAlbumUrlImage: string;
+  largeAlbumUrlImage: string;
+  contents:AlbumContentModel[]
+}

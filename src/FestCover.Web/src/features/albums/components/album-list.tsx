@@ -102,6 +102,17 @@ export const AlbumList = ({ albums, edit }: AlbumListProps) => {
           );
         })}
       </div>
+      {albums.length === 0 && (
+        <div className="card rounded-3 border-0 mt-1">
+          <div className="card-body">
+            <div className="row">
+              <div className="col d-flex justify-content-center">
+                <h5>No albums created... start by adding 😊</h5>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
       {show && (
         <AlbumDeleteModal
           album={albumToDelete}

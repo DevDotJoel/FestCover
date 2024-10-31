@@ -31,9 +31,7 @@ export const ContentSlider = ({
     <>
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
-          <Modal.Title className="ms-auto">
-            <b>Content</b>
-          </Modal.Title>
+          <Modal.Title className="ms-auto"></Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Carousel interval={null} activeIndex={index} onSelect={handleSelect}>

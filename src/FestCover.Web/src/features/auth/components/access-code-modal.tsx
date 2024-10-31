@@ -42,11 +42,11 @@ export const AccessCodeModal = ({
           </div>
         </Modal.Body>
         <Modal.Footer className="justify-content-between">
-          <button onClick={handleClose} className="btn btn-dark rounded-5">
+          <button onClick={handleClose} className="btn btn-blue rounded-5">
             Cancel
           </button>
 
-          <button className="btn btn-dark rounded-5">Submit</button>
+          <button className="btn btn-blue rounded-5">Submit</button>
         </Modal.Footer>
       </Modal>
     </>

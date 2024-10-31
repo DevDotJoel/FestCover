@@ -39,7 +39,7 @@ export const FileImporter = (props: IFileImporterProps) => {
   return (
     <>
       <button
-        className="btn btn-dark rounded-5 "
+        className="btn btn-blue rounded-5 "
         type="button"
         onClick={uploud}
       >

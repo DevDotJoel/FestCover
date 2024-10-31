@@ -57,11 +57,11 @@ export const AlbumModal = ({ show, album, handleClose }: AlbumModalProps) => {
           </div>
         </Modal.Body>
         <Modal.Footer className="justify-content-between">
-          <button onClick={handleClose} className="btn btn-dark rounded-5">
+          <button onClick={handleClose} className="btn btn-blue rounded-5">
             Close
           </button>
 
-          <button form="album-form" className="btn btn-dark rounded-5">
+          <button form="album-form" className="btn btn-blue rounded-5">
             Save
           </button>
         </Modal.Footer>
