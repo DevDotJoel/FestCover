@@ -45,7 +45,7 @@ export const LoginPage = () => {
                       <button
                         disabled={login.isPending}
                         onClick={handleShow}
-                        className="btn btn-dark rounded-5 w-100"
+                        className="btn btn-blue rounded-5 w-100"
                       >
                         Enter Code
                       </button>

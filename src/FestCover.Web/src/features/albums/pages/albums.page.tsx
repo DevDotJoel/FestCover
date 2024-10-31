@@ -273,7 +273,7 @@ export const AlbumsPage = () => {
                     <div>
                       <button
                         onClick={handleShow}
-                        className="btn btn-dark rounded-5"
+                        className="btn btn-blue rounded-5"
                       >
                         <i className="bi bi-plus-lg"></i> Album
                       </button>

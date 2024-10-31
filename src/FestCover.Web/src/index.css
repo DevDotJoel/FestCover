@@ -21,23 +21,49 @@ input:-webkit-autofill {
   background-color: #faf9f6 !important;
 }
 .btn-blue {
-  background-color: #a1e1e0 !important;
-  border-color: #a1e1e0 !important;
-  color: #000000 !important;
-}
-.btn-blue:hover {
-  background-color: #91d1d0 !important;
-  border-color: #91d1d0 !important;
-  color: #000000 !important;
-}
-.btn-blue:focus,
-.btn-blue:active {
-  background-color: #81c1c0 !important;
-  border-color: #81c1c0 !important;
-  color: #000000 !important;
-  box-shadow: 0 0 0 0.25rem rgba(161, 225, 224, 0.5) !important;
+  --bs-btn-color: #ffffff !important; 
+  --bs-btn-bg: #56a1f4 !important;
+  --bs-btn-border-color: #56a1f4 !important; 
+
+  --bs-btn-hover-color: #ffffff !important;
+  --bs-btn-hover-bg: #3d8ae0 !important; 
+  --bs-btn-hover-border-color: #3d8ae0 !important;
+
+  --bs-btn-focus-shadow-rgb: 86, 161, 244; 
+  
+  --bs-btn-active-color: #ffffff !important;
+  --bs-btn-active-bg: #6fb5f6 !important; 
+  --bs-btn-active-border-color: #6fb5f6 !important;
+  --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125) !important;
+
+  --bs-btn-disabled-color: #ffffff !important;
+  --bs-btn-disabled-bg: #56a1f4 !important; 
+  --bs-btn-disabled-border-color: #56a1f4 !important;
 }
 
+.btn-blue:hover {
+  background-color: var(--bs-btn-hover-bg) !important;
+  border-color: var(--bs-btn-hover-border-color) !important;
+  color: var(--bs-btn-hover-color) !important;
+}
+
+.btn-blue:focus {
+  box-shadow: 0 0 0 0.25rem rgba(var(--bs-btn-focus-shadow-rgb), 0.5) !important;
+}
+
+.btn-blue:active {
+  background-color: var(--bs-btn-active-bg) !important;
+  border-color: var(--bs-btn-active-border-color) !important;
+  color: var(--bs-btn-active-color) !important;
+  box-shadow: var(--bs-btn-active-shadow) !important;
+}
+
+.btn-blue:disabled, 
+.btn-blue.disabled {
+  background-color: var(--bs-btn-disabled-bg) !important;
+  border-color: var(--bs-btn-disabled-border-color) !important;
+  color: var(--bs-btn-disabled-color) !important;
+}
 .card-img-top {
   width: 100%;
   height: 15vw;
