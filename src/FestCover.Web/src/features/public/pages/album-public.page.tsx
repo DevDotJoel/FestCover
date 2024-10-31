@@ -1,5 +1,5 @@
 import React from "react";
-import { useParams } from "react-router";
+import { Navigate, useParams } from "react-router";
 import { usePublicAlbum } from "../api/get-public-albums";
 import { AlbumPublicContentList } from "../../albums/components/album-public-content-list";
 
@@ -207,7 +207,7 @@ export const AlbumPublicPage = () => {
     );
   }
   if (publicAlbumQuery.error || !publicAlbumQuery.data) {
-    return null;
+    return <Navigate replace to="/auth/login" />;
   }
 
   return (
@@ -237,7 +237,7 @@ export const AlbumPublicPage = () => {
                 </div>
                 <div className="row mt-2">
                   <div className="col">
-                    <button className="btn btn-blue rounded-5 w-100">
+                    <button className="btn btn-dark rounded-5 w-100">
                       Back
                     </button>
                   </div>

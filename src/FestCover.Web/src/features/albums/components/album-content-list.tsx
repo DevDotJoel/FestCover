@@ -46,18 +46,8 @@ export const AlbumContentList = ({
                     );
                     handleShowContent();
                   }}
-                  src={albumContent.mediumAlbumContentUrlImage}
+                  src={albumContent.originalAlbumContentUrlImage}
                   className="card-img-top"
-                  srcSet={`
-                    ${albumContent.smallAlbumContentUrlImage} 150w, 
-                    ${albumContent.mediumAlbumContentUrlImage} 500w, 
-                    ${albumContent.largeAlbumContentUrlImage} 1000w, 
-                    ${albumContent.originalAlbumContentUrlImage} 2000w
-                  `}
-                  sizes="(max-width: 600px) 150px, 
-                  (max-width: 1200px) 500px, 
-                  (max-width: 1800px) 1000px, 
-                  2000px"
                 />
                 <div className="card-body">
                   <div className="row">
