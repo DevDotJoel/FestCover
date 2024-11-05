@@ -17,14 +17,12 @@ namespace FestCover.Application.AlbumContents.Commands.CreateAlbumContent
         private readonly IStorageService _storageService;
         private readonly IUserService _userService;
         private readonly IMapper _mapper;
-        private readonly IImageService _imageService;
         public CreateAlbumContentCommandHandler(
             IAlbumRepository albumRepository,
             IStorageService storageService,
             IUserService userService,
             IMapper mapper,
-            IAlbumContentRepository albumContentRepository,
-            IImageService imageService
+            IAlbumContentRepository albumContentRepository
             )
         {
 
@@ -34,7 +32,6 @@ namespace FestCover.Application.AlbumContents.Commands.CreateAlbumContent
             _userService = userService;
             _mapper = mapper;
             _albumContentRepository = albumContentRepository;
-            _imageService = imageService;
         }
         public async Task<ErrorOr<Success>> Handle(CreateAlbumContentCommand request, CancellationToken cancellationToken)
         {
@@ -58,22 +55,10 @@ namespace FestCover.Application.AlbumContents.Commands.CreateAlbumContent
             //    return Error.Conflict(description: "Invalid phone number");
             //}
             //var formattedPhoneNumber = phoneNumberUtil.Format(phoneNumber, PhoneNumberFormat.INTERNATIONAL);
-            var small = _imageService.ConvertToSmallImage(request.AlbumContentImage.File);
-            var medium = _imageService.ConvertToMediumImage(request.AlbumContentImage.File);
-            var large = _imageService.ConvertToLargImage(request.AlbumContentImage.File);
 
-
-            var albumContent = AlbumContent.Create(createAlbumIdResult.Value,null);
-            var originalPath = await _storageService.AddFile(request.AlbumContentImage.ContentType, $"{userId}/Albums/{createAlbumIdResult.Value}/Content/original/{albumContent.Id.Value + request.AlbumContentImage.Extension}", request.AlbumContentImage.File);
-            var smallPath = await _storageService.AddFile(request.AlbumContentImage.ContentType, $"{userId}/Albums/{createAlbumIdResult.Value}/Content/small/{albumContent.Id.Value + request.AlbumContentImage.Extension}", small);
-            var mediumPath = await _storageService.AddFile(request.AlbumContentImage.ContentType, $"{userId}/Albums/{createAlbumIdResult.Value} /Content/medium/{albumContent.Id.Value + request.AlbumContentImage.Extension}", medium);
-            var LargePath = await _storageService.AddFile(request.AlbumContentImage.ContentType, $"{userId}/Albums/{createAlbumIdResult.Value} /Content/large/{albumContent.Id.Value + request.AlbumContentImage.Extension}", large);
-
-
-            albumContent.SetOriginalAlbumContentUrlImage(originalPath.Value);
-            albumContent.SetSmallAlbumContentUrlImage(smallPath.Value);
-            albumContent.SetMediumAlbumContentUrlImage(mediumPath.Value);
-            albumContent.SetLargeAlbumContentUrlImage(LargePath.Value);
+            var albumContent = AlbumContent.Create(createAlbumIdResult.Value,false,null);
+            var imageUrl = await _storageService.AddFile(request.AlbumContentImage.ContentType, $"{userId}/Albums/{createAlbumIdResult.Value}/Content/{albumContent.Id.Value + request.AlbumContentImage.Extension}", request.AlbumContentImage.File);
+            albumContent.SetUrl(imageUrl.Value);
 
             //album.AddContent(formattedPhoneNumber, contentUrl.Value);
             await _albumContentRepository.AddAsync(albumContent, cancellationToken);

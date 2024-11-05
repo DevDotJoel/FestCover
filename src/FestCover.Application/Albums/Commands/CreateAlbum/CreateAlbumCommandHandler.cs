@@ -44,22 +44,9 @@ namespace FestCover.Application.Albums.Commands.CreateAlbum
         {
 
             var userId = UserId.Create(Guid.Parse(_userService.GetCurrentUserId()));
-            var album = Album.Create(request.Name, request.Description);
-
-            var small = _imageService.ConvertToSmallImage(request.AlbumImage.File);
-            var medium = _imageService.ConvertToMediumImage(request.AlbumImage.File);
-            var large = _imageService.ConvertToLargImage(request.AlbumImage.File);
-
-            
-            var originalPath = await _storageService.AddFile(request.AlbumImage.ContentType, $"{userId}/Albums/{album.Id.Value}/Profile/original/{Guid.NewGuid() + request.AlbumImage.Extension}", request.AlbumImage.File);
-            var smallPath = await _storageService.AddFile(request.AlbumImage.ContentType, $"{userId}/Albums/{album.Id.Value}/Profile/small/{Guid.NewGuid() + request.AlbumImage.Extension}", small);
-            var mediumPath = await _storageService.AddFile(request.AlbumImage.ContentType, $"{userId}/Albums/{album.Id.Value}/Profile/medium/{Guid.NewGuid() + request.AlbumImage.Extension}", medium);
-            var LargePath = await _storageService.AddFile(request.AlbumImage.ContentType, $"{userId}/Albums/{album.Id.Value}/Profile/large/{Guid.NewGuid() + request.AlbumImage.Extension}", large);          
-
-            album.SetOriginalAlbumUrlImage(originalPath.Value);
-            album.SetSmallAlbumUrlImage(smallPath.Value);
-            album.SetMediumAlbumUrlImage(mediumPath.Value);
-            album.SetLargeAlbumUrlImage(LargePath.Value);
+            var album = Album.Create(request.Name, request.Description, request.AllowPublicUpload,request.ReviewUploadedContent);            
+            var imageUrl = await _storageService.AddFile(request.AlbumImage.ContentType, $"{userId}/Albums/{album.Id.Value}/Profile/{Guid.NewGuid() + request.AlbumImage.Extension}", request.AlbumImage.File);       
+            album.SetUrl(imageUrl.Value);
             await _albumRepository.AddAsync(album,cancellationToken);
             return _mapper.Map<AlbumModel>(album);
         }

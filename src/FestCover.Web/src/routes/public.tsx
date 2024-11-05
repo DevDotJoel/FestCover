@@ -34,7 +34,7 @@ export const publicRoutes = [
         element: <HomeRoutes />,
       },
       {
-        path: "/public/*",
+        path: "/p/*",
         element: <PublicRoutes />,
       },
       {

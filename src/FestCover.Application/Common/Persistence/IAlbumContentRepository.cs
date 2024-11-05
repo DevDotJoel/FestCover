@@ -11,6 +11,7 @@ namespace FestCover.Application.Common.Persistence
 {
     public interface IAlbumContentRepository:IBaseRepository<AlbumContentId,AlbumContent>
     {
-        Task<List<AlbumContent>> GetAlbumContentsByAlbumId(AlbumId albumId);
+        Task<List<AlbumContent>> GetAlbumContentsByAlbumId(AlbumId albumId, CancellationToken cancellationToken);
+        Task<List<AlbumContent>> GetPendingAlbumContents(CancellationToken cancellationToken);
     }
 }

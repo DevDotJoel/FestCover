@@ -13,6 +13,8 @@ namespace FestCover.Application.Albums.Commands.CreateAlbum
     (
      string Name,
      string Description,
+     bool AllowPublicUpload,
+     bool ReviewUploadedContent,
      AlbumImageCommand AlbumImage
     ):IRequest<ErrorOr<AlbumModel>>;
 

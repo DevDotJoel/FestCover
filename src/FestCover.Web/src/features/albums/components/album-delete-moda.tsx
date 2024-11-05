@@ -34,20 +34,7 @@ export const AlbumDeleteModal = ({
         <Modal.Body>
           <div className="row">
             <div className="col">
-              <img
-                src={album.mediumAlbumUrlImage}
-                className="card-img-top"
-                srcSet={`
-                    ${album.smallAlbumUrlImage} 150w, 
-                    ${album.mediumAlbumUrlImage} 500w, 
-                    ${album.largeAlbumUrlImage} 1000w, 
-                    ${album.originalAlbumUrlImage} 2000w
-                  `}
-                sizes="(max-width: 600px) 150px, 
-                  (max-width: 1200px) 500px, 
-                  (max-width: 1800px) 1000px, 
-                  2000px"
-              />
+              <img src={album.url} className="card-img-top" />
             </div>
           </div>
           <div className="row mt-2">

@@ -1,6 +1,6 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useLogout } from "../../../libs/auth";
+import { useLogout, useUser } from "../../../libs/auth";
 import { queryClient } from "../../../libs/react-query";
 
 export const SideNav = () => {
@@ -8,6 +8,13 @@ export const SideNav = () => {
 
   const currentQueryClient = queryClient;
   const logoutQuery = useLogout();
+
+  const userQuery = useUser();
+
+  if (userQuery.isLoading) {
+    return <></>;
+  }
+  const user = userQuery.data;
   function logOut() {
     logoutQuery.mutate({});
     currentQueryClient.clear();
@@ -43,7 +50,9 @@ export const SideNav = () => {
               height="20"
               className="rounded-circle"
             />
-            <span className="d-none d-sm-inline mx-1">loser</span>
+            <span className="d-none d-sm-inline text-dark mx-1">
+              {user.username}
+            </span>
           </a>
           <ul className="dropdown-menu dropdown-menu-dark text-small shadow">
             {/* <li>

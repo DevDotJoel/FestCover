@@ -17,7 +17,7 @@ export const AlbumShareModal = ({
   album,
   handleClose,
 }: AlbumShareModalProps) => {
-  const albumUrl = window.location.origin + "/public/" + album.key;
+  const albumUrl = window.location.origin + "/p/" + album.key;
   const message = `Use the album "${album.name}" in the Fest Cover app to share photos. 
 To share photos in my album, please click on the following link: 
 ${albumUrl} 

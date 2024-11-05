@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace FestCover.Infrastructure.Common.Persistence.Repositories
@@ -30,9 +31,9 @@ namespace FestCover.Infrastructure.Common.Persistence.Repositories
             return await _context.AlbumContents.AnyAsync(albumContent => albumContent.Id == id);
         }
 
-        public async Task<List<AlbumContent>> GetAlbumContentsByAlbumId(AlbumId albumId)
+        public async Task<List<AlbumContent>> GetAlbumContentsByAlbumId(AlbumId albumId, CancellationToken cancellationToken)
         {
-            return await _context.AlbumContents.Where(ac=>ac.AlbumId==albumId).AsNoTracking().ToListAsync();
+            return await _context.AlbumContents.Where(ac=>ac.AlbumId==albumId).AsNoTracking().ToListAsync(cancellationToken);
         }
 
         public async Task<List<AlbumContent>> GetAllAsync(CancellationToken cancellationToken)
@@ -53,6 +54,11 @@ namespace FestCover.Infrastructure.Common.Persistence.Repositories
         public async Task<List<AlbumContent>> GetByIdsAsync(List<AlbumContentId> ids, CancellationToken cancellationToken)
         {
             return await _context.AlbumContents.Where(p => ids.Contains(p.Id)).AsNoTracking().ToListAsync(cancellationToken);
+        }
+
+        public async Task<List<AlbumContent>> GetPendingAlbumContents(CancellationToken cancellationToken)
+        {
+            return await _context.AlbumContents.Where(ac => ac.Pending==true).AsNoTracking().ToListAsync(cancellationToken);
         }
 
         public async Task RemoveAsync(AlbumContent entity, CancellationToken cancellationToken)

@@ -18,10 +18,16 @@ namespace FestCover.Application.Common.Mapping
               
             Map(dest => dest.Id, src => src.Album.Id).
             Map(dest => dest.Name, src => src.Album.Name).
-            Map(dest => dest.OriginalAlbumUrlImage, src => src.Album.OriginalAlbumUrlImage).
-            Map(dest => dest.MediumAlbumUrlImage, src => src.Album.MediumAlbumUrlImage).
-            Map(dest => dest.LargeAlbumUrlImage, src => src.Album.LargeAlbumUrlImage).
+            Map(dest => dest.Url, src => src.Album.Url).
             Map(dest => dest.Contents, src => src.AlbumContent);
+
+            config.NewConfig<(Album Album, AlbumContent Content), AlbumContentPendingModel>().
+
+           Map(dest => dest.Id, src => src.Content.Id).
+           Map(dest => dest.AlbumId, src => src.Album.Id).
+           Map(dest => dest.AlbumName, src => src.Album.Name).
+           Map(dest => dest.Url, src => src.Content.Url).
+           Map(dest => dest.PhoneNumber, src => src.Content.PhoneNumber);
 
 
         }

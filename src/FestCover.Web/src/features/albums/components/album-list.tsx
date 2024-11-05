@@ -34,7 +34,7 @@ export const AlbumList = ({ albums, edit }: AlbumListProps) => {
               <div className="card rounded-3 border-0 mt-5 ">
                 <img
                   onClick={() => navigate(`details/${album.id}`)}
-                  src={album.originalAlbumUrlImage}
+                  src={album.url}
                   className="card-img-top"
                 />
                 <div className="card-body">

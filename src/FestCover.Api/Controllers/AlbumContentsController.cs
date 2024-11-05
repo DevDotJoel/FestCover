@@ -1,13 +1,10 @@
 ﻿using FestCover.Application.AlbumContents.Commands.CreateAlbumContent;
 using FestCover.Application.AlbumContents.Commands.DeleteAlbumContent;
 using FestCover.Application.AlbumContents.Queries.ListAlbumContents;
-using FestCover.Application.Albums.Commands.DeleteAlbum;
-using FestCover.Application.Albums.Queries.GetAlbum;
+using FestCover.Application.AlbumContents.Queries.ListPendingAlbumContents;
 using FestCover.Contracts.Albums;
 using MapsterMapper;
 using MediatR;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FestCover.Api.Controllers
@@ -44,6 +41,13 @@ namespace FestCover.Api.Controllers
             var result = await _mediator.Send(command);
             return result.Match(_ => NoContent(), Problem);
         }
-   
+        [HttpGet("Pending")]
+        public async Task<IActionResult> ListPendingAlbumContents()
+        {
+            var query = new ListPendingAlbumContenstQuery();
+            var result = await _mediator.Send(query);
+            return result.Match(Ok, Problem);
+        }
     }
 }
+

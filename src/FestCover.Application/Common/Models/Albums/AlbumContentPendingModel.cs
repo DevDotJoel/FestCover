@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace FestCover.Application.Common.Models.Albums
 {
-    public record AlbumDetailModel(
-    string Id,
-    string Name,
-    string Url,
-    List<AlbumContentModel> Contents
-);
-
+    public record AlbumContentPendingModel
+    (string Id,
+     string AlbumId,
+     string AlbumName,
+     string Url,
+     string? PhoneNumber = null
+     );
 }

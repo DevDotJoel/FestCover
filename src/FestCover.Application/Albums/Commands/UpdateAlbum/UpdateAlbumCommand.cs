@@ -14,6 +14,8 @@ namespace FestCover.Application.Albums.Commands.UpdateAlbum
      string AlbumId,
      string Name,
      string Description,
+     bool AllowPublicUpload,
+     bool ReviewUploadedContent,
      UpdateAlbumImageCommand? AlbumImage = null
     ) : IRequest<ErrorOr<AlbumModel>>;
 

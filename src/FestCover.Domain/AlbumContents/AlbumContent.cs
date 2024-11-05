@@ -14,40 +14,27 @@ namespace FestCover.Domain.AlbumContents
     {
         public AlbumId AlbumId { get; private set; }
         public string? PhoneNumber { get; private set; }
-        public string OriginalAlbumContentUrlImage { get; private set; }
-        public string SmallAlbumContentUrlImage { get; private set; }
-        public string MediumAlbumContentUrlImage { get; private set; }
-        public string LargeAlbumContentUrlImage { get; private set; }
+        public string Url { get; private set; }
+        public bool Pending { get; private set; }
         public bool IsDeleted { get; private set; }
-        private AlbumContent(AlbumId albumId, string? phoneNumber=null, AlbumContentId? albumContentId = null) : base(albumContentId ?? AlbumContentId.CreateUnique())
+        private AlbumContent(AlbumId albumId, bool pending, string? phoneNumber=null, AlbumContentId? albumContentId = null) : base(albumContentId ?? AlbumContentId.CreateUnique())
         {
             AlbumId = albumId;
             PhoneNumber = phoneNumber;
+            Pending = pending;
 
         }
-        public static AlbumContent Create(AlbumId albumId,string? phoneNumber=null, AlbumContentId? albumContentId = null)
+        public static AlbumContent Create(AlbumId albumId, bool pending, string? phoneNumber=null, AlbumContentId? albumContentId = null)
         {
-            var albumContent= new AlbumContent(albumId, phoneNumber, albumContentId);
+            var albumContent= new AlbumContent(albumId, pending ,phoneNumber, albumContentId);
 
             albumContent.AddDomainEvent(new AlbumContentCreated(albumId, albumContent.Id)); 
             
             return albumContent;
         }
-        public void SetOriginalAlbumContentUrlImage(string originalAlbumUrlImage)
+        public void SetUrl(string url)
         {
-            OriginalAlbumContentUrlImage = originalAlbumUrlImage;
-        }
-        public void SetSmallAlbumContentUrlImage(string smallAlbumUrlImage)
-        {
-            SmallAlbumContentUrlImage = smallAlbumUrlImage;
-        }
-        public void SetMediumAlbumContentUrlImage(string mediumAlbumUrlImage)
-        {
-            MediumAlbumContentUrlImage = mediumAlbumUrlImage;
-        }
-        public void SetLargeAlbumContentUrlImage(string largeAlbumUrlImage)
-        {
-            LargeAlbumContentUrlImage = largeAlbumUrlImage;
+            Url = url;
         }
         public void SetIsDeleted(bool isDeleted)
         {

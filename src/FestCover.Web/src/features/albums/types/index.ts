@@ -1,22 +1,15 @@
 export interface AlbumModel {
   id: string;
   name: string;
-  key:string;
+  key: string;
   description: string;
-  albumUrlImage: string;
-  originalAlbumUrlImage: string;
-  smallAlbumUrlImage: string;
-  mediumAlbumUrlImage: string;
-  largeAlbumUrlImage: string;
+  url: string;
 }
 
 export interface AlbumContentModel {
   id: string;
-  phoneNumber: string;
-  originalAlbumContentUrlImage: string;
-  smallAlbumContentUrlImage: string;
-  mediumAlbumContentUrlImage: string;
-  largeAlbumContentUrlImage: string;
+  phoneNumber?: string;
+  url: string;
 }
 
 export interface CreateAlbumModel {
@@ -35,13 +28,9 @@ export interface CreateAlbumContentModel {
   albumContentImage: File;
 }
 
-export interface AlbumDetailModel{
+export interface AlbumDetailModel {
   id: string;
   name: string;
-  albumUrlImage: string;
-  originalAlbumUrlImage: string;
-  smallAlbumUrlImage: string;
-  mediumAlbumUrlImage: string;
-  largeAlbumUrlImage: string;
-  contents:AlbumContentModel[]
+  url: string;
+  contents: AlbumContentModel[];
 }

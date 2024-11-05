@@ -12,6 +12,8 @@ namespace FestCover.Contracts.Albums
      Guid AlbumId,
      string Name,
      string Description,
+     bool AllowPublicUpload,
+     bool ReviewUploadedContent,
      IFormFile? AlbumImage=null
     );
 }

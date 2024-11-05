@@ -26,10 +26,10 @@ export const AlbumPublicContentList = ({
             <div key={albumContent.id} className="col mt-2">
               <img
                 onClick={() => {
-                  setContentSelected(albumContent.originalAlbumContentUrlImage);
+                  setContentSelected(albumContent.url);
                   handleShowContent();
                 }}
-                src={albumContent.originalAlbumContentUrlImage}
+                src={albumContent.url}
                 className="card-img-top"
               />
             </div>
@@ -38,11 +38,7 @@ export const AlbumPublicContentList = ({
       </div>
       {showContent && (
         <ContentSlider
-          contents={[
-            ...albumContents.map(
-              (content) => content.originalAlbumContentUrlImage
-            ),
-          ]}
+          contents={[...albumContents.map((content) => content.url)]}
           show={showContent}
           contentSelected={contentSelected}
           handleClose={handleContentClose}

@@ -2,6 +2,7 @@ import React from "react";
 import { Navigate, useParams } from "react-router";
 import { usePublicAlbum } from "../api/get-public-albums";
 import { AlbumPublicContentList } from "../../albums/components/album-public-content-list";
+import { Link } from "react-router-dom";
 
 export const AlbumPublicPage = () => {
   const { id } = useParams();
@@ -220,16 +221,9 @@ export const AlbumPublicPage = () => {
                 <div className="row">
                   <div className="col-4 ">
                     <img
-                      src={publicAlbumQuery.data.originalAlbumUrlImage}
+                      src={publicAlbumQuery.data.url}
                       className="img-fluid rounded-circle"
                     />
-                    {/* <div className="col d-flex justify-content-end mt-2">
-                    <div>
-                      <button className="btn btn-blue rounded-5">
-                        <i className="bi bi-plus-lg"></i> Content
-                      </button>
-                    </div>
-                  </div> */}
                   </div>
                   <div className="col">
                     <h4 className=" mt-3">{publicAlbumQuery.data.name}</h4>
@@ -237,9 +231,12 @@ export const AlbumPublicPage = () => {
                 </div>
                 <div className="row mt-2">
                   <div className="col">
-                    <button className="btn btn-dark rounded-5 w-100">
+                    <Link
+                      to={"/auth/login"}
+                      className="btn btn-dark rounded-5 w-100"
+                    >
                       Back
-                    </button>
+                    </Link>
                   </div>
                   <div className="col">
                     <button className="btn btn-blue rounded-5 w-100">

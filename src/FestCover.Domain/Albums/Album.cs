@@ -20,19 +20,20 @@ namespace FestCover.Domain.Albums
         private readonly List<AlbumContentId> _albumContentIds = new();
         public string Name { get; private set; }
         public string Description { get; private set; }
-        public string OriginalAlbumUrlImage { get; private set; }
-        public string SmallAlbumUrlImage { get; private set; }
-        public string MediumAlbumUrlImage { get; private set; }
-        public string LargeAlbumUrlImage { get; private set; }
+        public string Url { get; private set; }
         public string Key { get; set; }
+        public bool AllowPublicUpload { get; private set; }
+        public bool ReviewUploadedContent { get; private set; }
         public IReadOnlyList<AlbumContentId> AlbumContentIds => _albumContentIds.AsReadOnly();
         public UserId UserId { get; private set; }
         public bool IsDeleted { get; private set; }
-        private Album(string name, string description, AlbumId? albumId = null):base(albumId?? AlbumId.CreateUnique())
+        private Album(string name, string description,bool allowPublicUpload, bool reviewUploadedContent, AlbumId? albumId = null):base(albumId?? AlbumId.CreateUnique())
         {
             Name = name;
             Description = description;
             Key = ShortId.Generate(new GenerationOptions( useNumbers:true, useSpecialCharacters: false, length: 8));
+            AllowPublicUpload = allowPublicUpload;
+            ReviewUploadedContent = reviewUploadedContent;
 
 
         }
@@ -44,30 +45,27 @@ namespace FestCover.Domain.Albums
         {
             Description = description;
         }
+        public void SetAllowPublicUpload(bool allowPublicUpload)
+        {
+            AllowPublicUpload = allowPublicUpload;
+        }
+        public void SetReviewUploadedContent(bool reviewUploadedContent)
+        {
+            ReviewUploadedContent = reviewUploadedContent;
+        }
+
         public ErrorOr<Success> AddAlbumContentId(AlbumContentId albumContentId)
         {
             _albumContentIds.Add(albumContentId);
             return Result.Success;
         }
-        public void SetOriginalAlbumUrlImage(string originalAlbumUrlImage)
+        public void SetUrl(string url)
         {
-            OriginalAlbumUrlImage = originalAlbumUrlImage;
+            Url = url;
         }
-        public void SetSmallAlbumUrlImage(string smallAlbumUrlImage)
+        public static Album Create(string name,string description, bool allowPublicUpload, bool reviewUploadedContent, AlbumId? albumId=null)
         {
-            SmallAlbumUrlImage = smallAlbumUrlImage;
-        }
-        public void SetMediumAlbumUrlImage(string mediumAlbumUrlImage)
-        {
-            MediumAlbumUrlImage = mediumAlbumUrlImage;
-        }
-        public void SetLargeAlbumUrlImage(string largeAlbumUrlImage)
-        {
-            LargeAlbumUrlImage = largeAlbumUrlImage;
-        }
-        public static Album Create(string name,string description,AlbumId? albumId=null)
-        {
-            return new Album(name, description, albumId);
+            return new Album(name, description,allowPublicUpload, reviewUploadedContent, albumId);
             
         }
 

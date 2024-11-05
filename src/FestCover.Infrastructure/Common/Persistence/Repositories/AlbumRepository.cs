@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using FestCover.Domain.AlbumContents.ValueObjects;
 
 namespace FestCover.Infrastructure.Common.Persistence.Repositories
 {
@@ -30,9 +31,14 @@ namespace FestCover.Infrastructure.Common.Persistence.Repositories
             return await _context.Albums.AnyAsync(album => album.Id == id);
         }
 
-        public async Task<Album> GetAlbumByKey(string key)
+        public async Task<Album> GetAlbumByKey(string key, CancellationToken cancellationToken)
         {
-            return await _context.Albums.Where(album => album.Key == key).AsNoTracking().FirstOrDefaultAsync();
+            return await _context.Albums.Where(album => album.Key == key).AsNoTracking().FirstOrDefaultAsync(cancellationToken);
+        }
+
+        public async Task<List<Album>> GetAlbumsByAlbumContentIds(List<AlbumContentId> AlbumContentIds, CancellationToken cancellationToken)
+        {
+            return await _context.Albums.Where(p => p.AlbumContentIds.Any(aci=> AlbumContentIds.Contains(aci))).AsNoTracking().Distinct().ToListAsync(cancellationToken);
         }
 
         public  async Task<List<Album>> GetAllAsync(CancellationToken cancellationToken)

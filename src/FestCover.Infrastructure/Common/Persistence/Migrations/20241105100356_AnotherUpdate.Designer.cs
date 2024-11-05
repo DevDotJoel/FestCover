@@ -4,6 +4,7 @@ using FestCover.Infrastructure.Common.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FestCover.Infrastructure.Migrations
 {
     [DbContext(typeof(FestCoverDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241105100356_AnotherUpdate")]
+    partial class AnotherUpdate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -39,9 +42,6 @@ namespace FestCover.Infrastructure.Migrations
                     b.Property<DateTime>("LastModifiedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<bool>("Pending")
-                        .HasColumnType("bit");
-
                     b.Property<string>("PhoneNumber")
                         .HasColumnType("nvarchar(max)");
 
@@ -58,9 +58,6 @@ namespace FestCover.Infrastructure.Migrations
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("uniqueidentifier");
-
-                    b.Property<bool>("AllowPublicUpload")
-                        .HasColumnType("bit");
 
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
@@ -82,9 +79,6 @@ namespace FestCover.Infrastructure.Migrations
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("ReviewUploadedContent")
-                        .HasColumnType("bit");
 
                     b.Property<string>("Url")
                         .IsRequired()
@@ -218,16 +212,16 @@ namespace FestCover.Infrastructure.Migrations
                         {
                             Id = new Guid("f69b50aa-de02-423b-abc4-0ba2fb3eb64d"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "483e41c8-9179-4ad8-8041-ff7bf9fdae53",
+                            ConcurrencyStamp = "706ef391-50ba-4d03-809d-2d5230151f33",
                             Email = "j141996@hotmail.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "J141996@HOTMAIL.COM",
                             NormalizedUserName = "JOELFERREIRA",
-                            PasswordHash = "AQAAAAIAAYagAAAAENZKa4hC2xSQXLZVTFyUrXGsWFwmo6N/z1RcgEHN2CS37Ue+cbmZl9c/dSNqHOrerg==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEOgTfuNu+LtAX+d7sQS3OePpKGNLOZ3W5rDmSAYq4+FB4R5vI55PIuOti3w9e1t63Q==",
                             PhoneNumber = "+351960180464",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "eb6f6c9e-d941-4d42-a20d-314d5d45acaa",
+                            SecurityStamp = "285b1489-a4f6-4a53-b8c5-12bb59638455",
                             TwoFactorEnabled = false,
                             UserName = "JoelFerreira"
                         },
@@ -235,16 +229,16 @@ namespace FestCover.Infrastructure.Migrations
                         {
                             Id = new Guid("613de40e-809c-47c2-8f8b-005efffff05e"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "4338570d-17f5-4fd9-8dde-9c50fea4bca2",
+                            ConcurrencyStamp = "3f407ce7-cf23-4e8b-b62e-082781393581",
                             Email = "mirandajp@gmail.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "MIRANDAJP@GMAIL.COM",
                             NormalizedUserName = "JOAOMIRANDA",
-                            PasswordHash = "AQAAAAIAAYagAAAAEGRFQzmdV/Mmuvzq0g7iCSyfUafaZ2gGBm6F7Vgr8Q7hc+YSGdarZyamH/xyvfnWOQ==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEKtjGznDn9wO/s5PHZfDng8ho62NXsPIZbU++KbwevCuZi4SxniaXDbsEmdaCfvUmw==",
                             PhoneNumber = "+351960180464",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "9c9fad11-a50d-4f66-8b00-298c3033e656",
+                            SecurityStamp = "e1f14ce3-0923-46cd-9cb2-2f970387900e",
                             TwoFactorEnabled = false,
                             UserName = "JoaoMiranda"
                         },
@@ -252,16 +246,16 @@ namespace FestCover.Infrastructure.Migrations
                         {
                             Id = new Guid("aa14ed43-7698-408e-8b35-3e556e79bd18"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "91e23de8-dc89-4aa8-bdd2-6fd2546e8edf",
+                            ConcurrencyStamp = "c7c0c8bd-aaa8-4239-9ebb-0912250c9823",
                             Email = "isabelkiala@gmail.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
                             NormalizedEmail = "ISABELKIALA@GMAIL.COM",
                             NormalizedUserName = "ISABELKIALA",
-                            PasswordHash = "AQAAAAIAAYagAAAAECTULqJ4eviQrg9pmtk6JrIg/qI69LmMU6SmKoCLVH5F8xAd29NOBTd8rquB5CLwZg==",
+                            PasswordHash = "AQAAAAIAAYagAAAAELYG23AAUocPyIHiAHcQTflD/l5laXAjD19fAsXBSsGwesnspowqpbe1u3MHnHllIg==",
                             PhoneNumber = "+351960180464",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "197e4adb-ba08-44bf-a60f-6dd4625db76c",
+                            SecurityStamp = "8f8fc909-866d-4b7b-aa50-bbb7ab9e8077",
                             TwoFactorEnabled = false,
                             UserName = "IsabelKiala"
                         });
