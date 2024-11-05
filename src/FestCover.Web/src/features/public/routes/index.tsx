@@ -8,7 +8,7 @@ const { AlbumPublicPage } = lazyImport(
 export const PublicRoutes = () => {
   return (
     <Routes>
-      <Route path=":id" element={<AlbumPublicPage />} />
+      <Route path="/:id" element={<AlbumPublicPage />} />
     </Routes>
   );
 };
