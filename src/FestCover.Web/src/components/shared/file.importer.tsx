@@ -6,6 +6,7 @@ export interface IFileImporterProps {
   message: string;
   allowedExtensions: string;
   icon?: string;
+  allowMultiple: boolean;
 }
 
 export const FileImporter = (props: IFileImporterProps) => {
@@ -63,7 +64,7 @@ export const FileImporter = (props: IFileImporterProps) => {
         accept={props.allowedExtensions}
         ref={fileRef}
         onChange={handleChange}
-        multiple={true}
+        multiple={props.allowMultiple}
         type="file"
         hidden
       />

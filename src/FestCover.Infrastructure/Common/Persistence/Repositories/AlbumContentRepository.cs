@@ -28,6 +28,7 @@ namespace FestCover.Infrastructure.Common.Persistence.Repositories
         public async Task AddRangeAsync(List<AlbumContent> entities, CancellationToken cancellationToken)
         {
             await _context.AlbumContents.AddRangeAsync(entities, cancellationToken);
+            await _context.SaveChangesAsync();
         }
 
         public async Task<bool> ExistsAsync(AlbumContentId id)

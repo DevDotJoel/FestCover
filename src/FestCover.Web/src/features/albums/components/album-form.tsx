@@ -43,7 +43,7 @@ export const AlbumForm = ({ submit, album, disableFields }: AlbumFormsType) => {
     formState: { errors },
     setValue,
     watch,
-  } = useForm<any>({
+  } = useForm<AlbumFormFields>({
     defaultValues: album
       ? {
           id: album.id,
@@ -58,9 +58,9 @@ export const AlbumForm = ({ submit, album, disableFields }: AlbumFormsType) => {
     resolver: zodResolver(currentSchema),
   });
 
-  function getImage(file) {
-    setValue("albumPreview", file.filePreviewLink);
-    setValue("albumImage", file.file);
+  function getImage(files) {
+    setValue("albumPreview", files[0].filePreviewLink);
+    setValue("albumImage", files[0].file);
   }
   return (
     <>
@@ -90,6 +90,7 @@ export const AlbumForm = ({ submit, album, disableFields }: AlbumFormsType) => {
                         output={getImage}
                         message={" Select Image"}
                         icon="bi bi-card-image"
+                        allowMultiple={false}
                       />
                     </div>
                   </div>

@@ -6,11 +6,14 @@ import { FileImporter } from "../../../components/shared/file.importer";
 import { toast } from "react-toastify";
 import { watch } from "fs";
 
+const albumFileSchema = z.object({
+  filePreviewLink: z.string(),
+  file: z.instanceof(File),
+});
 const albumContentSchema = z.object({
   AlbumContentImages: z
-    .array(
-      z.object({ file: z.instanceof(File), filePreviewLink: z.string().min(1) })
-    )
+    .array(albumFileSchema)
+
     .min(1, { message: "At least one image is required" }),
   phoneNumber: z.string().optional(),
 });
@@ -24,11 +27,7 @@ export const AlbumContentForm = ({
   submit,
   disableFields,
 }: AlbumContentFormType) => {
-  const {
-    control,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<AlbumContentFormFields>({
+  const { control, handleSubmit } = useForm<AlbumContentFormFields>({
     defaultValues: {
       phoneNumber: "",
       AlbumContentImages: [],
@@ -45,9 +44,12 @@ export const AlbumContentForm = ({
       toast.error("Cannot add more than 20 images");
     } else {
       files.forEach((content) => {
-        append(content);
+        append({
+          file: content.file,
+          filePreviewLink: content.filePreviewLink,
+        });
       });
-      console.log(errors);
+      console.log(files);
     }
   }
   function removeImage(index: number) {
@@ -58,12 +60,7 @@ export const AlbumContentForm = ({
     <>
       <div className="row ">
         <div className="col ">
-          <form
-            id="album-content-form "
-            onSubmit={handleSubmit((data: any) => {
-              submit(data);
-            })}
-          >
+          <form id="album-content-form" onSubmit={handleSubmit(submit)}>
             <div className="row row-cols-2 scrollable-album-content-form    ">
               {fields.map((field: any, index: number) => {
                 return (
@@ -107,6 +104,7 @@ export const AlbumContentForm = ({
                     output={getImages}
                     message={" Select Images"}
                     icon="bi bi-card-image"
+                    allowMultiple={true}
                   />
                 </div>
               </div>

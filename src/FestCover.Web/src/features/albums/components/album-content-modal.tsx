@@ -16,7 +16,6 @@ export const AlbumContentModal = ({
   const createAlbumContentMutation = useCreateAlbumContent();
 
   async function saveAlbum(data) {
-    console.log(data);
     const createAlbumContent = {} as CreateAlbumContentModel;
     createAlbumContent.albumId = albumId;
     createAlbumContent.albumContentImages = data.AlbumContentImages.map((f) => {

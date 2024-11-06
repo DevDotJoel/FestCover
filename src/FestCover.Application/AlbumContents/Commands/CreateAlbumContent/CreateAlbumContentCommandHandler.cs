@@ -58,7 +58,7 @@ namespace FestCover.Application.AlbumContents.Commands.CreateAlbumContent
             List<AlbumContent> albumContents = new();
             foreach (var albumContentImage in request.AlbumContentImages)
             {
-                var albumContent = AlbumContent.Create(createAlbumIdResult.Value, false, null);
+                var albumContent = AlbumContent.Create(createAlbumIdResult.Value,false, null);
                 var imageUrl = await _storageService.AddFile(albumContentImage.ContentType, $"{userId}/Albums/{createAlbumIdResult.Value}/Content/{albumContent.Id.Value + albumContentImage.Extension}", albumContentImage.File);
                 albumContent.SetUrl(imageUrl.Value);
                 albumContents.Add(albumContent);
