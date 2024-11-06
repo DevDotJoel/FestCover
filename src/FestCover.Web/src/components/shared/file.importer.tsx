@@ -7,10 +7,12 @@ export interface IFileImporterProps {
   allowedExtensions: string;
   icon?: string;
   allowMultiple: boolean;
+  disableButton: boolean;
+  maxLength: number;
 }
 
 export const FileImporter = (props: IFileImporterProps) => {
-  const MAX_LENGTH = 20;
+  const MAX_LENGTH = props.maxLength;
   const fileRef = useRef<any>(null);
 
   const handleChange = (e: any) => {
@@ -51,6 +53,7 @@ export const FileImporter = (props: IFileImporterProps) => {
       <button
         className="btn btn-blue rounded-5 "
         type="button"
+        disabled={props.disableButton}
         onClick={uploud}
       >
         {props.icon && (

@@ -214,12 +214,12 @@ export const AlbumPublicPage = () => {
   return (
     <>
       <div className="container-fluid">
-        <div className="row mt-3 ">
-          <div className="col">
+        <div className="row mt-3  ">
+          <div className="col ">
             <div className="card rounded-4 border-0">
               <div className="card-body">
                 <div className="row">
-                  <div className="col-4 ">
+                  <div className="col-4 col-sm-2 ">
                     <img
                       src={publicAlbumQuery.data.url}
                       className="img-fluid rounded-circle"
@@ -229,17 +229,17 @@ export const AlbumPublicPage = () => {
                     <h4 className=" mt-3">{publicAlbumQuery.data.name}</h4>
                   </div>
                 </div>
-                <div className="row mt-2">
-                  <div className="col">
+                <div className="row mt-2 ">
+                  <div className="col  ">
                     <Link
                       to={"/auth/login"}
-                      className="btn btn-dark rounded-5 w-100"
+                      className="btn btn-dark rounded-5 w-100  "
                     >
                       Back
                     </Link>
                   </div>
-                  <div className="col">
-                    <button className="btn btn-blue rounded-5 w-100">
+                  <div className="col ">
+                    <button className="btn btn-blue rounded-5 w-100 ">
                       Add Content
                     </button>
                   </div>

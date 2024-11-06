@@ -11,5 +11,7 @@ namespace FestCover.Infrastructure.Common.Persistence.Identity
     {
         public string? RefreshToken { get; set; }
         public DateTime? RefreshTokenExpiryTime { get; set; }
+
+        public DateTime? LastLoginTime { get; set; }
     }
 }

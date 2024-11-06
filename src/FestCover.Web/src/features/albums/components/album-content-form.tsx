@@ -105,6 +105,8 @@ export const AlbumContentForm = ({
                     message={" Select Images"}
                     icon="bi bi-card-image"
                     allowMultiple={true}
+                    disableButton={disableFields}
+                    maxLength={20}
                   />
                 </div>
               </div>

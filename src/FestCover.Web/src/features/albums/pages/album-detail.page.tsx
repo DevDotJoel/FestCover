@@ -217,9 +217,9 @@ export const AlbumDetailPage = () => {
   return (
     <>
       <div className="container">
-        <div className="row mt-3 ">
+        <div className="row mt-3  ">
           <div className="col ">
-            <div className="card rounded-3 border-0   " aria-hidden="true">
+            <div className="card rounded-3 border-0    " aria-hidden="true">
               <div className="card-body">
                 <div className="row">
                   <div className="col">

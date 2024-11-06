@@ -91,6 +91,8 @@ export const AlbumForm = ({ submit, album, disableFields }: AlbumFormsType) => {
                         message={" Select Image"}
                         icon="bi bi-card-image"
                         allowMultiple={false}
+                        disableButton={disableFields}
+                        maxLength={1}
                       />
                     </div>
                   </div>

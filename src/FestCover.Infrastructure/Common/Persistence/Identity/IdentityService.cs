@@ -37,6 +37,7 @@ namespace AfterLife.Infrastructure.Persistence.Identity
             var tokenResult = _tokenService.GetToken(user.Email, user.Id.ToString(), roleName);
             user.RefreshToken = tokenResult.RefreshToken;
             user.RefreshTokenExpiryTime = DateTime.Now.AddDays(7);
+            user.LastLoginTime= DateTime.Now;
             await _userManager.UpdateAsync(user);
             return tokenResult;
         }
@@ -122,6 +123,7 @@ namespace AfterLife.Infrastructure.Persistence.Identity
             var tokenResult = _tokenService.GetToken(user.Email, user.Id.ToString(), roleName);
             user.RefreshToken = tokenResult.RefreshToken;
             user.RefreshTokenExpiryTime = DateTime.Now.AddDays(7);
+            user.LastLoginTime = DateTime.Now;
             await _userManager.UpdateAsync(user);
             return tokenResult;
         }

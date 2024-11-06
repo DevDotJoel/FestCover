@@ -1,5 +1,7 @@
+import { useState } from "react";
 import { Modal } from "react-bootstrap";
 import ReactCodeInput from "react-code-input";
+import { useNavigate } from "react-router";
 
 export type AccessCodeModalProps = {
   show: boolean;
@@ -10,12 +12,16 @@ export const AccessCodeModal = ({
 
   handleClose,
 }: AccessCodeModalProps) => {
+  const navigate = useNavigate();
+  const [value, setValue] = useState<string>("");
+  const [isValid, setIsValid] = useState<boolean>(false);
   // const deleteSurveyMutation = useDeleteSurvey();
 
   // async function deleteSurvey() {
   //   await deleteSurveyMutation.mutateAsync({ surveyId: survey.id });
   //   handleClose();
   // }
+
   return (
     <>
       <Modal
@@ -37,6 +43,10 @@ export const AccessCodeModal = ({
                 name="Access Code"
                 type="password"
                 fields={8}
+                value={value}
+                onChange={(data) => {
+                  setValue(data);
+                }}
               />
             </div>
           </div>
@@ -46,7 +56,15 @@ export const AccessCodeModal = ({
             Cancel
           </button>
 
-          <button className="btn btn-blue rounded-5">Submit</button>
+          <button
+            disabled={value.length === 8 ? false : true}
+            className="btn btn-blue rounded-5"
+            onClick={() => {
+              navigate(`/p/${value}`);
+            }}
+          >
+            Submit
+          </button>
         </Modal.Footer>
       </Modal>
     </>
