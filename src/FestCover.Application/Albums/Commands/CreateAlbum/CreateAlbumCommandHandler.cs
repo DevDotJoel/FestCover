@@ -44,7 +44,7 @@ namespace FestCover.Application.Albums.Commands.CreateAlbum
         {
 
             var userId = UserId.Create(Guid.Parse(_userService.GetCurrentUserId()));
-            var album = Album.Create(request.Name, request.Description, request.AllowPublicUpload,request.ReviewUploadedContent);            
+            var album = Album.Create(request.Name, request.Description,request.IsPublic ,request.AllowPublicUpload,request.ReviewUploadedContent);            
             var imageUrl = await _storageService.AddFile(request.AlbumImage.ContentType, $"{userId}/Albums/{album.Id.Value}/Profile/{Guid.NewGuid() + request.AlbumImage.Extension}", request.AlbumImage.File);       
             album.SetUrl(imageUrl.Value);
             await _albumRepository.AddAsync(album,cancellationToken);

@@ -3,39 +3,37 @@ export type InputFormProps = {
   label: string;
   control: any;
   errors: any;
-  type: "text" | "number" | "password" | "email" | "color" | "date";
   placeholder?: string;
   disableFields: boolean;
 };
 
-export const InputForm = ({
+export const InputCheckBoxForm = ({
   name,
   label,
   control,
-  type,
   errors,
   placeholder,
   disableFields,
 }: InputFormProps) => {
   return (
-    <>
-      <label htmlFor={name} className="form-label">
-        {label}
-      </label>
+    <div className="form-check">
       <input
         placeholder={placeholder}
-        type={type}
+        type={"checkbox"}
         disabled={disableFields}
-        className={`form-control rounded-3 ${
+        className={`form-check-input  ${
           errors?.[`${name}`] ? "is-invalid" : ""
         }`}
         {...control.register(name)}
       />
+      <label htmlFor={name} className="form-check-label">
+        {label}
+      </label>
       {errors?.[`${name}`] && (
         <span className="invalid-feedback d-block">
           {errors?.[`${name}`].message}
         </span>
       )}
-    </>
+    </div>
   );
 };

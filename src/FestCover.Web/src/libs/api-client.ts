@@ -27,7 +27,7 @@ api.interceptors.response.use(
   async (error) => {
     const message = error.response?.data?.title;
     const originalRequest = error?.config;
-    console.log(error.response?.status)
+    console.log(error.response?.status);
     if (error.response?.status == 401) {
       try {
         const accessToken = localStorage.getItem("accessToken");
@@ -47,6 +47,7 @@ api.interceptors.response.use(
 
       // window.location.href = `/auth/login`;
     }
+    toast.error(message);
 
     return Promise.reject(error);
   }

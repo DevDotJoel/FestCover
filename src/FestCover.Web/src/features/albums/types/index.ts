@@ -4,6 +4,9 @@ export interface AlbumModel {
   key: string;
   description: string;
   url: string;
+  isPublic: boolean;
+  allowPublicUpload: boolean;
+  reviewUploadedContent: boolean;
 }
 
 export interface AlbumContentModel {
@@ -16,16 +19,23 @@ export interface CreateAlbumModel {
   name: string;
   description: string;
   albumImage: File;
+  isPublic: boolean;
+  allowPublicUpload: boolean;
+  public: boolean;
+  reviewUploadedContent: boolean;
 }
 export interface UpdateAlbumModel {
   albumId: string;
   name: string;
   description: string;
   albumImage?: File;
+  isPublic: boolean;
+  allowPublicUpload: boolean;
+  reviewUploadedContent: boolean;
 }
 export interface CreateAlbumContentModel {
   albumId: string;
-  albumContentImage: File;
+  albumContentImages: File[];
 }
 
 export interface AlbumDetailModel {

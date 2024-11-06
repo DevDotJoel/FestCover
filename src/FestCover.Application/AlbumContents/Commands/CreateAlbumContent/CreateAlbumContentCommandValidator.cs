@@ -12,7 +12,7 @@ namespace FestCover.Application.AlbumContents.Commands.CreateAlbumContent
         public CreateAlbumContentCommandValidator()
         {
             RuleFor(x => x.AlbumId).NotEmpty();
-            RuleFor(x => x.AlbumContentImage).NotNull();
+            RuleFor(x => x.AlbumContentImages).NotNull().NotEmpty();
         }
     }
 }

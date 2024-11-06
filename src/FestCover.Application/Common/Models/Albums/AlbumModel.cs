@@ -12,7 +12,9 @@ namespace FestCover.Application.Common.Models.Albums
          string Name,
          string Key,
          string Description,
+         bool IsPublic,
          bool AllowPublicUpload,
+         bool ReviewUploadedContent,
          string Url
     );
 }

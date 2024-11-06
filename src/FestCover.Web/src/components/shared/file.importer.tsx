@@ -1,22 +1,31 @@
 import { useRef } from "react";
+import { toast } from "react-toastify";
 
 export interface IFileImporterProps {
-  output: (file: any) => void;
+  output: (files: any[]) => void;
   message: string;
   allowedExtensions: string;
   icon?: string;
 }
 
 export const FileImporter = (props: IFileImporterProps) => {
+  const MAX_LENGTH = 20;
   const fileRef = useRef<any>(null);
 
   const handleChange = (e: any) => {
-    const [file] = e.target.files;
-    fileToDataUri(file).then(async (previewLink: any) => {
-      props.output({
-        file: file,
-        filePreviewLink: previewLink,
-      });
+    if (Array.from(e.target.files).length > MAX_LENGTH) {
+      toast.error(`Cannot upload more than${MAX_LENGTH}`);
+      return;
+    }
+    const files = Array.from(e.target.files);
+    Promise.all(files.map(fileToDataUri)).then((filePreviews) => {
+      const outputFiles = files.map((file, index) => ({
+        file,
+        filePreviewLink: filePreviews[index],
+      }));
+
+      props.output(outputFiles);
+      e.target.value = null;
     });
   };
   function uploud() {
@@ -54,7 +63,7 @@ export const FileImporter = (props: IFileImporterProps) => {
         accept={props.allowedExtensions}
         ref={fileRef}
         onChange={handleChange}
-        multiple={false}
+        multiple={true}
         type="file"
         hidden
       />

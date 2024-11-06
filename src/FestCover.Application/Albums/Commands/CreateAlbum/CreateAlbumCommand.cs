@@ -13,6 +13,7 @@ namespace FestCover.Application.Albums.Commands.CreateAlbum
     (
      string Name,
      string Description,
+     bool IsPublic,
      bool AllowPublicUpload,
      bool ReviewUploadedContent,
      AlbumImageCommand AlbumImage

@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FileImporter } from "../../../components/shared/file.importer";
 import { InputForm } from "../../../components/ui/forms/input-form";
+import { InputCheckBoxForm } from "../../../components/ui/forms/input-checkbox-form";
 const albumSchema = z.object({
   id: z.string().optional(),
   name: z.string().min(5, { message: "The album name is required" }),
@@ -13,6 +14,15 @@ const albumSchema = z.object({
     .min(5, { message: "The album description is required" }),
   albumImage: z.instanceof(File),
   albumPreview: z.string(),
+  allowPublicUpload: z.boolean({
+    required_error: "Allow Public Upload is required",
+  }),
+  isPublic: z.boolean({
+    required_error: "Public  is required",
+  }),
+  reviewUploadedContent: z.boolean({
+    required_error: "Review Uploaded Content is required",
+  }),
 });
 export type AlbumFormFields = z.infer<typeof albumSchema>;
 
@@ -40,6 +50,9 @@ export const AlbumForm = ({ submit, album, disableFields }: AlbumFormsType) => {
           name: album.name,
           description: album.description,
           albumPreview: album.url,
+          isPublic: album.isPublic,
+          allowPublicUpload: album.allowPublicUpload,
+          reviewUploadedContent: album.reviewUploadedContent,
         }
       : undefined,
     resolver: zodResolver(currentSchema),
@@ -101,6 +114,39 @@ export const AlbumForm = ({ submit, album, disableFields }: AlbumFormsType) => {
                       control={control}
                       errors={errors}
                       type="text"
+                      disableFields={disableFields}
+                    />
+                  </div>
+                </div>
+                <div className="row mt-2">
+                  <div className="col">
+                    <InputCheckBoxForm
+                      name={"isPublic"}
+                      label={"Public  "}
+                      control={control}
+                      errors={errors}
+                      disableFields={disableFields}
+                    />
+                  </div>
+                </div>
+                <div className="row mt-2">
+                  <div className="col">
+                    <InputCheckBoxForm
+                      name={"allowPublicUpload"}
+                      label={"Allow Public Upload "}
+                      control={control}
+                      errors={errors}
+                      disableFields={disableFields}
+                    />
+                  </div>
+                </div>
+                <div className="row mt-2">
+                  <div className="col">
+                    <InputCheckBoxForm
+                      name={"reviewUploadedContent"}
+                      label={"Review Uploaded Content "}
+                      control={control}
+                      errors={errors}
                       disableFields={disableFields}
                     />
                   </div>

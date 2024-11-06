@@ -50,6 +50,7 @@ namespace FestCover.Application.Albums.Commands.UpdateAlbum
             album.SetDescription(request.Description);
             album.SetAllowPublicUpload(request.AllowPublicUpload);
             album.SetReviewUploadedContent(request.ReviewUploadedContent);
+            album.SetIsPublic(request.IsPublic);
             if (request.AlbumImage != null) 
             {
 

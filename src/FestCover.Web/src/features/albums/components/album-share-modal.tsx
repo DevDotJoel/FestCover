@@ -37,7 +37,11 @@ You will be taken to my album via the code "${album.key}".`;
           <h6 className="card-subtitle mt-2 text-muted text-center">
             Scan this QR code with your phone
           </h6>
-
+          {!album.isPublic && (
+            <h6 className="card-subtitle mt-2 text-danger text-center">
+              This Album is not public
+            </h6>
+          )}
           <div className="row mt-5">
             <div className="col d-flex justify-content-center ">
               <QRCode value={albumUrl} />

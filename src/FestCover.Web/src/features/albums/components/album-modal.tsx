@@ -20,12 +20,21 @@ export const AlbumModal = ({ show, album, handleClose }: AlbumModalProps) => {
       updateAlbum.name = data.name;
       updateAlbum.description = data.description;
       updateAlbum.albumImage = data.albumImage;
+      updateAlbum.isPublic = data.isPublic;
+      updateAlbum.allowPublicUpload = data.allowPublicUpload;
+      updateAlbum.reviewUploadedContent = data.reviewUploadedContent;
+      console.log(updateAlbum);
       await updateAlbumMutation.mutateAsync(updateAlbum);
     } else {
       const createAlbum = {} as CreateAlbumModel;
       createAlbum.name = data.name;
       createAlbum.description = data.description;
       createAlbum.albumImage = data.albumImage;
+      createAlbum.public = data.isPublic;
+      createAlbum.allowPublicUpload = data.allowPublicUpload;
+      createAlbum.reviewUploadedContent = data.reviewUploadedContent;
+
+      console.log(createAlbum);
       await createAlbumMutation.mutateAsync(createAlbum);
     }
 
@@ -49,7 +58,9 @@ export const AlbumModal = ({ show, album, handleClose }: AlbumModalProps) => {
           <div className="row mt-3">
             <div className="col ">
               <AlbumForm
-                disableFields={createAlbumMutation.isPending}
+                disableFields={
+                  createAlbumMutation.isPending || updateAlbumMutation.isPending
+                }
                 album={album}
                 submit={saveAlbum}
               />

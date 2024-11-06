@@ -16,10 +16,14 @@ export const AlbumContentModal = ({
   const createAlbumContentMutation = useCreateAlbumContent();
 
   async function saveAlbum(data) {
-    const createAlbum = {} as CreateAlbumContentModel;
-    createAlbum.albumId = albumId;
-    createAlbum.albumContentImage = data.AlbumContentImage;
-    await createAlbumContentMutation.mutateAsync(createAlbum);
+    console.log(data);
+    const createAlbumContent = {} as CreateAlbumContentModel;
+    createAlbumContent.albumId = albumId;
+    createAlbumContent.albumContentImages = data.AlbumContentImages.map((f) => {
+      return f.file;
+    });
+    console.log(createAlbumContent);
+    await createAlbumContentMutation.mutateAsync(createAlbumContent);
     handleClose();
   }
 

@@ -11,7 +11,7 @@ namespace FestCover.Application.AlbumContents.Commands.CreateAlbumContent
     public record CreateAlbumContentCommand
     (
         string AlbumId,
-        AlbumContentImageCommand AlbumContentImage
+        List<AlbumContentImageCommand> AlbumContentImages
     ) : IRequest<ErrorOr<Success>>;
     public record AlbumContentImageCommand(
     byte[] File,

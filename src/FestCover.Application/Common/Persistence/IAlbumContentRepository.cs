@@ -13,5 +13,6 @@ namespace FestCover.Application.Common.Persistence
     {
         Task<List<AlbumContent>> GetAlbumContentsByAlbumId(AlbumId albumId, CancellationToken cancellationToken);
         Task<List<AlbumContent>> GetPendingAlbumContents(CancellationToken cancellationToken);
+        Task<List<AlbumContent>> GetApprovedAlbumContentsByAlbumId(AlbumId albumId, CancellationToken cancellationToken);
     }
 }

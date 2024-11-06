@@ -10,6 +10,6 @@ namespace FestCover.Contracts.Albums
     public record CreateAlbumContentRequest
     ( 
        Guid AlbumId,
-       IFormFile AlbumContentImage
+       List<IFormFile> AlbumContentImages
     );
 }

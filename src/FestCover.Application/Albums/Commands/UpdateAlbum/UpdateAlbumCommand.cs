@@ -14,6 +14,7 @@ namespace FestCover.Application.Albums.Commands.UpdateAlbum
      string AlbumId,
      string Name,
      string Description,
+     bool IsPublic,
      bool AllowPublicUpload,
      bool ReviewUploadedContent,
      UpdateAlbumImageCommand? AlbumImage = null

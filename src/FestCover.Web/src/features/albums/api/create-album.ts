@@ -13,7 +13,18 @@ export const createAlbum = (
   formData.append("name", createAlbum.name);
   formData.append("description", createAlbum.description);
   formData.append("albumImage", createAlbum.albumImage);
-
+  formData.append(
+    "isPublic",
+    createAlbum.isPublic ? "1" : "0"
+  );
+  formData.append(
+    "allowPublicUpload",
+    createAlbum.allowPublicUpload ? "1" : "0"
+  );
+  formData.append(
+    "reviewUploadedContent",
+    createAlbum.reviewUploadedContent ? "1" : "0"
+  );
   return toast.promise(api.post(`/api/albums`, formData), {
     pending: "Creating Album ",
     success: "Album created with success",

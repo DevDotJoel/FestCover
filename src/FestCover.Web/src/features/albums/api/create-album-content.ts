@@ -11,7 +11,12 @@ export const createAlbumContent = (
   const formData = new FormData();
 
   formData.append("AlbumId", createAlbumContent.albumId);
-  formData.append("AlbumContentImage", createAlbumContent.albumContentImage);
+  for (let i = 0; i < createAlbumContent.albumContentImages.length; i++) {
+    formData.append(
+      "AlbumContentImages",
+      createAlbumContent.albumContentImages[i]
+    );
+  }
 
   return toast.promise(api.post(`/api/AlbumContents`, formData), {
     pending: "Creating Album Content ",

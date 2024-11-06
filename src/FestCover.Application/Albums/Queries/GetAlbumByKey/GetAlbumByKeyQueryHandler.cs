@@ -25,11 +25,11 @@ namespace FestCover.Application.Albums.Queries.GetAlbumByKey
         public async Task<ErrorOr<AlbumDetailModel>> Handle(GetAlbumByKeyQuery request, CancellationToken cancellationToken)
         {
             var album = await _albumRepository.GetAlbumByKey(request.Key, cancellationToken);
-            if (album is null)
+            if (album is null || !album.IsPublic)
             {
                 return Error.NotFound(description: "Album not found");
             }
-
+            
             var albumContents = await _albumContentRepository.GetAlbumContentsByAlbumId(album.Id,cancellationToken);
             return _mapper.Map<AlbumDetailModel>((album,albumContents));
         }

@@ -31,7 +31,7 @@ namespace FestCover.Application.AlbumContents.Queries.ListAlbumContents
             {
                 return Errors.Album.NotFound;
             }
-            return _mapper.Map<List<AlbumContentModel>>(await _albumContentRepository.GetAlbumContentsByAlbumId(listAlbumIdResult.Value, cancellationToken));
+            return _mapper.Map<List<AlbumContentModel>>(await _albumContentRepository.GetApprovedAlbumContentsByAlbumId(listAlbumIdResult.Value, cancellationToken));
         }
     }
 }

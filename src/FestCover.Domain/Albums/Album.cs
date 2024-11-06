@@ -24,16 +24,18 @@ namespace FestCover.Domain.Albums
         public string Key { get; set; }
         public bool AllowPublicUpload { get; private set; }
         public bool ReviewUploadedContent { get; private set; }
+        public bool IsPublic { get; private set; }
         public IReadOnlyList<AlbumContentId> AlbumContentIds => _albumContentIds.AsReadOnly();
         public UserId UserId { get; private set; }
         public bool IsDeleted { get; private set; }
-        private Album(string name, string description,bool allowPublicUpload, bool reviewUploadedContent, AlbumId? albumId = null):base(albumId?? AlbumId.CreateUnique())
+        private Album(string name, string description,bool isPublic,bool allowPublicUpload, bool reviewUploadedContent, AlbumId? albumId = null):base(albumId?? AlbumId.CreateUnique())
         {
             Name = name;
             Description = description;
             Key = ShortId.Generate(new GenerationOptions( useNumbers:true, useSpecialCharacters: false, length: 8));
             AllowPublicUpload = allowPublicUpload;
             ReviewUploadedContent = reviewUploadedContent;
+            IsPublic=isPublic;
 
 
         }
@@ -63,9 +65,11 @@ namespace FestCover.Domain.Albums
         {
             Url = url;
         }
-        public static Album Create(string name,string description, bool allowPublicUpload, bool reviewUploadedContent, AlbumId? albumId=null)
+        public void SetIsPublic(bool isPublic)
+        { IsPublic = isPublic; }
+        public static Album Create(string name,string description, bool isPublic, bool allowPublicUpload, bool reviewUploadedContent, AlbumId? albumId=null)
         {
-            return new Album(name, description,allowPublicUpload, reviewUploadedContent, albumId);
+            return new Album(name, description, isPublic, allowPublicUpload, reviewUploadedContent, albumId);
             
         }
 

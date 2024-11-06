@@ -55,13 +55,18 @@ namespace FestCover.Application.AlbumContents.Commands.CreateAlbumContent
             //    return Error.Conflict(description: "Invalid phone number");
             //}
             //var formattedPhoneNumber = phoneNumberUtil.Format(phoneNumber, PhoneNumberFormat.INTERNATIONAL);
+            List<AlbumContent> albumContents = new();
+            foreach (var albumContentImage in request.AlbumContentImages)
+            {
+                var albumContent = AlbumContent.Create(createAlbumIdResult.Value, false, null);
+                var imageUrl = await _storageService.AddFile(albumContentImage.ContentType, $"{userId}/Albums/{createAlbumIdResult.Value}/Content/{albumContent.Id.Value + albumContentImage.Extension}", albumContentImage.File);
+                albumContent.SetUrl(imageUrl.Value);
+                albumContents.Add(albumContent);
+            }
 
-            var albumContent = AlbumContent.Create(createAlbumIdResult.Value,false,null);
-            var imageUrl = await _storageService.AddFile(request.AlbumContentImage.ContentType, $"{userId}/Albums/{createAlbumIdResult.Value}/Content/{albumContent.Id.Value + request.AlbumContentImage.Extension}", request.AlbumContentImage.File);
-            albumContent.SetUrl(imageUrl.Value);
 
             //album.AddContent(formattedPhoneNumber, contentUrl.Value);
-            await _albumContentRepository.AddAsync(albumContent, cancellationToken);
+            await _albumContentRepository.AddRangeAsync(albumContents, cancellationToken);
                 return Result.Success;
 
             

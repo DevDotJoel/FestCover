@@ -25,6 +25,10 @@ namespace FestCover.Infrastructure.Common.Persistence.Repositories
             await _context.AlbumContents.AddAsync(entity);
             await _context.SaveChangesAsync();
         }
+        public async Task AddRangeAsync(List<AlbumContent> entities, CancellationToken cancellationToken)
+        {
+            await _context.AlbumContents.AddRangeAsync(entities, cancellationToken);
+        }
 
         public async Task<bool> ExistsAsync(AlbumContentId id)
         {
@@ -44,6 +48,11 @@ namespace FestCover.Infrastructure.Common.Persistence.Repositories
         public async Task<List<AlbumContent>> GetAllWithPaginationAsync(int page, int size, CancellationToken cancellationToken)
         {
             return await _context.AlbumContents.AsNoTracking().Skip(page).Take(size).ToListAsync(cancellationToken);
+        }
+
+        public async Task<List<AlbumContent>> GetApprovedAlbumContentsByAlbumId(AlbumId albumId, CancellationToken cancellationToken)
+        {
+            return await _context.AlbumContents.Where(ac => ac.AlbumId == albumId && !ac.Pending).AsNoTracking().ToListAsync(cancellationToken);
         }
 
         public async Task<AlbumContent> GetByIdAsync(AlbumContentId id, CancellationToken cancellationToken)

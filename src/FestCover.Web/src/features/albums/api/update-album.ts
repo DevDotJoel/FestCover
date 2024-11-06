@@ -12,6 +12,15 @@ export const updateAlbum = (
   formData.append("albumId", updateAlbum.albumId);
   formData.append("name", updateAlbum.name);
   formData.append("description", updateAlbum.description);
+  formData.append("isPublic", updateAlbum.isPublic ? "1" : "0");
+  formData.append(
+    "allowPublicUpload",
+    updateAlbum.allowPublicUpload ? "1" : "0"
+  );
+  formData.append(
+    "reviewUploadedContent",
+    updateAlbum.reviewUploadedContent ? "1" : "0"
+  );
   formData.append("albumImage", updateAlbum.albumImage);
 
   return toast.promise(api.put(`/api/albums`, formData), {
