@@ -47,7 +47,14 @@ You will be taken to my album via the code "${album.key}".`;
               <QRCode value={albumUrl} />
             </div>
           </div>
-          <div className="row mt-5 d-flex justify-content-center">
+          <div className="row mt-5 ">
+            <div className="col  d-flex justify-content-center">
+              <h4>
+                <b>Album Code:</b> {album.key}
+              </h4>
+            </div>
+          </div>
+          <div className="row mt-3 d-flex justify-content-center">
             <div className="col-10  ">
               <div className="input-group mb-3">
                 <input
