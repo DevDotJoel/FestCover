@@ -42,5 +42,6 @@ export interface AlbumDetailModel {
   id: string;
   name: string;
   url: string;
+  allowPublicUpload: boolean;
   contents: AlbumContentModel[];
 }

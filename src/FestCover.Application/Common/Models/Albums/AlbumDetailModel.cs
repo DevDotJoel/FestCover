@@ -10,6 +10,7 @@ namespace FestCover.Application.Common.Models.Albums
     string Id,
     string Name,
     string Url,
+    bool AllowPublicUpload,
     List<AlbumContentModel> Contents
 );
 

@@ -4,29 +4,35 @@ import { useFieldArray, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FileImporter } from "../../../components/shared/file.importer";
 import { toast } from "react-toastify";
-import { watch } from "fs";
-
-const albumFileSchema = z.object({
-  filePreviewLink: z.string(),
-  file: z.instanceof(File),
-});
-const albumContentSchema = z.object({
-  AlbumContentImages: z
-    .array(albumFileSchema)
-
-    .min(1, { message: "At least one image is required" }),
-  phoneNumber: z.string().optional(),
-});
-export type AlbumContentFormFields = z.infer<typeof albumContentSchema>;
 
 export type AlbumContentFormType = {
-  submit: (data: AlbumContentFormFields) => void;
+  submit: (data) => void;
   disableFields: boolean;
+  phoneNumberRequired: boolean;
 };
 export const AlbumContentForm = ({
   submit,
   disableFields,
+  phoneNumberRequired,
 }: AlbumContentFormType) => {
+  const albumFileSchema = z.object({
+    filePreviewLink: z.string(),
+    file: z.instanceof(File),
+  });
+  const albumContentSchema = z.object({
+    AlbumContentImages: z
+      .array(albumFileSchema)
+
+      .min(1, { message: "At least one image is required" }),
+    phoneNumber: phoneNumberRequired
+      ? z
+          .string()
+          .refine((value) =>
+            /^[+]{1}(?:[0-9-()/.]\s?){6,15}[0-9]{1}$/.test(value)
+          )
+      : z.string().optional(),
+  });
+  type AlbumContentFormFields = z.infer<typeof albumContentSchema>;
   const { control, handleSubmit } = useForm<AlbumContentFormFields>({
     defaultValues: {
       phoneNumber: "",
@@ -61,7 +67,7 @@ export const AlbumContentForm = ({
       <div className="row ">
         <div className="col ">
           <form id="album-content-form" onSubmit={handleSubmit(submit)}>
-            <div className="row row-cols-2 scrollable-album-content-form    ">
+            <div className="row row-cols-2 scrollable-album-content-form">
               {fields.map((field: any, index: number) => {
                 return (
                   <div key={field.id} className="card rounded-3 border-0 ">

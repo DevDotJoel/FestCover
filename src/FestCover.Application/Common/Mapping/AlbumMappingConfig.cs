@@ -19,6 +19,7 @@ namespace FestCover.Application.Common.Mapping
             Map(dest => dest.Id, src => src.Album.Id).
             Map(dest => dest.Name, src => src.Album.Name).
             Map(dest => dest.Url, src => src.Album.Url).
+            Map(dest => dest.AllowPublicUpload, src => src.Album.AllowPublicUpload).
             Map(dest => dest.Contents, src => src.AlbumContent);
 
             config.NewConfig<(Album Album, AlbumContent Content), AlbumContentPendingModel>().

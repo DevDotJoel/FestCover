@@ -45,6 +45,7 @@ export const AlbumContentModal = ({
               <AlbumContentForm
                 disableFields={createAlbumContentMutation.isPending}
                 submit={saveAlbum}
+                phoneNumberRequired={false}
               />
             </div>
           </div>

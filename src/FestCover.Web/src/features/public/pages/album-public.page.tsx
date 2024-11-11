@@ -239,7 +239,10 @@ export const AlbumPublicPage = () => {
                     </Link>
                   </div>
                   <div className="col ">
-                    <button className="btn btn-blue rounded-5 w-100 ">
+                    <button
+                      disabled={!publicAlbumQuery.data.allowPublicUpload}
+                      className="btn btn-blue rounded-5 w-100 "
+                    >
                       Add Content
                     </button>
                   </div>
