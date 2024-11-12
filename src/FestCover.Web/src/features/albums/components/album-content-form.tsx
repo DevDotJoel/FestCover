@@ -4,6 +4,7 @@ import { useFieldArray, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FileImporter } from "../../../components/shared/file.importer";
 import { toast } from "react-toastify";
+import { InputPhoneNumberForm } from "../../../components/ui/forms/input-phone-number-form";
 
 export type AlbumContentFormType = {
   submit: (data) => void;
@@ -33,7 +34,11 @@ export const AlbumContentForm = ({
       : z.string().optional(),
   });
   type AlbumContentFormFields = z.infer<typeof albumContentSchema>;
-  const { control, handleSubmit } = useForm<AlbumContentFormFields>({
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<AlbumContentFormFields>({
     defaultValues: {
       phoneNumber: "",
       AlbumContentImages: [],
@@ -55,7 +60,6 @@ export const AlbumContentForm = ({
           filePreviewLink: content.filePreviewLink,
         });
       });
-      console.log(files);
     }
   }
   function removeImage(index: number) {
@@ -67,7 +71,22 @@ export const AlbumContentForm = ({
       <div className="row ">
         <div className="col ">
           <form id="album-content-form" onSubmit={handleSubmit(submit)}>
-            <div className="row row-cols-2 scrollable-album-content-form">
+            <div className="row ">
+              <div className="col d-flex justify-content-center">
+                <div>
+                  <FileImporter
+                    allowedExtensions={"image/*"}
+                    output={getImages}
+                    message={" Select Images"}
+                    icon="bi bi-card-image"
+                    allowMultiple={true}
+                    disableButton={disableFields}
+                    maxLength={20}
+                  />
+                </div>
+              </div>
+            </div>
+            <div className="row mt-4 row-cols-2 scrollable-album-content-form">
               {fields.map((field: any, index: number) => {
                 return (
                   <div key={field.id} className="card rounded-3 border-0 ">
@@ -102,21 +121,19 @@ export const AlbumContentForm = ({
                 </div>
               </div>
             )}
-            <div className="row mt-3">
-              <div className="col d-flex justify-content-center">
-                <div>
-                  <FileImporter
-                    allowedExtensions={"image/*"}
-                    output={getImages}
-                    message={" Select Images"}
-                    icon="bi bi-card-image"
-                    allowMultiple={true}
-                    disableButton={disableFields}
-                    maxLength={20}
+            {phoneNumberRequired && (
+              <div className="row mt-1 d-flex justify-content-center">
+                <div className="col-8 ">
+                  <InputPhoneNumberForm
+                    name={"phoneNumber"}
+                    label={""}
+                    control={control}
+                    errors={errors}
+                    disableFields={disableFields}
                   />
                 </div>
               </div>
-            </div>
+            )}
           </form>
         </div>
       </div>

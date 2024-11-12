@@ -1,27 +1,26 @@
 import { Modal } from "react-bootstrap";
-import { CreateAlbumContentModel } from "../types";
+import { CreateAlbumContentModel, CreateAlbumContentPublicModel } from "../types";
 import { useCreateAlbumContent } from "../api/create-album-content";
 import { AlbumContentForm } from "./album-content-form";
 
-export type AlbumContentModalProps = {
+export type AlbumContentPublicModalProps = {
   albumId: string;
   show: boolean;
   handleClose: () => void;
 };
-export const AlbumContentModal = ({
+export const AlbumContentPublicModal = ({
   show,
   albumId,
   handleClose,
-}: AlbumContentModalProps) => {
+}: AlbumContentPublicModalProps) => {
   const createAlbumContentMutation = useCreateAlbumContent();
 
   async function saveAlbum(data) {
-    const createAlbumContent = {} as CreateAlbumContentModel;
+    const createAlbumContent = {} as CreateAlbumContentPublicModel;
     createAlbumContent.albumId = albumId;
     createAlbumContent.albumContentImages = data.AlbumContentImages.map((f) => {
       return f.file;
     });
-    console.log(createAlbumContent);
     await createAlbumContentMutation.mutateAsync(createAlbumContent);
     handleClose();
   }
@@ -36,7 +35,7 @@ export const AlbumContentModal = ({
       >
         <Modal.Header closeButton>
           <Modal.Title className="ms-auto">
-            <b> Album Content</b>
+            <b> Add Content to Album</b>
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>

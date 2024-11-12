@@ -45,3 +45,9 @@ export interface AlbumDetailModel {
   allowPublicUpload: boolean;
   contents: AlbumContentModel[];
 }
+export interface CreateAlbumContentPublicModel {
+  phoneNumber: string;
+  name: string;
+  albumId: string;
+  albumContentImages: File[];
+}

@@ -76,6 +76,6 @@ input:-webkit-autofill {
 }
 .scrollable-album-content-form {
   overflow-y: auto !important;
-  max-height: 600px;
+  max-height: 500px;
   height: 100%;
 }
