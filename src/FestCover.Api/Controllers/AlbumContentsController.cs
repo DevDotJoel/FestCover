@@ -1,10 +1,12 @@
 ﻿using FestCover.Application.AlbumContents.Commands.CreateAlbumContent;
+using FestCover.Application.AlbumContents.Commands.CreatetPublicAlbumContent;
 using FestCover.Application.AlbumContents.Commands.DeleteAlbumContent;
 using FestCover.Application.AlbumContents.Queries.ListAlbumContents;
 using FestCover.Application.AlbumContents.Queries.ListPendingAlbumContents;
 using FestCover.Contracts.Albums;
 using MapsterMapper;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FestCover.Api.Controllers
@@ -47,6 +49,14 @@ namespace FestCover.Api.Controllers
             var query = new ListPendingAlbumContenstQuery();
             var result = await _mediator.Send(query);
             return result.Match(Ok, Problem);
+        }
+        [AllowAnonymous]
+        [HttpPost("Public/Upload")]
+        public async Task<IActionResult> CreatePublicAlbumContent([FromForm] CreatePublicAlbumContentRequest createPublicAlbumContentRequest)
+        {
+            var command = _mapper.Map<CreatetPublicAlbumContentCommand>(createPublicAlbumContentRequest);
+            var result = await _mediator.Send(command);
+            return result.Match(_ => NoContent(), Problem);
         }
     }
 }

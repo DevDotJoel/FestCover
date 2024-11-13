@@ -3,6 +3,7 @@ using FestCover.Application.Albums.Commands.CreateAlbum;
 using FestCover.Application.Albums.Commands.UpdateAlbum;
 using FestCover.Contracts.Albums;
 using FestCover.Application.AlbumContents.Commands.CreateAlbumContent;
+using FestCover.Application.AlbumContents.Commands.CreatetPublicAlbumContent;
 
 namespace FestCover.Api.Common.Mapping
 {
@@ -26,6 +27,12 @@ namespace FestCover.Api.Common.Mapping
             config
              .NewConfig<CreateAlbumContentRequest, CreateAlbumContentCommand>()
               .Map(dest => dest.AlbumContentImages, src => src.AlbumContentImages.ConvertAll(c=> ConvertToFile(c)));
+            config
+     .NewConfig<CreatePublicAlbumContentRequest, CreatetPublicAlbumContentCommand>()
+               .Map(dest => dest.Name, src => src.Name)
+               .Map(dest => dest.PhoneNumber, src => src.PhoneNumber)
+               .Map(dest => dest.AlbumId, src => src.AlbumId)
+                .Map(dest => dest.AlbumPublicContentImages, src => src.AlbumContentImages.ConvertAll(c => ConvertToFile(c)));
 
         }
         private AlbumImageCommand ConvertToFile(IFormFile file)

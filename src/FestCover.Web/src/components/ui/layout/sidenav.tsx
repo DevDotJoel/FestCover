@@ -33,6 +33,15 @@ export const SideNav = () => {
               <span className="ms-1 d-none d-sm-inline">Albums</span>
             </Link>
           </li>
+          <li>
+            <Link
+              to="albums/pendent"
+              className="nav-link px-0 align-middle text-dark"
+            >
+              <i className="fs-4  bi bi-hourglass-split"></i>{" "}
+              <span className="ms-1 d-none d-sm-inline">Pendent Content</span>
+            </Link>
+          </li>
         </ul>
         <hr />
         <div className="dropdown pb-4">

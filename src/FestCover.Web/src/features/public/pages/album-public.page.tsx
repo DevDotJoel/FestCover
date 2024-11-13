@@ -1,15 +1,20 @@
-import React from "react";
+import React, { useState } from "react";
 import { Navigate, useParams } from "react-router";
 import { usePublicAlbum } from "../api/get-public-albums";
 import { AlbumPublicContentList } from "../../albums/components/album-public-content-list";
 import { Link } from "react-router-dom";
+import { AlbumContentPublicModal } from "../../albums/components/album-content-public-modal";
 
 export const AlbumPublicPage = () => {
   const { id } = useParams();
   const publicAlbumQuery = usePublicAlbum({
     key: id ?? "",
   });
-
+  const [show, setShow] = useState(false);
+  const handleClose = () => {
+    setShow(false);
+  };
+  const handleShow = () => setShow(true);
   if (publicAlbumQuery.isLoading) {
     return (
       <>
@@ -240,6 +245,7 @@ export const AlbumPublicPage = () => {
                   </div>
                   <div className="col ">
                     <button
+                      onClick={handleShow}
                       disabled={!publicAlbumQuery.data.allowPublicUpload}
                       className="btn btn-blue rounded-5 w-100 "
                     >
@@ -258,6 +264,13 @@ export const AlbumPublicPage = () => {
             />
           </div>
         </div>
+        {show && (
+          <AlbumContentPublicModal
+            show={show}
+            albumId={publicAlbumQuery.data.id}
+            handleClose={handleClose}
+          />
+        )}
       </div>
     </>
   );

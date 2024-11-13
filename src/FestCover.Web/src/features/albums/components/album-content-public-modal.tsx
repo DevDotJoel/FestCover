@@ -1,7 +1,11 @@
 import { Modal } from "react-bootstrap";
-import { CreateAlbumContentModel, CreateAlbumContentPublicModel } from "../types";
+import {
+  CreateAlbumContentModel,
+  CreateAlbumContentPublicModel,
+} from "../types";
 import { useCreateAlbumContent } from "../api/create-album-content";
 import { AlbumContentForm } from "./album-content-form";
+import { useCreatePublicAlbumContent } from "../../public/api/create-public-album-content";
 
 export type AlbumContentPublicModalProps = {
   albumId: string;
@@ -13,15 +17,20 @@ export const AlbumContentPublicModal = ({
   albumId,
   handleClose,
 }: AlbumContentPublicModalProps) => {
-  const createAlbumContentMutation = useCreateAlbumContent();
+  const createCreatePublicAlbumContentMutation = useCreatePublicAlbumContent();
 
-  async function saveAlbum(data) {
+  async function saveAlbumContent(data) {
+    console.log(data);
     const createAlbumContent = {} as CreateAlbumContentPublicModel;
+    createAlbumContent.phoneNumber = data.phoneNumber;
+    createAlbumContent.name = data.name;
     createAlbumContent.albumId = albumId;
     createAlbumContent.albumContentImages = data.AlbumContentImages.map((f) => {
       return f.file;
     });
-    await createAlbumContentMutation.mutateAsync(createAlbumContent);
+    await createCreatePublicAlbumContentMutation.mutateAsync(
+      createAlbumContent
+    );
     handleClose();
   }
 
@@ -42,8 +51,8 @@ export const AlbumContentPublicModal = ({
           <div className="row mt-3">
             <div className="col ">
               <AlbumContentForm
-                disableFields={createAlbumContentMutation.isPending}
-                submit={saveAlbum}
+                disableFields={createCreatePublicAlbumContentMutation.isPending}
+                submit={saveAlbumContent}
                 phoneNumberRequired={true}
               />
             </div>
@@ -51,7 +60,7 @@ export const AlbumContentPublicModal = ({
         </Modal.Body>
         <Modal.Footer className="justify-content-between">
           <button
-            disabled={createAlbumContentMutation.isPending}
+            disabled={createCreatePublicAlbumContentMutation.isPending}
             onClick={handleClose}
             className="btn btn-blue rounded-5"
           >
@@ -59,7 +68,7 @@ export const AlbumContentPublicModal = ({
           </button>
 
           <button
-            disabled={createAlbumContentMutation.isPending}
+            disabled={createCreatePublicAlbumContentMutation.isPending}
             form="album-content-form"
             className="btn btn-blue rounded-5"
           >

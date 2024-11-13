@@ -5,6 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { FileImporter } from "../../../components/shared/file.importer";
 import { toast } from "react-toastify";
 import { InputPhoneNumberForm } from "../../../components/ui/forms/input-phone-number-form";
+import { InputForm } from "../../../components/ui/forms/input-form";
 
 export type AlbumContentFormType = {
   submit: (data) => void;
@@ -26,11 +27,10 @@ export const AlbumContentForm = ({
 
       .min(1, { message: "At least one image is required" }),
     phoneNumber: phoneNumberRequired
-      ? z
-          .string()
-          .refine((value) =>
-            /^[+]{1}(?:[0-9-()/.]\s?){6,15}[0-9]{1}$/.test(value)
-          )
+      ? z.string().min(5, { message: "Invalid Phone Number" })
+      : z.string().optional(),
+    name: phoneNumberRequired
+      ? z.string().min(3, { message: "Name is required" })
       : z.string().optional(),
   });
   type AlbumContentFormFields = z.infer<typeof albumContentSchema>;
@@ -122,17 +122,31 @@ export const AlbumContentForm = ({
               </div>
             )}
             {phoneNumberRequired && (
-              <div className="row mt-1 d-flex justify-content-center">
-                <div className="col-8 ">
-                  <InputPhoneNumberForm
-                    name={"phoneNumber"}
-                    label={""}
-                    control={control}
-                    errors={errors}
-                    disableFields={disableFields}
-                  />
+              <>
+                <div className="row mt-1 d-flex justify-content-center">
+                  <div className="col-8 ">
+                    <InputForm
+                      name={"name"}
+                      label={"Name"}
+                      control={control}
+                      errors={errors}
+                      type="text"
+                      disableFields={disableFields}
+                    />
+                  </div>
                 </div>
-              </div>
+                <div className="row mt-1 d-flex justify-content-center">
+                  <div className="col-8 ">
+                    <InputPhoneNumberForm
+                      name={"phoneNumber"}
+                      label={""}
+                      control={control}
+                      errors={errors}
+                      disableFields={disableFields}
+                    />
+                  </div>
+                </div>
+              </>
             )}
           </form>
         </div>

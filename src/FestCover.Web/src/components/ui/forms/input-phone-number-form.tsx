@@ -33,6 +33,7 @@ export const InputPhoneNumberForm = ({
             value={value}
             onChange={onChange}
             country={"pt"}
+            copyNumbersOnly={false}
           />
         )}
       />

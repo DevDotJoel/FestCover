@@ -30,7 +30,7 @@ namespace FestCover.Application.Albums.Queries.GetAlbumByKey
                 return Error.NotFound(description: "Album not found");
             }
             
-            var albumContents = await _albumContentRepository.GetAlbumContentsByAlbumId(album.Id,cancellationToken);
+            var albumContents = await _albumContentRepository.GetApprovedAlbumContentsByAlbumId(album.Id,cancellationToken);
             return _mapper.Map<AlbumDetailModel>((album,albumContents));
         }
     }

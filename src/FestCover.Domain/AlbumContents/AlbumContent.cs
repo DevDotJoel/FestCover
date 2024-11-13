@@ -15,18 +15,20 @@ namespace FestCover.Domain.AlbumContents
         public AlbumId AlbumId { get; private set; }
         public string? PhoneNumber { get; private set; }
         public string Url { get; private set; }
+        public string? Name { get; private set; }
         public bool Pending { get; private set; }
         public bool IsDeleted { get; private set; }
-        private AlbumContent(AlbumId albumId, bool pending, string? phoneNumber=null, AlbumContentId? albumContentId = null) : base(albumContentId ?? AlbumContentId.CreateUnique())
+        private AlbumContent(AlbumId albumId, bool pending, string? phoneNumber=null, string? name = null, AlbumContentId? albumContentId = null) : base(albumContentId ?? AlbumContentId.CreateUnique())
         {
             AlbumId = albumId;
             PhoneNumber = phoneNumber;
             Pending = pending;
+            Name = name;
 
         }
-        public static AlbumContent Create(AlbumId albumId, bool pending, string? phoneNumber=null, AlbumContentId? albumContentId = null)
+        public static AlbumContent Create(AlbumId albumId, bool pending, string? phoneNumber=null, string? name = null, AlbumContentId? albumContentId = null)
         {
-            var albumContent= new AlbumContent(albumId, pending ,phoneNumber, albumContentId);
+            var albumContent= new AlbumContent(albumId, pending ,phoneNumber, name,albumContentId);
 
             albumContent.AddDomainEvent(new AlbumContentCreated(albumId, albumContent.Id)); 
             
@@ -35,6 +37,10 @@ namespace FestCover.Domain.AlbumContents
         public void SetUrl(string url)
         {
             Url = url;
+        }
+        public void SetPendent(bool pending)
+        {
+            Pending = pending;
         }
         public void SetIsDeleted(bool isDeleted)
         {

@@ -44,7 +44,7 @@ type UseDeleteAlbumContentOptions = {
         }
       },
       onSuccess: (_, __, context: any) => {
-        console.log(context)
+        
         queryClient.invalidateQueries({queryKey:["album-contents",context.albumId]});
       },
       ...config,
