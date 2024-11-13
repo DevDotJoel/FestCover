@@ -8,6 +8,16 @@ export interface AlbumModel {
   allowPublicUpload: boolean;
   reviewUploadedContent: boolean;
 }
+export interface AlbumContentPendingModel {
+  id: string;
+  albumName: string;
+  albumId: string;
+  description: string;
+  url: string;
+  name: string;
+  phoneNumber: string;
+  date: string;
+}
 
 export interface AlbumContentModel {
   id: string;
@@ -50,4 +60,12 @@ export interface CreateAlbumContentPublicModel {
   name: string;
   albumId: string;
   albumContentImages: File[];
+}
+
+export interface ApproveAlbumContentModel {
+  albumContentId: string;
+}
+
+export interface RejectAlbumContentModel {
+  albumContentId: string;
 }

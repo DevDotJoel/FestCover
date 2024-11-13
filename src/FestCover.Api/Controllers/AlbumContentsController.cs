@@ -1,6 +1,8 @@
-﻿using FestCover.Application.AlbumContents.Commands.CreateAlbumContent;
+﻿using FestCover.Application.AlbumContents.Commands.ApproveAlbumContent;
+using FestCover.Application.AlbumContents.Commands.CreateAlbumContent;
 using FestCover.Application.AlbumContents.Commands.CreatetPublicAlbumContent;
 using FestCover.Application.AlbumContents.Commands.DeleteAlbumContent;
+using FestCover.Application.AlbumContents.Commands.RejectAlbumContent;
 using FestCover.Application.AlbumContents.Queries.ListAlbumContents;
 using FestCover.Application.AlbumContents.Queries.ListPendingAlbumContents;
 using FestCover.Contracts.Albums;
@@ -40,6 +42,20 @@ namespace FestCover.Api.Controllers
         public async Task<IActionResult> DeleteAlbumContent(string albumContentId)
         {
             var command = new DeleteAlbumContentCommand(albumContentId);
+            var result = await _mediator.Send(command);
+            return result.Match(_ => NoContent(), Problem);
+        }
+        [HttpPost("Approve")]
+        public async Task<IActionResult> ApproveAlbumContent(ApproveAlbumContentRequest request)
+        {
+            var command = new ApproveAlbumContentCommand(request.AlbumContentId);
+            var result = await _mediator.Send(command);
+            return result.Match(_ => NoContent(), Problem);
+        }
+        [HttpPost("Reject")]
+        public async Task<IActionResult> RejectAlbumContent(RejectAlbumContentRequest request)
+        {
+            var command = new RejectAlbumContentCommand(request.AlbumContentId);
             var result = await _mediator.Send(command);
             return result.Match(_ => NoContent(), Problem);
         }

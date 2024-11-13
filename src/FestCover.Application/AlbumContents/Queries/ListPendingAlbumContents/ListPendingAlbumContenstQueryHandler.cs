@@ -1,6 +1,7 @@
 ﻿using ErrorOr;
 using FestCover.Application.Common.Models.Albums;
 using FestCover.Application.Common.Persistence;
+using FestCover.Domain.AlbumContents.ValueObjects;
 using MapsterMapper;
 using MediatR;
 using System;
@@ -26,7 +27,8 @@ namespace FestCover.Application.AlbumContents.Queries.ListPendingAlbumContents
         {
             var albumContents = await _albumContentRepository.GetPendingAlbumContents(cancellationToken);
             var albumContentsIds= albumContents.ConvertAll(ac=>ac.Id).ToList();
-            var albums= await _albumRepository.GetAlbumsByAlbumContentIds(albumContentsIds,cancellationToken);
+            var allAlbums= await _albumRepository.GetAllAsync(cancellationToken);
+            var albums = allAlbums.Where(p => p.AlbumContentIds.Any(aci => albumContentsIds.Contains(aci))).Distinct().ToList();
             var result= albumContents.ConvertAll(content =>
             {
                 var album= albums.Where(a=>a.AlbumContentIds.Contains(content.Id)).FirstOrDefault();

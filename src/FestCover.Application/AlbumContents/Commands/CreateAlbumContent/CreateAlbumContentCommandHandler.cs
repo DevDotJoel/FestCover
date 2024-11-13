@@ -47,14 +47,6 @@ namespace FestCover.Application.AlbumContents.Commands.CreateAlbumContent
                     return Errors.Album.NotFound;
                 }
 
-            //var phoneNumberUtil = PhoneNumberUtil.GetInstance();
-            //var phoneNumber = phoneNumberUtil.Parse(request.PhoneNumber, null);
-            //var isValid = phoneNumberUtil.IsValidNumber(phoneNumber);
-            //if (!isValid)
-            //{
-            //    return Error.Conflict(description: "Invalid phone number");
-            //}
-            //var formattedPhoneNumber = phoneNumberUtil.Format(phoneNumber, PhoneNumberFormat.INTERNATIONAL);
             List<AlbumContent> albumContents = new();
             foreach (var albumContentImage in request.AlbumContentImages)
             {
@@ -64,12 +56,8 @@ namespace FestCover.Application.AlbumContents.Commands.CreateAlbumContent
                 albumContents.Add(albumContent);
             }
 
-
-            //album.AddContent(formattedPhoneNumber, contentUrl.Value);
             await _albumContentRepository.AddRangeAsync(albumContents, cancellationToken);
-                return Result.Success;
-
-            
+            return Result.Success;           
 
         }
     }

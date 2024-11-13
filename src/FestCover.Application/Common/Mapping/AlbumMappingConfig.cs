@@ -28,6 +28,8 @@ namespace FestCover.Application.Common.Mapping
            Map(dest => dest.AlbumId, src => src.Album.Id).
            Map(dest => dest.AlbumName, src => src.Album.Name).
            Map(dest => dest.Url, src => src.Content.Url).
+           Map(dest => dest.Name, src => src.Content.Name).
+           Map(dest => dest.Date, src => src.Content.CreatedDate.ToString("dd-MM-yyyy HH:mm")).
            Map(dest => dest.PhoneNumber, src => src.Content.PhoneNumber);
 
 

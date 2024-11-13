@@ -11,6 +11,8 @@ namespace FestCover.Application.Common.Models.Albums
      string AlbumId,
      string AlbumName,
      string Url,
-     string? PhoneNumber = null
+     string Name,
+     string PhoneNumber,
+     string Date
      );
 }
