@@ -46,7 +46,6 @@ namespace FestCover.Infrastructure.Storage
                     {
                         HttpHeaders = blobHttpHeaders
                     });
-
                     // Get the blob URL after upload
                     var blobUrl = blobClient.Uri.ToString();
                     return blobUrl;

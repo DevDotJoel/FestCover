@@ -13,7 +13,6 @@ export const AlbumModal = ({ show, album, handleClose }: AlbumModalProps) => {
   const createAlbumMutation = useCreateAlbum();
   const updateAlbumMutation = useUpdateAlbum();
   async function saveAlbum(data) {
-    console.log(data);
     if (data.id != null || data.id != undefined) {
       const updateAlbum = {} as UpdateAlbumModel;
       updateAlbum.albumId = data.id;
@@ -30,11 +29,9 @@ export const AlbumModal = ({ show, album, handleClose }: AlbumModalProps) => {
       createAlbum.name = data.name;
       createAlbum.description = data.description;
       createAlbum.albumImage = data.albumImage;
-      createAlbum.public = data.isPublic;
+      createAlbum.isPublic = data.isPublic;
       createAlbum.allowPublicUpload = data.allowPublicUpload;
       createAlbum.reviewUploadedContent = data.reviewUploadedContent;
-
-      console.log(createAlbum);
       await createAlbumMutation.mutateAsync(createAlbum);
     }
 

@@ -13,7 +13,7 @@ export const getPublicAlbum = ({
 
 export const getPublicAlbumQueryOptions = (key: string) => {
   return queryOptions({
-    queryKey: ["public-album", key],
+    queryKey: ["public-album"],
     queryFn: () => getPublicAlbum({ key }),
   });
 };

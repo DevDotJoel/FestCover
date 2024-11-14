@@ -38,7 +38,7 @@ export const useCreatePublicAlbumContent = ({
   return useMutation({
     onMutate: async (albumPublicContent: any) => {
       await queryClient.cancelQueries({
-        queryKey: ["public-album", albumPublicContent.albumId],
+        queryKey: ["public-album"],
       });
 
       const previousAlbumContents = queryClient.getQueryData<
@@ -49,9 +49,9 @@ export const useCreatePublicAlbumContent = ({
         albumId: albumPublicContent.albumId,
       };
     },
-    onSuccess: (_, __, context: any) => {
+    onSuccess: () => {
       queryClient.refetchQueries({
-        queryKey: ["public-album", context.albumId],
+        queryKey: ["public-album"],
       });
     },
     ...config,
