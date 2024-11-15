@@ -27,27 +27,27 @@ api.interceptors.response.use(
   async (error) => {
     const message = error.response?.data?.title;
     const originalRequest = error?.config;
+
     console.log(error.response?.status);
-    if (error.response?.status == 401) {
+
+    if (error.response?.status === 401 && !originalRequest._retry) {
+      originalRequest._retry = true;
+
       try {
         const accessToken = localStorage.getItem("accessToken");
         if (accessToken != null) {
           const response = await refreshToken({ accessToken: accessToken });
-          console.log(response);
           localStorage.setItem("accessToken", response.accessToken);
-          console.log(originalRequest)
-          originalRequest.headers["Authorization"] =
-            "Bearer " + response.accessToken;
-          originalRequest._retry = true;
-          return originalRequest;
+          originalRequest.headers["Authorization"] = `Bearer ${response.accessToken}`;
+          
+          return api(originalRequest);
         }
-      } catch (error) {
+      } catch (err) {
         localStorage.removeItem("accessToken");
         window.location.href = `/auth/login`;
       }
-
-      // window.location.href = `/auth/login`;
     }
+
     toast.error(message);
 
     return Promise.reject(error);

@@ -18,13 +18,13 @@ namespace FestCover.Application.Albums.Commands.UpdateAlbum
         private readonly IStorageService _storageService;
         private readonly IUserService _userService;
         private readonly IMapper _mapper;
-        private readonly IImageService _imageService;
+        private readonly IContentValidator _contentValidator;
         public UpdateAlbumCommandHandler(
              IAlbumRepository albumRepository,
             IStorageService storageService,
             IUserService userService,
             IMapper mapper,
-           IImageService imageService
+            IContentValidator contentValidator
             )
         {
             _albumRepository = albumRepository;
@@ -32,7 +32,7 @@ namespace FestCover.Application.Albums.Commands.UpdateAlbum
             _storageService = storageService;
             _userService = userService;
             _mapper = mapper;
-            _imageService = imageService;
+            _contentValidator = contentValidator;
         }
         public async Task<ErrorOr<AlbumModel>> Handle(UpdateAlbumCommand request, CancellationToken cancellationToken)
         {
@@ -51,8 +51,13 @@ namespace FestCover.Application.Albums.Commands.UpdateAlbum
             album.SetAllowPublicUpload(request.AllowPublicUpload);
             album.SetReviewUploadedContent(request.ReviewUploadedContent);
             album.SetIsPublic(request.IsPublic);
-            if (request.AlbumImage != null) 
+            if (request.AlbumImage != null)
             {
+                var isContentValid = await _contentValidator.IsValidContent(request.AlbumImage.File);
+                if (!isContentValid)
+                {
+                    return Error.Conflict(description: "Content not valid");
+                }
 
                 var imageUrl = await _storageService.AddFile(request.AlbumImage.ContentType, $"{album.UserId.Value}/Albums/{album.Id.Value}/Profile/{Guid.NewGuid() + request.AlbumImage.Extension}", request.AlbumImage.File);
 

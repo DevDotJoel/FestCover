@@ -40,12 +40,6 @@ export const useUpdateAlbum = ({ config }: UseUpdateAlbumOptions = {}) => {
 
       const previousAlbums = queryClient.getQueryData<AlbumModel[]>(["albums"]);
 
-      const currentAlbum = album as AlbumModel;
-      queryClient.setQueryData(
-        ["albums"],
-        [...(previousAlbums || []), currentAlbum]
-      );
-
       return { previousAlbums };
     },
     onError: (_, __, context: any) => {

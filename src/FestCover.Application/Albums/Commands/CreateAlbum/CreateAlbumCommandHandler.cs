@@ -21,13 +21,14 @@ namespace FestCover.Application.Albums.Commands.CreateAlbum
         private readonly IStorageService _storageService;
         private readonly IUserService _userService;
         private readonly IMapper _mapper;
-        private readonly IImageService _imageService;
+        private readonly IContentValidator _contentValidator;
+
         public CreateAlbumCommandHandler(
             IAlbumRepository albumRepository,
             IStorageService storageService,
             IUserService userService,
             IMapper mapper,
-            IImageService imageService
+            IContentValidator contentValidator
             )
         {
 
@@ -36,7 +37,7 @@ namespace FestCover.Application.Albums.Commands.CreateAlbum
             _storageService = storageService;
             _userService = userService;
             _mapper = mapper;
-            _imageService = imageService;
+            _contentValidator = contentValidator;
 
 
         }
@@ -44,6 +45,11 @@ namespace FestCover.Application.Albums.Commands.CreateAlbum
         {
 
             var userId = UserId.Create(Guid.Parse(_userService.GetCurrentUserId()));
+            var isContentValid = await _contentValidator.IsValidContent(request.AlbumImage.File);
+            if (!isContentValid)
+            {
+                return Error.Conflict(description: "Content not valid");
+            }
             var album = Album.Create(request.Name, request.Description,request.IsPublic ,request.AllowPublicUpload,request.ReviewUploadedContent);            
             var imageUrl = await _storageService.AddFile(request.AlbumImage.ContentType, $"{userId}/Albums/{album.Id.Value}/Profile/{Guid.NewGuid() + request.AlbumImage.Extension}", request.AlbumImage.File);       
             album.SetUrl(imageUrl.Value);
