@@ -73,6 +73,11 @@ export const SideNav = () => {
               <hr className="dropdown-divider" />
             </li> */}
             <li>
+              <Link to="user/profile" className="dropdown-item">
+                Profile
+              </Link>
+            </li>
+            <li>
               <button className="dropdown-item" onClick={logOut}>
                 Sign out
               </button>

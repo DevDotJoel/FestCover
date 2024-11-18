@@ -15,5 +15,7 @@ namespace FestCover.Application.Common.Contracts
         Task<ErrorOr<Success>> Register(string username, string email, string password, string password2);
         Task<ErrorOr<TokenResultModel>> RefreshToken(TokenResultModel currentToken);
         Task<ErrorOr<Success>> Logout(string userId);
+
+        Task<ErrorOr<Success>> UpdateUser(UpdateUserAuthModel userInfo);
     }
 }

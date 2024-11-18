@@ -6,9 +6,9 @@ import { lazyImport } from "../utils/lazyImport";
 import { useUser } from "../libs/auth";
 
 // import { RoutesPermissions } from "./permissions";
-const { HomeRoutes } = lazyImport(
-  () => import("../features/home"),
-  "HomeRoutes"
+const { UserRoutes } = lazyImport(
+  () => import("../features/users"),
+  "UserRoutes"
 );
 const { AlbumRoutes } = lazyImport(
   () => import("../features/albums"),
@@ -41,6 +41,10 @@ export const protectedRoutes = [
       {
         path: "/albums/*",
         element: <AlbumRoutes />,
+      },
+      {
+        path: "/user/*",
+        element: <UserRoutes />,
       },
       { path: "*", element: <Navigate to="." /> },
     ],

@@ -1,6 +1,5 @@
 import { Route, Routes } from "react-router-dom";
 import { lazyImport } from "../../../utils/lazyImport";
-import { RoutesPermissions } from "../../../routes/permissions";
 
 const { AlbumsPage } = lazyImport(
   () => import("../pages/albums.page"),

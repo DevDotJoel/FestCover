@@ -10,7 +10,8 @@ namespace FestCover.Application.Common.Models.Auth
     (
        Guid Id,
        string Username,
-       string Email
+       string Email,
+       string? PictureUrl=null
     );
 
 

@@ -36,7 +36,7 @@ export const useCreatePublicAlbumContent = ({
   config,
 }: UseCreatePublicAlbumContentOptions = {}) => {
   return useMutation({
-    onMutate: async (albumPublicContent: any) => {
+    onMutate: async (albumPublicContent: CreateAlbumContentPublicModel) => {
       await queryClient.cancelQueries({
         queryKey: ["public-album"],
       });

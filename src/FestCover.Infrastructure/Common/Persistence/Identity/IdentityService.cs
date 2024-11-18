@@ -5,6 +5,9 @@ using Microsoft.EntityFrameworkCore;
 using FestCover.Application.Common.Contracts;
 using FestCover.Application.Common.Models.Auth;
 using FestCover.Infrastructure.Common.Persistence.Identity;
+using FestCover.Domain.Common;
+using FestCover.Infrastructure.Common.Persistence;
+using Microsoft.Azure.CognitiveServices.Vision.ComputerVision.Models;
 
 namespace AfterLife.Infrastructure.Persistence.Identity
 {
@@ -13,14 +16,24 @@ namespace AfterLife.Infrastructure.Persistence.Identity
         private readonly UserManager<User> _userManager;
         private readonly RoleManager<Role> _roleManager;
         private readonly ITokenClaimService _tokenService;
+        private readonly IStorageService _storageService;
+        private readonly FestCoverDbContext _context;
+        private readonly IContentValidator _contenteService;
         public IdentityService(
             UserManager<User> userManager,
             RoleManager<Role> roleManager,
-            ITokenClaimService tokenService)
+            ITokenClaimService tokenService,
+            IStorageService storageService,
+            FestCoverDbContext context,
+            IContentValidator contenteService
+            )
         {
             _userManager = userManager;
             _roleManager = roleManager;
             _tokenService = tokenService;
+            _storageService = storageService;
+            _context = context;
+            _contenteService = contenteService;
         }
 
         public async Task<ErrorOr<TokenResultModel>> LoginJwtAsync(string email, string password)
@@ -95,7 +108,8 @@ namespace AfterLife.Infrastructure.Persistence.Identity
             var currentUser = new AuthUserModel(
                 Id: user.Id,
                 Username: user.UserName,
-                Email: user.Email
+                Email: user.Email,
+                PictureUrl: user.PictureUrl
            );
             return currentUser;
 
@@ -139,6 +153,80 @@ namespace AfterLife.Infrastructure.Persistence.Identity
             user.RefreshToken = null;
             await _userManager.UpdateAsync(user);
             return Result.Success;
+        }
+
+        public async Task<ErrorOr<Success>> UpdateUser(UpdateUserAuthModel userInfo)
+        {
+            if (userInfo == null || string.IsNullOrWhiteSpace(userInfo.Username) || string.IsNullOrWhiteSpace(userInfo.Email))
+                return Error.Validation(description: "Invalid user information.");
+
+            await using var transaction = await _context.Database.BeginTransactionAsync();
+            try
+            {
+                var user = await _userManager.FindByIdAsync(userInfo.UserId.ToString());
+                if (user == null)
+                    return Error.Conflict(description: "User not found");
+
+                var isUserNameInUse = await _userManager.Users.AnyAsync(u => u.UserName.ToLower() == userInfo.Username.ToLower() && u.Id != userInfo.UserId);
+                if (isUserNameInUse)
+                    return Error.Conflict(description: "Username not available");
+
+                var isEmailInUse = await _userManager.Users.AnyAsync(u => u.Email.ToLower() == userInfo.Email.ToLower() && u.Id != userInfo.UserId);
+                if (isEmailInUse)
+                    return Error.Conflict(description: "Email not available");
+
+                if (!string.IsNullOrWhiteSpace(userInfo.Password))
+                {
+                    if (string.IsNullOrWhiteSpace(userInfo.CurrentPassword))
+                        return Error.Conflict(description: "Current password is required to set a new password.");
+
+                    if (!await _userManager.CheckPasswordAsync(user, userInfo.CurrentPassword))
+                        return Error.Conflict(description: "Invalid password.");
+
+                    if (userInfo.Password != userInfo.Password2)
+                        return Error.Conflict(description: "Passwords don't match.");
+
+                    var passwordResult = await _userManager.ChangePasswordAsync(user, userInfo.CurrentPassword, userInfo.Password);
+                    if (!passwordResult.Succeeded)
+                        return Error.Conflict(description: string.Join(", ", passwordResult.Errors.Select(e => e.Description)));
+                }
+
+                if (userInfo.Picture != null)
+                {
+                    var isImageValid= await _contenteService.IsValidContent(userInfo.Picture);
+                    if (!isImageValid)
+                    {
+                        return Error.Conflict(description: "Not valid Image");
+                    }
+                    var fileResult = await _storageService.AddFile(userInfo.ContentType, $"{user.Id}/Profile/{user.Id + userInfo.Extension}", userInfo.Picture);
+                    if (fileResult.IsError)
+                    {
+                        await _context.Database.RollbackTransactionAsync();
+                        return Error.Conflict(description: "An error occurred while uploading the profile picture.");
+                    }
+                    user.PictureUrl = fileResult.Value;
+                }
+
+                user.UserName = userInfo.Username;
+                user.NormalizedUserName = userInfo.Username.ToUpperInvariant();
+                user.Email = userInfo.Email;
+                user.NormalizedEmail = userInfo.Email.ToUpperInvariant();
+
+                var updateResult = await _userManager.UpdateAsync(user);
+                if (!updateResult.Succeeded)
+                {
+                    await _context.Database.RollbackTransactionAsync();
+                    return Error.Conflict(description: "User update failed.");
+                }
+
+                await _context.Database.CommitTransactionAsync();
+                return Result.Success;
+            }
+            catch
+            {
+                await _context.Database.RollbackTransactionAsync();
+                throw;
+            }
         }
     }
 }
