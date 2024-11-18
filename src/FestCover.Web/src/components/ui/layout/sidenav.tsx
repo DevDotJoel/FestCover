@@ -53,7 +53,9 @@ export const SideNav = () => {
             aria-expanded="false"
           >
             <img
-              src="/blankprofile.png"
+              src={
+                user.pictureUrl != null ? user.pictureUrl : "/blankprofile.png"
+              }
               alt="hugenerd"
               width="20"
               height="20"

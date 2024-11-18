@@ -18,14 +18,21 @@ const userProfileSchema = z
     filePreview: z.string().optional(),
   })
   .superRefine(({ currentPassword, password, password2 }, ctx) => {
-    if (currentPassword != "")
-      if (password2 !== password) {
+    if (currentPassword !== "")
+      if (password === "" && password2 === "") {
         ctx.addIssue({
           code: "custom",
-          message: "The passwords did not match",
+          message: "The new password must be filled",
           path: ["password"],
         });
       }
+    if (password2 !== password) {
+      ctx.addIssue({
+        code: "custom",
+        message: "The passwords did not match",
+        path: ["password2"],
+      });
+    }
   });
 export type UserProfileFormFields = z.infer<typeof userProfileSchema>;
 
@@ -39,15 +46,10 @@ export const UserProfileForm = ({
   user,
   disableFields,
 }: UserFormProps) => {
-  //   const currentSchema = userProfileSchema.extend({
-  //     albumImage:
-  //       album != null ? z.instanceof(File).optional() : z.instanceof(File),
-  //   });
-
   const {
     control,
     handleSubmit,
-    formState: { errors, isValid },
+    formState: { errors },
     setValue,
     watch,
   } = useForm<UserProfileFormFields>({
@@ -65,11 +67,9 @@ export const UserProfileForm = ({
     name: "currentPassword",
   });
   useEffect(() => {
-    console.log(control._formState);
     if (currentPassword === "") {
-      // Clear the values of the dependent fields
-      setValue("password", "");
-      setValue("password2", ""); // Clear the second password field
+      setValue("password", null);
+      setValue("password2", null);
     }
   }, [currentPassword, setValue]);
   function getImage(files) {
@@ -87,7 +87,7 @@ export const UserProfileForm = ({
                   <div className="col ">
                     <img
                       src={
-                        watch("filePreview") === null
+                        watch("filePreview") === ""
                           ? "/blankprofile.png"
                           : watch("filePreview")
                       }
@@ -187,6 +187,7 @@ export const UserProfileForm = ({
                     <div className="row mt-2">
                       <div className="col d-flex justify-content-center">
                         <button
+                          disabled={disableFields}
                           type="submit"
                           form="user-profile-form"
                           className="btn btn-blue rounded-5"

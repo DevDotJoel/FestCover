@@ -196,7 +196,17 @@ namespace AfterLife.Infrastructure.Persistence.Identity
                     var isImageValid= await _contenteService.IsValidContent(userInfo.Picture);
                     if (!isImageValid)
                     {
-                        return Error.Conflict(description: "Not valid Image");
+                        return Error.Conflict(description: "Not valid profile picture");
+                    }
+                    if (user.PictureUrl != null)
+                    {
+                      var deletePictureResult=  await _storageService.RemoveFile(user.Id.ToString()+"/"+ user.PictureUrl.Substring(user.PictureUrl.LastIndexOf("Profile")));
+
+                        if (deletePictureResult.IsError)
+                        {
+                            return Error.Conflict(description: "An error occurred while updating the user picture");
+                        }
+
                     }
                     var fileResult = await _storageService.AddFile(userInfo.ContentType, $"{user.Id}/Profile/{user.Id + userInfo.Extension}", userInfo.Picture);
                     if (fileResult.IsError)
