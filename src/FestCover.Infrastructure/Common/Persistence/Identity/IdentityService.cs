@@ -208,7 +208,7 @@ namespace AfterLife.Infrastructure.Persistence.Identity
                         }
 
                     }
-                    var fileResult = await _storageService.AddFile(userInfo.ContentType, $"{user.Id}/Profile/{user.Id + userInfo.Extension}", userInfo.Picture);
+                    var fileResult = await _storageService.AddFile(userInfo.ContentType, $"{user.Id}/Profile/{Guid.NewGuid().ToString() + userInfo.Extension}", userInfo.Picture);
                     if (fileResult.IsError)
                     {
                         await _context.Database.RollbackTransactionAsync();
