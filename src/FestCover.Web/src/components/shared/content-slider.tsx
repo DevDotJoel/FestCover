@@ -34,11 +34,20 @@ export const ContentSlider = ({
           <Modal.Title className="ms-auto"></Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <Carousel interval={null} activeIndex={index} onSelect={handleSelect}>
+          <Carousel
+            interval={null}
+            activeIndex={index}
+            onSelect={handleSelect}
+            fade={false}
+          >
             {contents.map((content, index) => {
               return (
                 <Carousel.Item key={index}>
-                  <img src={content} className="d-block w-100" alt="..." />
+                  <img
+                    src={content}
+                    className="img-fluid d-block  "
+                    alt="..."
+                  />
                 </Carousel.Item>
               );
             })}
