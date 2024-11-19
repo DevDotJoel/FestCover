@@ -43,7 +43,7 @@ export const RejectAlbumContentModal = ({
             <div className="col">
               Are you sure you want to reject this content from{" "}
               <b>{albumContent.name} </b> with the phone number{" "}
-              <b>{albumContent.phoneNumber} </b>?
+              <b>{albumContent.email} </b>?
             </div>
           </div>
         </Modal.Body>
