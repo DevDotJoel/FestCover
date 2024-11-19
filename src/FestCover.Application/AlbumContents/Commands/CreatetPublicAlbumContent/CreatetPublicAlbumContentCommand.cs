@@ -11,7 +11,7 @@ namespace FestCover.Application.AlbumContents.Commands.CreatetPublicAlbumContent
     public record CreatetPublicAlbumContentCommand
       (
         string Name,
-        string PhoneNumber,
+        string Email,
         string AlbumId,
        List<AlbumPublicContentImageCommand> AlbumPublicContentImages
     ) : IRequest<ErrorOr<Success>>;

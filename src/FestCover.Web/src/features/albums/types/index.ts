@@ -15,7 +15,7 @@ export interface AlbumContentPendingModel {
   description: string;
   url: string;
   name: string;
-  phoneNumber: string;
+  email?: string;
   date: string;
 }
 
@@ -56,7 +56,7 @@ export interface AlbumDetailModel {
   contents: AlbumContentModel[];
 }
 export interface CreateAlbumContentPublicModel {
-  phoneNumber: string;
+  email: string;
   name: string;
   albumId: string;
   albumContentImages: File[];

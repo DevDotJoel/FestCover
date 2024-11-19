@@ -12,7 +12,7 @@ namespace FestCover.Application.Common.Models.Albums
      string AlbumName,
      string Url,
      string Name,
-     string PhoneNumber,
+     string Email,
      string Date
      );
 }

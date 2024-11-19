@@ -10,7 +10,7 @@ namespace FestCover.Contracts.Albums
     public record CreatePublicAlbumContentRequest
     (
        string Name,
-       string PhoneNumber,
+       string Email,
        Guid AlbumId,
        List<IFormFile> AlbumContentImages);
 

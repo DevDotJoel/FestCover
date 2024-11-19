@@ -12,7 +12,7 @@ export const createPublicAlbumContent = (
   createPublicAlbumContent: CreateAlbumContentPublicModel
 ): Promise<void> => {
   const formData = new FormData();
-  formData.append("phoneNumber", createPublicAlbumContent.phoneNumber);
+  formData.append("email", createPublicAlbumContent.email);
   formData.append("name", createPublicAlbumContent.name);
   formData.append("AlbumId", createPublicAlbumContent.albumId);
   for (let i = 0; i < createPublicAlbumContent.albumContentImages.length; i++) {

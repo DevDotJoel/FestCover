@@ -22,7 +22,7 @@ export const AlbumContentPublicModal = ({
   async function saveAlbumContent(data) {
     console.log(data);
     const createAlbumContent = {} as CreateAlbumContentPublicModel;
-    createAlbumContent.phoneNumber = data.phoneNumber;
+    createAlbumContent.email = data.email;
     createAlbumContent.name = data.name;
     createAlbumContent.albumId = albumId;
     createAlbumContent.albumContentImages = data.AlbumContentImages.map((f) => {
@@ -53,7 +53,7 @@ export const AlbumContentPublicModal = ({
               <AlbumContentForm
                 disableFields={createCreatePublicAlbumContentMutation.isPending}
                 submit={saveAlbumContent}
-                phoneNumberRequired={true}
+                emailRequired={true}
               />
             </div>
           </div>

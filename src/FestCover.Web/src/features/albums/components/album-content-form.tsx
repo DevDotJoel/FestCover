@@ -10,12 +10,12 @@ import { InputForm } from "../../../components/ui/forms/input-form";
 export type AlbumContentFormType = {
   submit: (data) => void;
   disableFields: boolean;
-  phoneNumberRequired: boolean;
+  emailRequired: boolean;
 };
 export const AlbumContentForm = ({
   submit,
   disableFields,
-  phoneNumberRequired,
+  emailRequired,
 }: AlbumContentFormType) => {
   const albumFileSchema = z.object({
     filePreviewLink: z.string(),
@@ -26,10 +26,13 @@ export const AlbumContentForm = ({
       .array(albumFileSchema)
 
       .min(1, { message: "At least one image is required" }),
-    phoneNumber: phoneNumberRequired
-      ? z.string().min(5, { message: "Invalid Phone Number" })
+    email: emailRequired
+      ? z
+          .string()
+          .min(1, { message: "Email is required" })
+          .email("This is not a valid email.")
       : z.string().optional(),
-    name: phoneNumberRequired
+    name: emailRequired
       ? z.string().min(3, { message: "Name is required" })
       : z.string().optional(),
   });
@@ -40,7 +43,7 @@ export const AlbumContentForm = ({
     formState: { errors },
   } = useForm<AlbumContentFormFields>({
     defaultValues: {
-      phoneNumber: "",
+      email: "",
       AlbumContentImages: [],
     },
     resolver: zodResolver(albumContentSchema),
@@ -121,7 +124,7 @@ export const AlbumContentForm = ({
                 </div>
               </div>
             )}
-            {phoneNumberRequired && (
+            {emailRequired && (
               <>
                 <div className="row mt-1 d-flex justify-content-center">
                   <div className="col-8 ">
@@ -137,11 +140,12 @@ export const AlbumContentForm = ({
                 </div>
                 <div className="row mt-1 d-flex justify-content-center">
                   <div className="col-8 ">
-                    <InputPhoneNumberForm
-                      name={"phoneNumber"}
-                      label={""}
+                    <InputForm
+                      name={"email"}
+                      label={"Email"}
                       control={control}
                       errors={errors}
+                      type="text"
                       disableFields={disableFields}
                     />
                   </div>

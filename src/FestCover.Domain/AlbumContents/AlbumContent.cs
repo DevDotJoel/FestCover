@@ -13,15 +13,15 @@ namespace FestCover.Domain.AlbumContents
     public class AlbumContent : Entity<AlbumContentId>,ISoftDelete
     {
         public AlbumId AlbumId { get; private set; }
-        public string? PhoneNumber { get; private set; }
+        public string? Email { get; private set; }
         public string Url { get; private set; }
         public string? Name { get; private set; }
         public bool Pending { get; private set; }
         public bool IsDeleted { get; private set; }
-        private AlbumContent(AlbumId albumId, bool pending, string? phoneNumber=null, string? name = null, AlbumContentId? albumContentId = null) : base(albumContentId ?? AlbumContentId.CreateUnique())
+        private AlbumContent(AlbumId albumId, bool pending, string? email=null, string? name = null, AlbumContentId? albumContentId = null) : base(albumContentId ?? AlbumContentId.CreateUnique())
         {
             AlbumId = albumId;
-            PhoneNumber = phoneNumber;
+            Email = email;
             Pending = pending;
             Name = name;
 

@@ -39,25 +39,11 @@ namespace FestCover.Application.AlbumContents.Commands.CreatetPublicAlbumContent
             {
                 return Errors.Album.NotFound;
             }
-            var currentPhoneNumber = request.PhoneNumber;
-            if (!request.PhoneNumber.StartsWith("+"))
-            {
-                currentPhoneNumber = "+" + currentPhoneNumber;
-            }
-            var phoneNumberUtil = PhoneNumberUtil.GetInstance();
-            var phoneNumber = phoneNumberUtil.Parse(currentPhoneNumber, null);
-            var isValid = phoneNumberUtil.IsValidNumber(phoneNumber);
-            if (!isValid)
-            {
-                return Error.Conflict(description: "Invalid phone number");
-            }
-
-            var formattedPhoneNumber = phoneNumberUtil.Format(phoneNumber, PhoneNumberFormat.INTERNATIONAL);
 
             List<AlbumContent> albumContents = new();
             foreach (var albumContentImage in request.AlbumPublicContentImages)
             {
-                var albumContent = AlbumContent.Create(createAlbumIdResult.Value, album.ReviewUploadedContent, formattedPhoneNumber,request.Name);
+                var albumContent = AlbumContent.Create(createAlbumIdResult.Value, album.ReviewUploadedContent, request.Email,request.Name);
                 var imageUrl = await _storageService.AddFile(albumContentImage.ContentType, $"{album.UserId}/Albums/{createAlbumIdResult.Value}/Content/{albumContent.Id.Value + albumContentImage.Extension}", albumContentImage.File);
                 albumContent.SetUrl(imageUrl.Value);
                 albumContents.Add(albumContent);

@@ -58,8 +58,8 @@ export const AlbumPendingContentList = ({
                     {albumContent.name}
                   </h6>
                   <h6 className="card-subtitle mb-2 text-muted">
-                    <b> Number:</b>
-                    {albumContent.phoneNumber}
+                    <b> Email:</b>
+                    {albumContent.email}
                   </h6>
                   <h6 className="card-subtitle mb-2 text-muted">
                     <b> Date:</b>

@@ -30,7 +30,7 @@ namespace FestCover.Application.Common.Mapping
            Map(dest => dest.Url, src => src.Content.Url).
            Map(dest => dest.Name, src => src.Content.Name).
            Map(dest => dest.Date, src => src.Content.CreatedDate.ToString("dd-MM-yyyy HH:mm")).
-           Map(dest => dest.PhoneNumber, src => src.Content.PhoneNumber);
+           Map(dest => dest.Email, src => src.Content.Email);
 
 
         }

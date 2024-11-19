@@ -30,7 +30,7 @@ namespace FestCover.Api.Common.Mapping
             config
      .NewConfig<CreatePublicAlbumContentRequest, CreatetPublicAlbumContentCommand>()
                .Map(dest => dest.Name, src => src.Name)
-               .Map(dest => dest.PhoneNumber, src => src.PhoneNumber)
+               .Map(dest => dest.Email, src => src.Email)
                .Map(dest => dest.AlbumId, src => src.AlbumId)
                 .Map(dest => dest.AlbumPublicContentImages, src => src.AlbumContentImages.ConvertAll(c => ConvertToFile(c)));
 
