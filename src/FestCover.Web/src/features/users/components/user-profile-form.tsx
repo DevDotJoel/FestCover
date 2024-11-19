@@ -91,8 +91,9 @@ export const UserProfileForm = ({
                           ? "/blankprofile.png"
                           : watch("filePreview")
                       }
-                      className="img-fluid rounded-circle"
-                      width={150}
+                      className="rounded-circle"
+                      width={200}
+                      height={200}
                     ></img>
                   </div>
                 </div>
