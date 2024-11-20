@@ -1,6 +1,8 @@
 using FestCover.Api;
 using FestCover.Infrastructure;
 using FestCover.Application;
+using Microsoft.AspNetCore.Builder;
+using SixLabors.ImageSharp;
 var builder = WebApplication.CreateBuilder(args);
 builder.WebHost.ConfigureKestrel(options => options.Limits.MaxRequestBodySize = 50 * 1024 * 1024);
 // Add services to the container.
@@ -23,6 +25,14 @@ if (app.Environment.IsDevelopment())
 }
 app.UseSwagger();
 app.UseSwaggerUI();
+
+app.Use((context, next) =>
+{
+    var webAppSettings = builder.Configuration.GetSection("WebApp");
+    context.Request.Host = new HostString(webAppSettings.GetSection("BackendHost").Value);
+    context.Request.Scheme = "https";
+    return next();
+});
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
