@@ -3,6 +3,8 @@ import { useLogin } from "../../../libs/auth";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { AccessCodeModal } from "../components/access-code-modal";
+import { toast } from "react-toastify";
+import { API_URL } from "../../../config/env";
 
 export const LoginPage = () => {
   const login = useLogin();
@@ -43,7 +45,7 @@ export const LoginPage = () => {
                   <div className="col ">
                     <form
                       method="POST"
-                      action={`https://localhost:7001/api/auth/external-login?provider=Google&returnUrl=/home`}
+                      action={`${API_URL}api/auth/external-login?provider=Google&returnUrl=/home`}
                     >
                       <button className="btn btn-danger rounded-5 w-100">
                         <i className="bi bi-google"></i> Google
