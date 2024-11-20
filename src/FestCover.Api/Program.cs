@@ -19,18 +19,10 @@ builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-if (!app.Environment.IsDevelopment())
+app.UseForwardedHeaders(new ForwardedHeadersOptions
 {
-    app.UseHsts();
-    app.Use((context, next) =>
-    {
-        var webAppSettings = builder.Configuration.GetSection("WebApp");
-        context.Request.Host = new HostString(webAppSettings.GetSection("BackendHost").Value);
-        context.Request.Scheme = "https";
-        return next();
-    });
-
-}
+    ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+});
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
@@ -42,6 +34,8 @@ app.UseSwaggerUI();
 
 app.UseHttpsRedirection();
 
+app.UseForwardedHeaders();
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
