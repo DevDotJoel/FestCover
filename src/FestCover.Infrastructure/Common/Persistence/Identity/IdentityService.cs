@@ -285,9 +285,13 @@ namespace AfterLife.Infrastructure.Persistence.Identity
                     };
 
                    var result=  await _userManager.CreateAsync(user);
-                    if (!result.Succeeded)
+                    if (result.Succeeded)
                     {
                         await _userManager.AddToRoleAsync(user, role.Name);
+                    }
+                    else
+                    {
+                        return Error.Failure(description: "An error occurred while signing in");
                     }
                 }
 
