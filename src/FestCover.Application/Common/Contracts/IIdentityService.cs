@@ -17,5 +17,6 @@ namespace FestCover.Application.Common.Contracts
         Task<ErrorOr<Success>> Logout(string userId);
 
         Task<ErrorOr<Success>> UpdateUser(UpdateUserAuthModel userInfo);
+        Task<ErrorOr<TokenResultModel>> ExternalLoginAsycn();
     }
 }

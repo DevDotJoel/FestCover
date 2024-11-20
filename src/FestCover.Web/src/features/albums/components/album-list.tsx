@@ -31,7 +31,7 @@ export const AlbumList = ({ albums, edit }: AlbumListProps) => {
         {albums?.map((album: AlbumModel) => {
           return (
             <div key={album.id} className="col-12 col-sm-3">
-              <div className="card rounded-3 border-0 mt-5 ">
+              <div className="card rounded-3 border-0 mt-5">
                 <img
                   onClick={() => navigate(`details/${album.id}`)}
                   src={album.url}

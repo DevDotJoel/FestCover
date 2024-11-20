@@ -8,6 +8,8 @@ using FestCover.Infrastructure.Common.Persistence.Identity;
 using FestCover.Domain.Common;
 using FestCover.Infrastructure.Common.Persistence;
 using Microsoft.Azure.CognitiveServices.Vision.ComputerVision.Models;
+using Microsoft.AspNetCore.Authentication;
+using System.Security.Claims;
 
 namespace AfterLife.Infrastructure.Persistence.Identity
 {
@@ -19,9 +21,11 @@ namespace AfterLife.Infrastructure.Persistence.Identity
         private readonly IStorageService _storageService;
         private readonly FestCoverDbContext _context;
         private readonly IContentValidator _contenteService;
+        private readonly SignInManager<User> _signInManager;
         public IdentityService(
             UserManager<User> userManager,
             RoleManager<Role> roleManager,
+            SignInManager<User> signInManager,
             ITokenClaimService tokenService,
             IStorageService storageService,
             FestCoverDbContext context,
@@ -34,6 +38,8 @@ namespace AfterLife.Infrastructure.Persistence.Identity
             _storageService = storageService;
             _context = context;
             _contenteService = contenteService;
+            _signInManager = signInManager;
+
         }
 
         public async Task<ErrorOr<TokenResultModel>> LoginJwtAsync(string email, string password)
@@ -50,7 +56,7 @@ namespace AfterLife.Infrastructure.Persistence.Identity
             var tokenResult = _tokenService.GetToken(user.Email, user.Id.ToString(), roleName);
             user.RefreshToken = tokenResult.RefreshToken;
             user.RefreshTokenExpiryTime = DateTime.Now.AddDays(7);
-            user.LastLoginTime= DateTime.Now;
+            user.LastLoginTime = DateTime.Now;
             await _userManager.UpdateAsync(user);
             return tokenResult;
         }
@@ -118,7 +124,7 @@ namespace AfterLife.Infrastructure.Persistence.Identity
         {
 
             var principal = _tokenService.GetPrincipalFromExpiredToken(currentToken.AccessToken);
-            if(principal.IsError)
+            if (principal.IsError)
             {
                 return principal.Errors;
             }
@@ -193,14 +199,14 @@ namespace AfterLife.Infrastructure.Persistence.Identity
 
                 if (userInfo.Picture != null)
                 {
-                    var isImageValid= await _contenteService.IsValidContent(userInfo.Picture);
+                    var isImageValid = await _contenteService.IsValidContent(userInfo.Picture);
                     if (!isImageValid)
                     {
                         return Error.Conflict(description: "Not valid profile picture");
                     }
                     if (user.PictureUrl != null)
                     {
-                      var deletePictureResult=  await _storageService.RemoveFile(user.Id.ToString()+"/"+ user.PictureUrl.Substring(user.PictureUrl.LastIndexOf("Profile")));
+                        var deletePictureResult = await _storageService.RemoveFile(user.Id.ToString() + "/" + user.PictureUrl.Substring(user.PictureUrl.LastIndexOf("Profile")));
 
                         if (deletePictureResult.IsError)
                         {
@@ -237,6 +243,58 @@ namespace AfterLife.Infrastructure.Persistence.Identity
                 await _context.Database.RollbackTransactionAsync();
                 throw;
             }
+        }
+
+        public async Task<ErrorOr<TokenResultModel>> ExternalLoginAsycn()
+        {
+            var info = await _signInManager.GetExternalLoginInfoAsync();
+            if (info is null)
+            {
+                return Error.Failure(description: "Sign in failed");
+            }
+            var signinResult = await _signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, false);
+            var email = info.Principal.FindFirstValue(ClaimTypes.Email);
+            var user = await _userManager.FindByEmailAsync(email);
+            if (signinResult.Succeeded)
+            {
+                var role = await _userManager.GetRolesAsync(user);
+                var roleName = role.FirstOrDefault();
+                var currentRole = await _roleManager.Roles.Where(r => r.Name == roleName).FirstOrDefaultAsync();
+                var roleClaims = await _roleManager.GetClaimsAsync(currentRole);
+                var currentClaims = roleClaims.Select(r => r.Value).ToList();
+                var tokenResult = _tokenService.GetToken(user.Email, user.Id.ToString(), roleName);
+                user.RefreshToken = tokenResult.RefreshToken;
+                user.RefreshTokenExpiryTime = DateTime.Now.AddDays(7);
+                user.LastLoginTime = DateTime.Now;
+                await _userManager.UpdateAsync(user);
+                return tokenResult;
+
+            }
+            if (email is not null)
+            {
+                if (user is null)
+                {
+                    user = new User
+                    {
+                        UserName = info.Principal.FindFirstValue(ClaimTypes.Email),
+                        Email = info.Principal.FindFirstValue(ClaimTypes.Email),
+                    };
+
+                  var result=  await _userManager.CreateAsync(user);
+                    if (!result.Succeeded)
+                    {
+
+                    }
+                }
+
+                await _userManager.AddLoginAsync(user, info);
+                await _signInManager.SignInAsync(user, false);
+                var role = await _roleManager.FindByNameAsync("User");
+                await _userManager.AddToRoleAsync(user, role.Name);
+                var tokenResult = _tokenService.GetToken(user.Email, user.Id.ToString(), role.Name);
+                return tokenResult;
+            }
+            return Error.Failure(description: "An error occurred while signing in");
         }
     }
 }

@@ -41,6 +41,19 @@ export const LoginPage = () => {
                 <hr />
                 <div className="row mt-1">
                   <div className="col ">
+                    <form
+                      method="POST"
+                      action={`https://localhost:7001/api/auth/external-login?provider=Google&returnUrl=/home`}
+                    >
+                      <button className="btn btn-blue rounded-5 w-100">
+                        Google Login
+                      </button>
+                    </form>
+                  </div>
+                </div>
+                <hr />
+                <div className="row mt-1">
+                  <div className="col ">
                     <div>
                       <button
                         disabled={login.isPending}

@@ -69,11 +69,14 @@ namespace FestCover.Infrastructure
                 options.User.RequireUniqueEmail = true;
             });
             var jwtSettings = configuration.GetSection("JwtSettings");
+            var googleSettings = configuration.GetSection("Google");
             services.AddAuthentication(opt =>
             {
                 opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            }).AddJwtBearer(options =>
+            })
+                
+                .AddJwtBearer(options =>
             {
                 options.TokenValidationParameters = new TokenValidationParameters
                 {
@@ -99,7 +102,17 @@ namespace FestCover.Infrastructure
                 //        return Task.CompletedTask;
                 //    }
                 //};
+            }).AddGoogle(options =>
+            {
+    
+
+                options.ClientId = googleSettings.GetSection("ClientId").Value;
+                options.ClientSecret = googleSettings.GetSection("ClientSecret").Value;
+                //this function is get user google profile image
+                options.Scope.Add("profile");
+                options.SignInScheme = Microsoft.AspNetCore.Identity.IdentityConstants.ExternalScheme;
             });
+            
             return services;
         }
     }
