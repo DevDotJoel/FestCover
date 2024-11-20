@@ -9,11 +9,6 @@ builder.WebHost.ConfigureKestrel(options => options.Limits.MaxRequestBodySize = 
 // Add services to the container.
 
 builder.Services.AddControllers();
-builder.Services.Configure<ForwardedHeadersOptions>(options =>
-{
-    options.ForwardedHeaders =
-        ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
-});
 builder.Services.AddWebApi();
 builder.Services.AddApplication();
 builder.Services.AddInfrastructure(builder.Configuration);
@@ -24,18 +19,19 @@ builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
-    app.UseExceptionHandler("/Error");
-    app.UseForwardedHeaders();
     app.UseHsts();
+    app.Use((context, next) =>
+    {
+        var webAppSettings = builder.Configuration.GetSection("WebApp");
+        context.Request.Host = new HostString(webAppSettings.GetSection("BackendHost").Value);
+        context.Request.Scheme = "https";
+        return next();
+    });
+
 }
-else
-{
-    app.UseDeveloperExceptionPage();
-    app.UseForwardedHeaders();
-}
+// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
    
