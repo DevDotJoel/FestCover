@@ -45,8 +45,8 @@ export const LoginPage = () => {
                       method="POST"
                       action={`https://localhost:7001/api/auth/external-login?provider=Google&returnUrl=/home`}
                     >
-                      <button className="btn btn-blue rounded-5 w-100">
-                        Google Login
+                      <button className="btn btn-danger rounded-5 w-100">
+                        <i className="bi bi-google"></i> Google
                       </button>
                     </form>
                   </div>

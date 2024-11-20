@@ -109,13 +109,15 @@ namespace AfterLife.Infrastructure.Persistence.Identity
             var user = await _userManager.FindByIdAsync(userId);
             if (user == null)
                 return Error.Conflict(description: "User not found");
+            var hasPassword = await _userManager.HasPasswordAsync(user);
             var role = await _userManager.GetRolesAsync(user);
             var roleName = role.FirstOrDefault();
             var currentUser = new AuthUserModel(
                 Id: user.Id,
                 Username: user.UserName,
                 Email: user.Email,
-                PictureUrl: user.PictureUrl
+                PictureUrl: user.PictureUrl,
+                ExternalAuth:!hasPassword
            );
             return currentUser;
 
@@ -272,25 +274,25 @@ namespace AfterLife.Infrastructure.Persistence.Identity
             }
             if (email is not null)
             {
+                var role = await _roleManager.FindByNameAsync("User");
                 if (user is null)
                 {
                     user = new User
                     {
                         UserName = info.Principal.FindFirstValue(ClaimTypes.Email),
                         Email = info.Principal.FindFirstValue(ClaimTypes.Email),
+                        EmailConfirmed=true,
                     };
 
-                  var result=  await _userManager.CreateAsync(user);
+                   var result=  await _userManager.CreateAsync(user);
                     if (!result.Succeeded)
                     {
-
+                        await _userManager.AddToRoleAsync(user, role.Name);
                     }
                 }
 
                 await _userManager.AddLoginAsync(user, info);
                 await _signInManager.SignInAsync(user, false);
-                var role = await _roleManager.FindByNameAsync("User");
-                await _userManager.AddToRoleAsync(user, role.Name);
                 var tokenResult = _tokenService.GetToken(user.Email, user.Id.ToString(), role.Name);
                 return tokenResult;
             }

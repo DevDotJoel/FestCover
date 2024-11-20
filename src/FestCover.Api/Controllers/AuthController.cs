@@ -17,11 +17,13 @@ namespace FestCover.Api.Controllers
         private readonly IIdentityService _identityService;
         private readonly IUserService _userService;
         private readonly SignInManager<User> _signInManager;
-        public AuthController(IIdentityService identityService, IUserService userService, SignInManager<User> signInManager)
+        private readonly IConfiguration _config;
+        public AuthController(IIdentityService identityService, IUserService userService, SignInManager<User> signInManager, IConfiguration configuration)
         {
             _identityService = identityService;
             _userService = userService;
             _signInManager = signInManager;
+            _config = configuration;
         }
         [AllowAnonymous]
         [HttpPost("login")]
@@ -89,7 +91,7 @@ namespace FestCover.Api.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> ExternalLogin(string provider, string returnUrl)
         {
-            var redirectUrl = $"https://localhost:7001/api/auth/external-auth-callback?returnUrl={returnUrl}";
+            var redirectUrl = $"{_config["WebApp:BackendPublicUrl"]}/api/auth/external-auth-callback?returnUrl={returnUrl}";
             var properties = _signInManager.ConfigureExternalAuthenticationProperties(provider, redirectUrl);
             properties.AllowRefresh = true;
             return Challenge(properties, provider);
@@ -105,23 +107,15 @@ namespace FestCover.Api.Controllers
             {
                 HttpContext.Response.Cookies.Append("token", result.Value.AccessToken, new CookieOptions
                 {
-                    Expires = DateTime.Now.AddDays(1),
-                    HttpOnly = true,
-                    IsEssential = true,
-                    Secure = true,
-                    SameSite = SameSiteMode.None,
-                });
-                HttpContext.Response.Cookies.Append("refreshToken", result.Value.RefreshToken, new CookieOptions
-                {
-                    Expires = DateTime.Now.AddDays(7),
-                    HttpOnly = true,
+                    Expires = DateTime.UtcNow.AddMinutes(5),
+                    HttpOnly = false,
                     IsEssential = true,
                     Secure = true,
                     SameSite = SameSiteMode.None,
                 });
             }
 
-            return Redirect($"http://localhost:3000/auth/external-login");
+            return Redirect($"{_config["WebApp:FrontendPublicUrl"]}/auth/external-login-callback");
 
         }
         

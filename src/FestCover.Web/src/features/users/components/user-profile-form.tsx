@@ -58,6 +58,9 @@ export const UserProfileForm = ({
           username: user.username,
           email: user.email,
           filePreview: user.pictureUrl !== null ? user.pictureUrl : "",
+          currentPassword: user.externalAuth ? "null" : "",
+          password: user.externalAuth ? "null" : "",
+          password2: user.externalAuth ? "null" : "",
         }
       : undefined,
     resolver: zodResolver(userProfileSchema),
@@ -138,53 +141,58 @@ export const UserProfileForm = ({
                           control={control}
                           errors={errors}
                           type="text"
-                          disableFields={disableFields}
+                          disableFields={disableFields || user.externalAuth}
                         />
                       </div>
                     </div>
-                    <div className="row mt-3">
-                      <div className="col">
-                        <h3>
-                          <b>Password</b>
-                        </h3>
-                      </div>
-                    </div>
-                    <div className="row mt-2">
-                      <div className="col">
-                        <InputForm
-                          name={"currentPassword"}
-                          label={"Current Password"}
-                          control={control}
-                          errors={errors}
-                          type="password"
-                          disableFields={false}
-                        />
-                      </div>
-                    </div>
-                    <div className="row mt-2">
-                      <div className="col">
-                        <InputForm
-                          name={"password"}
-                          label={"New Password"}
-                          control={control}
-                          errors={errors}
-                          type="password"
-                          disableFields={currentPassword === ""}
-                        />
-                      </div>
-                    </div>
-                    <div className="row mt-2">
-                      <div className="col">
-                        <InputForm
-                          name={"password2"}
-                          label={"Repeat Password"}
-                          control={control}
-                          errors={errors}
-                          type="password"
-                          disableFields={currentPassword === ""}
-                        />
-                      </div>
-                    </div>
+                    {!user.externalAuth && (
+                      <>
+                        {" "}
+                        <div className="row mt-3">
+                          <div className="col">
+                            <h3>
+                              <b>Password</b>
+                            </h3>
+                          </div>
+                        </div>
+                        <div className="row mt-2">
+                          <div className="col">
+                            <InputForm
+                              name={"currentPassword"}
+                              label={"Current Password"}
+                              control={control}
+                              errors={errors}
+                              type="password"
+                              disableFields={false}
+                            />
+                          </div>
+                        </div>
+                        <div className="row mt-2">
+                          <div className="col">
+                            <InputForm
+                              name={"password"}
+                              label={"New Password"}
+                              control={control}
+                              errors={errors}
+                              type="password"
+                              disableFields={currentPassword === ""}
+                            />
+                          </div>
+                        </div>
+                        <div className="row mt-2">
+                          <div className="col">
+                            <InputForm
+                              name={"password2"}
+                              label={"Repeat Password"}
+                              control={control}
+                              errors={errors}
+                              type="password"
+                              disableFields={currentPassword === ""}
+                            />
+                          </div>
+                        </div>
+                      </>
+                    )}
                     <div className="row mt-2">
                       <div className="col d-flex justify-content-center">
                         <button
