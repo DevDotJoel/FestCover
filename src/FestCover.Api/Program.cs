@@ -3,6 +3,7 @@ using FestCover.Infrastructure;
 using FestCover.Application;
 using Microsoft.AspNetCore.Builder;
 using SixLabors.ImageSharp;
+using Microsoft.AspNetCore.HttpOverrides;
 var builder = WebApplication.CreateBuilder(args);
 builder.WebHost.ConfigureKestrel(options => options.Limits.MaxRequestBodySize = 50 * 1024 * 1024);
 // Add services to the container.
@@ -14,10 +15,26 @@ builder.Services.AddInfrastructure(builder.Configuration);
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.Configure<ForwardedHeadersOptions>(options =>
+{
+    options.ForwardedHeaders =
+        ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
+});
 
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
+if (!app.Environment.IsDevelopment())
+{
+    app.UseExceptionHandler("/Error");
+    app.UseForwardedHeaders();
+    app.UseHsts();
+}
+else
+{
+    app.UseDeveloperExceptionPage();
+    app.UseForwardedHeaders();
+}
 if (app.Environment.IsDevelopment())
 {
    
@@ -26,13 +43,6 @@ if (app.Environment.IsDevelopment())
 app.UseSwagger();
 app.UseSwaggerUI();
 
-app.Use((context, next) =>
-{
-    var webAppSettings = builder.Configuration.GetSection("WebApp");
-    context.Request.Host = new HostString(webAppSettings.GetSection("BackendHost").Value);
-    context.Request.Scheme = "https";
-    return next();
-});
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
