@@ -18,24 +18,22 @@ builder.Services.Configure<ForwardedHeadersOptions>(options =>
 builder.Services.AddWebApi();
 builder.Services.AddApplication();
 builder.Services.AddInfrastructure(builder.Configuration);
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 
 var app = builder.Build();
-
+app.Use((context, next) =>
+{
+    context.Request.Scheme = "https";
+    return next(context);
+});
+app.UseForwardedHeaders();
 
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Error");
-    app.UseForwardedHeaders();
     app.UseHsts();
-}
-else
-{
-    app.UseDeveloperExceptionPage();
-    app.UseForwardedHeaders();
 }
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -47,8 +45,6 @@ app.UseSwagger();
 app.UseSwaggerUI();
 
 app.UseHttpsRedirection();
-
-app.UseForwardedHeaders();
 app.UseAuthentication();
 app.UseAuthorization();
 
