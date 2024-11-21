@@ -112,10 +112,6 @@ namespace FestCover.Api.Controllers
                 {
                     //Needed so that domain.com can access  the cookie set by api.domain.com
                     Expires = DateTime.UtcNow.AddMinutes(5),
-                    HttpOnly = false,
-                    IsEssential = true,
-                    Secure = true,
-                    SameSite = SameSiteMode.None,
                     Domain=isProduction? $"{_config["WebApp:FrontendHost"]}":null
                 };
                 HttpContext.Response.Cookies.Append("token", result.Value.AccessToken, options);
