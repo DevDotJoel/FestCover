@@ -18,12 +18,14 @@ namespace FestCover.Api.Controllers
         private readonly IUserService _userService;
         private readonly SignInManager<User> _signInManager;
         private readonly IConfiguration _config;
-        public AuthController(IIdentityService identityService, IUserService userService, SignInManager<User> signInManager, IConfiguration configuration)
+        private readonly IWebHostEnvironment _env;
+        public AuthController(IIdentityService identityService, IUserService userService, SignInManager<User> signInManager, IConfiguration configuration, IWebHostEnvironment env)
         {
             _identityService = identityService;
             _userService = userService;
             _signInManager = signInManager;
             _config = configuration;
+            _env = env;
         }
         [AllowAnonymous]
         [HttpPost("login")]
@@ -105,6 +107,7 @@ namespace FestCover.Api.Controllers
 
             if (!result.IsError)
             {
+                var isProduction = _env.EnvironmentName == "Production";
                 HttpContext.Response.Cookies.Append("token", result.Value.AccessToken, new CookieOptions
                 {
                     Expires = DateTime.UtcNow.AddMinutes(5),
@@ -112,6 +115,7 @@ namespace FestCover.Api.Controllers
                     IsEssential = true,
                     Secure = true,
                     SameSite = SameSiteMode.None,
+                    Domain = isProduction ? $"{_config["WebApp:FrontendHost"]}" : null
                 });
             }
 
