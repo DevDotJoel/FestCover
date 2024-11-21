@@ -116,6 +116,7 @@ namespace FestCover.Api.Controllers
                     IsEssential = true,
                     Secure = true,
                     SameSite = SameSiteMode.None,
+                    Domain=isProduction? $"{_config["WebApp:FrontendHost"]}":null
                 };
                 HttpContext.Response.Cookies.Append("token", result.Value.AccessToken, options);
             }
