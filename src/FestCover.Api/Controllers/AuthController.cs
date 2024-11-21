@@ -108,15 +108,17 @@ namespace FestCover.Api.Controllers
             if (!result.IsError)
             {
                 var isProduction = _env.EnvironmentName == "Production";
-                HttpContext.Response.Cookies.Append("token", result.Value.AccessToken, new CookieOptions
+                var options = new CookieOptions()
                 {
+                    //Needed so that domain.com can access  the cookie set by api.domain.com
+                    Domain = isProduction ? $"{_config["WebApp:FrontendHost"]}" : null,
                     Expires = DateTime.UtcNow.AddMinutes(5),
-                    HttpOnly = false,
+                    SameSite=SameSiteMode.None,
+                    HttpOnly=false,
                     IsEssential = true,
                     Secure = true,
-                    SameSite = SameSiteMode.None,
-                    Domain = isProduction ? $"{_config["WebApp:FrontendHost"]}" : null
-                });
+                };
+                HttpContext.Response.Cookies.Append("token", result.Value.AccessToken, options);
             }
 
             return Redirect($"{_config["WebApp:FrontendPublicUrl"]}/auth/external-login-callback");
