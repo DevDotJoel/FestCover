@@ -1,11 +1,12 @@
 import React, { useEffect } from "react";
-import Cookies from "js-cookie";
 import { useNavigate } from "react-router";
+import { useSearchParams } from "react-router-dom";
 export const ExternalLoginPage = () => {
   const navigate = useNavigate();
-  const accessToken = Cookies.get("token");
+  const [searchParams] = useSearchParams();
 
   useEffect(() => {
+    const accessToken = searchParams.get("token");
     console.log(accessToken);
     if (accessToken) {
       localStorage.setItem("accessToken", accessToken);

@@ -21,12 +21,12 @@ var app = builder.Build();
 if (!app.Environment.IsDevelopment())
 {
     app.UseHsts();
-    app.Use((context, next) =>
-    {
-        context.Request.Host = new HostString(".festcoverapi.festcover.com");
-        context.Request.Scheme = "https";
-        return next(context);
-    });
+    //app.Use((context, next) =>
+    //{
+    //    context.Request.Host = new HostString(".festcoverapi.festcover.com");
+    //    context.Request.Scheme = "https";
+    //    return next(context);
+    //});
 }
 
 // Configure the HTTP request pipeline.

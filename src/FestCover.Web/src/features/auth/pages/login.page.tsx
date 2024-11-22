@@ -41,7 +41,7 @@ export const LoginPage = () => {
                   </div>
                 </div>
                 <hr />
-                {/* <div className="row mt-1">
+                <div className="row mt-1">
                   <div className="col ">
                     <form
                       method="POST"
@@ -52,7 +52,7 @@ export const LoginPage = () => {
                       </button>
                     </form>
                   </div>
-                </div> */}
+                </div>
                 <div className="row mt-1">
                   <div className="col ">
                     <div>

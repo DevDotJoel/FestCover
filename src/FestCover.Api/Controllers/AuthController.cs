@@ -104,24 +104,8 @@ namespace FestCover.Api.Controllers
         public async Task<IActionResult> ExternalLoginCallback()
         {
             var result = await _identityService.ExternalLoginAsycn();
-
-            if (!result.IsError)
-            {
-                var isProduction = _env.EnvironmentName == "Production";
-                var options = new CookieOptions()
-                {
-                    //Needed so that domain.com can access  the cookie set by api.domain.com
-                    Expires = DateTime.UtcNow.AddMinutes(5),
-                    Domain=isProduction? ".festcover.com" : null,
-                    IsEssential = true,
-                    Secure = true,
-                    SameSite = SameSiteMode.None,
-                    HttpOnly=false
-                };
-                HttpContext.Response.Cookies.Append("token", result.Value.AccessToken, options);
-            }
-
-            return Redirect($"{_config["WebApp:FrontendPublicUrl"]}/auth/external-login-callback");
+            return result.Match(_ => Redirect($"{_config["WebApp:FrontendPublicUrl"]}/auth/external-login-callback?token={result.Value.AccessToken}"), Problem);
+        
 
         }
         
