@@ -7,6 +7,8 @@ export interface AlbumModel {
   isPublic: boolean;
   allowPublicUpload: boolean;
   reviewUploadedContent: boolean;
+  totalContent:number,
+  createdDate:string
 }
 export interface AlbumContentPendingModel {
   id: string;

@@ -53,7 +53,6 @@ export const LoginPage = () => {
                     </form>
                   </div>
                 </div> */}
-                <hr />
                 <div className="row mt-1">
                   <div className="col ">
                     <div>

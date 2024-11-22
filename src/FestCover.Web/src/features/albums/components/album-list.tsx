@@ -39,9 +39,14 @@ export const AlbumList = ({ albums, edit }: AlbumListProps) => {
                 />
                 <div className="card-body">
                   <h5 className="card-title">{album.name}</h5>
-                  <h6 className="card-subtitle mb-2 text-muted">
-                    {album.description}
-                  </h6>
+                  <div className="row mt-3">
+                    <div className="col text-muted">{album.createdDate}</div>
+                    <div className="col d-flex justify-content-end text-muted">
+                      Photos: {album.totalContent}
+                    </div>
+                  </div>
+                  <div className="row mt-3"></div>
+
                   <div className="row">
                     <div className="col d-flex justify-content-end ">
                       <button
