@@ -3,7 +3,6 @@ import { useLogin } from "../../../libs/auth";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { AccessCodeModal } from "../components/access-code-modal";
-import { toast } from "react-toastify";
 import { API_URL } from "../../../config/env";
 
 export const LoginPage = () => {

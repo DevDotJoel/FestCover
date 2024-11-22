@@ -7,7 +7,6 @@ export const ExternalLoginPage = () => {
 
   useEffect(() => {
     const accessToken = searchParams.get("token");
-    console.log(accessToken);
     if (accessToken) {
       localStorage.setItem("accessToken", accessToken);
       navigate("/albums");
