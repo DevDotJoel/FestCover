@@ -13,7 +13,7 @@ export const LoginPage = () => {
     setShow(false);
   };
   const handleShow = () => setShow(true);
-  async function onSubmit(data: any) {
+  async function onSubmit(data) {
     await login.mutateAsync(data);
     navigate("/albums");
   }

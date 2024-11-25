@@ -79,7 +79,18 @@ input:-webkit-autofill {
   max-height: 500px;
   height: 100%;
 }
-.carousel-inner div {
-  height: 400px;
+
+.carousel-inner {
+  aspect-ratio: 1 / 1 !important; /* Ensures the carousel maintains a square aspect ratio */
+  overflow: hidden !important; /* Hides overflow for non-square images */
+}
+
+.carousel-item img {
+  width: 100% !important; /* Image stretches to fill the width */
+  height: 100% !important; /* Image stretches to fill the height */
+  object-fit: cover !important; /* Ensures images are cropped and maintain aspect ratio */
+}
+.img-cover{
   object-fit: cover;
+  object-position: center;
 }
