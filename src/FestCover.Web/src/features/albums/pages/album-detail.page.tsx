@@ -3,6 +3,8 @@ import { useParams } from "react-router";
 import { useAlbumContents } from "../api/get-Album-Contents";
 import { AlbumContentList } from "../components/album-content-list";
 import { AlbumContentModal } from "../components/album-content-modal";
+import JSZip from "jszip";
+import { saveAs } from "file-saver";
 export const AlbumDetailPage = () => {
   const { id } = useParams();
   const albumContentsQuery = useAlbumContents({
@@ -214,6 +216,19 @@ export const AlbumDetailPage = () => {
     return null;
   }
 
+  async function downloadImages() {
+    const zip = new JSZip();
+    for (const [index, albumContent] of albumContentsQuery.data.entries()) {
+      const response = await fetch(albumContent.url);
+      const blob = await response.blob();
+      zip.file(albumContent.url.split("/").pop(), blob);
+    }
+
+    // Generate zip and save
+    zip.generateAsync({ type: "blob" }).then((content) => {
+      saveAs(content, "images.zip");
+    });
+  }
   return (
     <>
       <div className="container">
@@ -235,6 +250,18 @@ export const AlbumDetailPage = () => {
                         className="btn btn-blue rounded-5"
                       >
                         <i className="bi bi-plus-lg"></i> Content
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                <div className="row">
+                  <div className="col d-flex justify-content-end">
+                    <div>
+                      <button
+                        onClick={downloadImages}
+                        className="btn btn-blue rounded-5"
+                      >
+                        <i className="bi bi-download"></i>
                       </button>
                     </div>
                   </div>
