@@ -22,7 +22,7 @@ export const LoginPage = () => {
       <div className="d-flex justify-content-center align-items-center mt-5">
         <div className="row ">
           <div className="col ">
-            <div className="card rounded-3 border-0">
+            <div className="card rounded-3 border-0 shadow-sm">
               <div className="card-body  ">
                 <div className="row ">
                   <div className="col d-flex justify-content-center">
@@ -39,20 +39,8 @@ export const LoginPage = () => {
                     />
                   </div>
                 </div>
-                <hr />
-                <div className="row mt-1">
-                  <div className="col ">
-                    <form
-                      method="POST"
-                      action={`${API_URL}api/auth/external-login?provider=Google&returnUrl=/home`}
-                    >
-                      <button className="btn btn-danger rounded-5 w-100">
-                        <i className="bi bi-google"></i> Google
-                      </button>
-                    </form>
-                  </div>
-                </div>
-                <div className="row mt-1">
+
+                <div className="row mt-3">
                   <div className="col ">
                     <div>
                       <button
@@ -63,6 +51,19 @@ export const LoginPage = () => {
                         Enter Code
                       </button>
                     </div>
+                  </div>
+                </div>
+                <hr />
+                <div className="row mt-1">
+                  <div className="col d-flex justify-content-center ">
+                    <form
+                      method="POST"
+                      action={`${API_URL}api/auth/external-login?provider=Google&returnUrl=/home`}
+                    >
+                      <button className="btn btn-danger rounded-5">
+                        <i className="bi bi-google"></i>
+                      </button>
+                    </form>
                   </div>
                 </div>
               </div>

@@ -59,7 +59,7 @@ export const LoginForm = ({ onSubmit, disableFields }: LoginFormProps) => {
                 type="submit"
                 className="btn btn-blue rounded-5 w-100"
               >
-                Log In
+                Sign In
               </button>
             </div>
           </div>
