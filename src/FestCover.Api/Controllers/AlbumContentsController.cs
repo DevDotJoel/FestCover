@@ -3,6 +3,7 @@ using FestCover.Application.AlbumContents.Commands.CreateAlbumContent;
 using FestCover.Application.AlbumContents.Commands.CreatetPublicAlbumContent;
 using FestCover.Application.AlbumContents.Commands.DeleteAlbumContent;
 using FestCover.Application.AlbumContents.Commands.RejectAlbumContent;
+using FestCover.Application.AlbumContents.Queries.GetAlbumContentsDownloadUrl;
 using FestCover.Application.AlbumContents.Queries.ListAlbumContents;
 using FestCover.Application.AlbumContents.Queries.ListPendingAlbumContents;
 using FestCover.Contracts.Albums;
@@ -63,6 +64,13 @@ namespace FestCover.Api.Controllers
         public async Task<IActionResult> ListPendingAlbumContents()
         {
             var query = new ListPendingAlbumContenstQuery();
+            var result = await _mediator.Send(query);
+            return result.Match(Ok, Problem);
+        }
+        [HttpGet("Download/{albumId}")]
+        public async Task<IActionResult> GetAlbumContentsDownloadUrl(Guid albumId)
+        {
+            var query = new GetAlbumContentsDownloadUrlQuery(albumId);
             var result = await _mediator.Send(query);
             return result.Match(Ok, Problem);
         }

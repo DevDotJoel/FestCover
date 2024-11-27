@@ -58,6 +58,9 @@ namespace AfterLife.Infrastructure.Persistence.Identity
             user.RefreshTokenExpiryTime = DateTime.Now.AddDays(7);
             user.LastLoginTime = DateTime.Now;
             await _userManager.UpdateAsync(user);
+
+            //var spaceUsed = await _storageService.GetFolderSizeAsync($"{user.Id}/Albums/");
+            //var totalSize = (spaceUsed. Value/(1024 * 1024));
             return tokenResult;
         }
 

@@ -3,12 +3,18 @@ import { useParams } from "react-router";
 import { useAlbumContents } from "../api/get-Album-Contents";
 import { AlbumContentList } from "../components/album-content-list";
 import { AlbumContentModal } from "../components/album-content-modal";
-import JSZip from "jszip";
 import { saveAs } from "file-saver";
+import { useAlbumContentDownloadUrl } from "../api/get-album-download-url";
 export const AlbumDetailPage = () => {
   const { id } = useParams();
   const albumContentsQuery = useAlbumContents({
     albumId: id ?? "",
+  });
+  const albumDownloadUrlQuery = useAlbumContentDownloadUrl({
+    albumId: id,
+    queryConfig: {
+      enabled: false,
+    },
   });
   const [show, setShow] = useState(false);
   const handleClose = () => {
@@ -217,16 +223,11 @@ export const AlbumDetailPage = () => {
   }
 
   async function downloadImages() {
-    const zip = new JSZip();
-    for (const [index, albumContent] of albumContentsQuery.data.entries()) {
-      const response = await fetch(albumContent.url);
-      const blob = await response.blob();
-      zip.file(albumContent.url.split("/").pop(), blob);
-    }
-
-    // Generate zip and save
-    zip.generateAsync({ type: "blob" }).then((content) => {
-      saveAs(content, "images.zip");
+    const { data } = await albumDownloadUrlQuery.refetch();
+    fetch(data).then((response) => {
+      response.blob().then((blob) => {
+        saveAs(blob, crypto.randomUUID() + ".zip");
+      });
     });
   }
   return (
@@ -246,6 +247,7 @@ export const AlbumDetailPage = () => {
                   <div className="col d-flex justify-content-end mt-2">
                     <div>
                       <button
+                        disabled={albumDownloadUrlQuery.isFetching}
                         onClick={handleShow}
                         className="btn btn-blue rounded-5"
                       >

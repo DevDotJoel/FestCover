@@ -1,10 +1,13 @@
 ﻿
 using Azure;
+using Azure.Storage;
 using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
+using Azure.Storage.Sas;
 using ErrorOr;
 using FestCover.Application.Common.Contracts;
 using System.IO;
+using System.IO.Compression;
 
 namespace FestCover.Infrastructure.Storage
 {
@@ -119,6 +122,60 @@ namespace FestCover.Infrastructure.Storage
             }
          
 
+        }
+
+        public async Task<ErrorOr<long>> GetFolderSizeAsync(string path)
+        {
+            try
+            {
+                var containerClient = _blobServiceClient.GetBlobContainerClient(container);
+                if (await containerClient.ExistsAsync())
+                {
+                    long totalSize = 0;
+                    await foreach (BlobItem blobItem in containerClient.GetBlobsAsync(prefix: path))
+                    {
+                        // Get blob properties (size)
+                        BlobClient blobClient = containerClient.GetBlobClient(blobItem.Name);
+                        BlobProperties properties = await blobClient.GetPropertiesAsync();
+                        totalSize += properties.ContentLength;
+                    }
+
+                    return totalSize;
+
+                }
+                else
+                {
+                    return Error.NotFound(description: "Container not found");
+                }
+            }
+            catch (Exception ex)
+            {
+
+                return Error.Failure(description: ex.Message);
+            }
+        }
+
+        public async Task<ErrorOr<string>> GetDownloadImagesUrlAsync( List<string> fileNames, string pathToDownload)
+        {
+            var containerClient = _blobServiceClient.GetBlobContainerClient(container);
+            using MemoryStream zipStream = new MemoryStream();
+            using (ZipArchive zip = new ZipArchive(zipStream, ZipArchiveMode.Create, true))
+            {
+                foreach (var fileName in fileNames)
+                {
+                    BlobClient blobClient = containerClient.GetBlobClient(fileName);
+                    var blobDownloadInfo = await blobClient.DownloadAsync();
+
+                    ZipArchiveEntry zipEntry = zip.CreateEntry(fileName);
+
+                    using Stream entryStream = zipEntry.Open();
+                    await blobDownloadInfo.Value.Content.CopyToAsync(entryStream);
+                }
+            }
+            BlobClient zipBlobClient = containerClient.GetBlobClient(pathToDownload+".zip");
+            zipStream.Position = 0;
+            await zipBlobClient.UploadAsync(zipStream);
+            return zipBlobClient.Uri.ToString();
         }
     }
 }
