@@ -22,7 +22,8 @@ export const updateAlbum = (
     updateAlbum.reviewUploadedContent ? "1" : "0"
   );
   formData.append("albumImage", updateAlbum.albumImage);
-
+  formData.append("backgroundUrl", updateAlbum.backgroundUrl);
+  formData.append("albumBackgroundImage", updateAlbum.albumBackgroundImage);
   return toast.promise(api.put(`/api/albums`, formData), {
     pending: "Updating Album ",
     success: "Album updated with success",

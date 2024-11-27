@@ -13,6 +13,7 @@ export const createAlbum = (
   formData.append("name", createAlbum.name);
   formData.append("description", createAlbum.description);
   formData.append("albumImage", createAlbum.albumImage);
+  formData.append("albumBackgroundImage", createAlbum.albumBackgroundImage);
   formData.append(
     "isPublic",
     createAlbum.isPublic ? "1" : "0"

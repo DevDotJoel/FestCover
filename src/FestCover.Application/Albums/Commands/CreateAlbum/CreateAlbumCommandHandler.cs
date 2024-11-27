@@ -51,8 +51,18 @@ namespace FestCover.Application.Albums.Commands.CreateAlbum
                 return Error.Conflict(description: "Content not valid");
             }
             var album = Album.Create(request.Name, request.Description,request.IsPublic ,request.AllowPublicUpload,request.ReviewUploadedContent);            
-            var imageUrl = await _storageService.AddFile(request.AlbumImage.ContentType, $"{userId}/Albums/{album.Id.Value}/Profile/{Guid.NewGuid() + request.AlbumImage.Extension}", request.AlbumImage.File);       
+            var imageUrl = await _storageService.AddFile(request.AlbumImage.ContentType, $"{userId}/Albums/{album.Id.Value}/Profile/{Guid.NewGuid() + request.AlbumImage.Extension}", request.AlbumImage.File);     
             album.SetUrl(imageUrl.Value);
+            if(request.AlbumBackgroundImage != null)
+            {
+                var isBackgroundContentValid = await _contentValidator.IsValidContent(request.AlbumBackgroundImage.File);
+                if (!isBackgroundContentValid)
+                {
+                    return Error.Conflict(description: "Content not valid");
+                }
+                var backgroundUrl = await _storageService.AddFile(request.AlbumBackgroundImage.ContentType, $"{userId}/Albums/{album.Id.Value}/Profile/Background/{Guid.NewGuid() + request.AlbumBackgroundImage.Extension}", request.AlbumBackgroundImage.File);
+                album.SetBackgroundUrl(backgroundUrl.Value);
+            }
             await _albumRepository.AddAsync(album,cancellationToken);
             return _mapper.Map<AlbumModel>(album);
         }

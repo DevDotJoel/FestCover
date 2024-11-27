@@ -22,7 +22,11 @@ export const AlbumModal = ({ show, album, handleClose }: AlbumModalProps) => {
       updateAlbum.isPublic = data.isPublic;
       updateAlbum.allowPublicUpload = data.allowPublicUpload;
       updateAlbum.reviewUploadedContent = data.reviewUploadedContent;
-      console.log(updateAlbum);
+      updateAlbum.albumBackgroundImage = data.albumBackgroundImage;
+      updateAlbum.backgroundUrl =
+        data.albumBackgroundImage != null || data.albumBackgroundPreview === ""
+          ? ""
+          : data.albumBackgroundPreview;
       await updateAlbumMutation.mutateAsync(updateAlbum);
     } else {
       const createAlbum = {} as CreateAlbumModel;
@@ -32,6 +36,7 @@ export const AlbumModal = ({ show, album, handleClose }: AlbumModalProps) => {
       createAlbum.isPublic = data.isPublic;
       createAlbum.allowPublicUpload = data.allowPublicUpload;
       createAlbum.reviewUploadedContent = data.reviewUploadedContent;
+      createAlbum.albumBackgroundImage = data.albumBackgroundImage;
       await createAlbumMutation.mutateAsync(createAlbum);
     }
 

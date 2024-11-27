@@ -15,6 +15,8 @@ namespace FestCover.Contracts.Albums
      string IsPublic,
      string AllowPublicUpload,
      string ReviewUploadedContent,
-     IFormFile? AlbumImage=null
+     string? BackgroundUrl = null,
+     IFormFile? AlbumImage=null,
+     IFormFile? AlbumBackgroundImage = null
     );
 }

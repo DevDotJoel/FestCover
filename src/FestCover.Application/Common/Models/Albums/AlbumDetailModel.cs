@@ -11,7 +11,8 @@ namespace FestCover.Application.Common.Models.Albums
     string Name,
     string Url,
     bool AllowPublicUpload,
-    List<AlbumContentModel> Contents
+    List<AlbumContentModel> Contents,
+    string? BackgroundUrl=null
 );
 
 }

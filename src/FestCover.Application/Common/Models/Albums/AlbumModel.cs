@@ -17,6 +17,7 @@ namespace FestCover.Application.Common.Models.Albums
          bool ReviewUploadedContent,
          string Url,
          int TotalContent,
-         string CreatedDate
+         string CreatedDate,
+         string? BackgroundUrl = null
     );
 }

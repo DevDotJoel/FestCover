@@ -7,8 +7,9 @@ export interface AlbumModel {
   isPublic: boolean;
   allowPublicUpload: boolean;
   reviewUploadedContent: boolean;
-  totalContent:number,
-  createdDate:string
+  totalContent: number;
+  createdDate: string;
+  backgroundUrl?: string;
 }
 export interface AlbumContentPendingModel {
   id: string;
@@ -31,6 +32,7 @@ export interface CreateAlbumModel {
   name: string;
   description: string;
   albumImage: File;
+  albumBackgroundImage?: File;
   isPublic: boolean;
   allowPublicUpload: boolean;
   public: boolean;
@@ -41,9 +43,11 @@ export interface UpdateAlbumModel {
   name: string;
   description: string;
   albumImage?: File;
+  albumBackgroundImage?: File;
   isPublic: boolean;
   allowPublicUpload: boolean;
   reviewUploadedContent: boolean;
+  backgroundUrl: string;
 }
 export interface CreateAlbumContentModel {
   albumId: string;
@@ -56,6 +60,7 @@ export interface AlbumDetailModel {
   url: string;
   allowPublicUpload: boolean;
   contents: AlbumContentModel[];
+  backgroundUrl?: string;
 }
 export interface CreateAlbumContentPublicModel {
   email: string;

@@ -63,6 +63,30 @@ namespace FestCover.Application.Albums.Commands.UpdateAlbum
 
                 album.SetUrl(imageUrl.Value);
             }
+
+            if(string.IsNullOrEmpty(request.BackgroundUrl) && album.BackgroundUrl!=null)
+            {
+
+                var deletePictureResult = await _storageService.RemoveFile(album.UserId.Value.ToString() + "/" + album.BackgroundUrl.Substring(album.BackgroundUrl.LastIndexOf("Albums")));
+
+                if (deletePictureResult.IsError)
+                {
+                    return Error.Conflict(description: "An error occurred while updating the album background image");
+                }
+                album.SetBackgroundUrl(null);
+            }
+            if (request.AlbumBackgroundImage != null)
+            {
+                var isContentValid = await _contentValidator.IsValidContent(request.AlbumBackgroundImage.File);
+                if (!isContentValid)
+                {
+                    return Error.Conflict(description: "Content not valid");
+                }
+
+                var backgroundUrl = await _storageService.AddFile(request.AlbumBackgroundImage.ContentType, $"{album.UserId.Value}/Albums/{album.Id.Value}/Profile/Background/{Guid.NewGuid() + request.AlbumBackgroundImage.Extension}", request.AlbumBackgroundImage.File);
+
+                album.SetBackgroundUrl(backgroundUrl.Value);
+            }
             await _albumRepository.UpdateAsync(album,cancellationToken);
             return _mapper.Map<AlbumModel>(album);
         }

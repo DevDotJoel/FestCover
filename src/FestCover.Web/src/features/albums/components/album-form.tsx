@@ -12,8 +12,10 @@ const albumSchema = z.object({
   description: z
     .string()
     .min(5, { message: "The album description is required" }),
-  albumImage: z.instanceof(File),
+  albumImage: z.instanceof(File, { message: " Album cover is required" }),
+  albumBackgroundImage: z.instanceof(File).optional(),
   albumPreview: z.string(),
+  albumBackgroundPreview: z.string().optional(),
   allowPublicUpload: z.boolean({
     required_error: "Allow Public Upload is required",
   }),
@@ -50,17 +52,33 @@ export const AlbumForm = ({ submit, album, disableFields }: AlbumFormsType) => {
           name: album.name,
           description: album.description,
           albumPreview: album.url,
+          albumBackgroundPreview: album.backgroundUrl,
           isPublic: album.isPublic,
           allowPublicUpload: album.allowPublicUpload,
           reviewUploadedContent: album.reviewUploadedContent,
         }
-      : undefined,
+      : {
+          albumImage: null,
+          albumBackgroundImage: null,
+        },
     resolver: zodResolver(currentSchema),
   });
 
   function getImage(files) {
     setValue("albumPreview", files[0].filePreviewLink);
     setValue("albumImage", files[0].file);
+  }
+  function getAlbumBackgroundImage(files) {
+    setValue("albumBackgroundPreview", files[0].filePreviewLink);
+    setValue("albumBackgroundImage", files[0].file);
+  }
+  function removeImage() {
+    setValue("albumPreview", "");
+    setValue("albumImage", undefined);
+  }
+  function removeBackgroundImage() {
+    setValue("albumBackgroundPreview", "");
+    setValue("albumBackgroundImage", undefined);
   }
   return (
     <>
@@ -69,26 +87,80 @@ export const AlbumForm = ({ submit, album, disableFields }: AlbumFormsType) => {
           <form id="album-form" onSubmit={handleSubmit(submit)}>
             <div className="card rounded-3 border-0 ">
               <div className="card-body scrollable-div">
-                <div className="row mt-2 ">
-                  <div className="col d-flex justify-content-center">
+                <div className="row mt-2 d-flex justify-content-center ">
+                  <div className="col-5 ">
                     <img
-                      src={
-                        watch("albumPreview") === ""
-                          ? "/blankprofile.png"
-                          : watch("albumPreview")
-                      }
-                      className="img-responsive"
+                      src={watch("albumPreview")}
+                      className="img-fluid"
                       width={200}
                     ></img>
                   </div>
+                  {watch("albumPreview") != "" &&
+                    watch("albumPreview") != null && (
+                      <div className="col-1 ps-0">
+                        <button
+                          type="button"
+                          onClick={removeImage}
+                          className="btn btn-sm btn-danger rounded-5"
+                        >
+                          <i className="bi bi-x-lg"></i>
+                        </button>
+                      </div>
+                    )}
                 </div>
+                {errors?.albumImage && (
+                  <div className="row d-flex justify-content-center ">
+                    <div className="col-8 ms-5">
+                      <span className="invalid-feedback d-block">
+                        {errors?.albumImage.message}
+                      </span>
+                    </div>
+                  </div>
+                )}
                 <div className="row mt-3">
                   <div className="col d-flex justify-content-center">
                     <div>
                       <FileImporter
                         allowedExtensions={"image/png, image/jpeg"}
                         output={getImage}
-                        message={" Select Image"}
+                        message={" Select Album Cover"}
+                        icon="bi bi-card-image"
+                        allowMultiple={false}
+                        disableButton={disableFields}
+                        maxLength={1}
+                      />
+                    </div>
+                  </div>
+                </div>
+                <hr />
+                <div className="row mt-2 d-flex justify-content-center ">
+                  <div className="col-5">
+                    <img
+                      src={watch("albumBackgroundPreview")}
+                      className="img-fluid"
+                      width={200}
+                    ></img>
+                  </div>
+                  {watch("albumBackgroundPreview") != "" &&
+                    watch("albumBackgroundPreview") != null && (
+                      <div className="col-1 ps-0 ">
+                        <button
+                          onClick={removeBackgroundImage}
+                          type="button"
+                          className="btn btn-sm btn-danger rounded-5"
+                        >
+                          <i className="bi bi-x-lg"></i>
+                        </button>
+                      </div>
+                    )}
+                </div>
+                <div className="row mt-3">
+                  <div className="col d-flex justify-content-center">
+                    <div>
+                      <FileImporter
+                        allowedExtensions={"image/png, image/jpeg"}
+                        output={getAlbumBackgroundImage}
+                        message={" Select Album Background "}
                         icon="bi bi-card-image"
                         allowMultiple={false}
                         disableButton={disableFields}

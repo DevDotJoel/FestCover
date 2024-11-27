@@ -21,6 +21,7 @@ namespace FestCover.Domain.Albums
         public string Name { get; private set; }
         public string Description { get; private set; }
         public string Url { get; private set; }
+        public string? BackgroundUrl { get; private set; }
         public string Key { get; set; }
         public bool AllowPublicUpload { get; private set; }
         public bool ReviewUploadedContent { get; private set; }
@@ -76,6 +77,10 @@ namespace FestCover.Domain.Albums
         public void SetUserId(UserId userId)
         {
             UserId= userId; 
+        }
+        public void SetBackgroundUrl(string? backgroundUrl=null)
+        {
+            BackgroundUrl = backgroundUrl;           
         }
 
         public ErrorOr<Success> Remove()

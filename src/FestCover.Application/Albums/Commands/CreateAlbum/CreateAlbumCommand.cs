@@ -16,8 +16,9 @@ namespace FestCover.Application.Albums.Commands.CreateAlbum
      bool IsPublic,
      bool AllowPublicUpload,
      bool ReviewUploadedContent,
-     AlbumImageCommand AlbumImage
-    ):IRequest<ErrorOr<AlbumModel>>;
+     AlbumImageCommand AlbumImage,
+     AlbumImageCommand? AlbumBackgroundImage=null
+    ) :IRequest<ErrorOr<AlbumModel>>;
 
     public record AlbumImageCommand(
      byte[] File,
