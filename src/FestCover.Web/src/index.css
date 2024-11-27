@@ -90,7 +90,17 @@ input:-webkit-autofill {
   height: 100% !important; /* Image stretches to fill the height */
   object-fit: cover !important; /* Ensures images are cropped and maintain aspect ratio */
 }
-.img-cover{
+.img-cover {
   object-fit: cover;
   object-position: center;
+}
+
+.profile-album-card {
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  height: 300px;
+  border-radius: 10px;
+  position: relative;
+  color: white;
 }

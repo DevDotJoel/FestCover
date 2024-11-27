@@ -214,35 +214,27 @@ export const AlbumPublicPage = () => {
   if (publicAlbumQuery.error || !publicAlbumQuery.data) {
     return <Navigate replace to="/auth/login" />;
   }
-  const cardStyle =
-    publicAlbumQuery.data.backgroundUrl != null
-      ? {
-          backgroundImage: `url(${publicAlbumQuery.data.backgroundUrl})`,
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          backgroundRepeat: "no-repeat",
-          height: "300px",
-          borderRadius: "10px",
-          position: "relative",
-          color: "white",
-        }
-      : null;
-  const overlayStyle = {
-    position: "absolute",
-    top: 0,
-    left: 0,
-    width: "100%",
-    height: "100%",
-    background: "rgba(0, 0, 0, 0.5)", // Semi-transparent dark overlay
-    borderRadius: "10px",
-    zIndex: 1, // Makes sure it's above the background image
-  };
+
   return (
     <>
       <div className="container-fluid">
         <div className="row mt-3  ">
           <div className="col ">
-            <div style={cardStyle} className="card rounded-4 border-0">
+            <div
+              style={{
+                backgroundImage: `url(${
+                  publicAlbumQuery.data.backgroundUrl ?? null
+                })`,
+                backgroundSize: "cover",
+                backgroundPosition: "center",
+                backgroundRepeat: "no-repeat",
+                height: "300px",
+                borderRadius: "10px",
+                position: "relative",
+                color: "white",
+              }}
+              className="card rounded-4 border-0"
+            >
               <div className="card-body">
                 <div className="row d-flex justify-content-center">
                   <div className="col-4 col-sm-2  ">
