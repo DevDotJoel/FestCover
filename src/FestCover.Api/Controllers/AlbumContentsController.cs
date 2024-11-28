@@ -72,7 +72,7 @@ namespace FestCover.Api.Controllers
         {
             var query = new GetAlbumContentsDownloadUrlQuery(albumId);
             var result = await _mediator.Send(query);
-            return result.Match(Ok, Problem);
+            return result.Match(a=>File(a.File, a.FileType, a.Filename), Problem);
         }
         [AllowAnonymous]
         [HttpPost("Public/Upload")]

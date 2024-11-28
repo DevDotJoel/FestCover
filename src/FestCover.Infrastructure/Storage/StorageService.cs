@@ -155,10 +155,11 @@ namespace FestCover.Infrastructure.Storage
             }
         }
 
-        public async Task<ErrorOr<string>> GetDownloadImagesUrlAsync( List<string> fileNames, string pathToDownload)
+        public async Task<ErrorOr<MemoryStream>> GetDownloadImageAsync( List<string> fileNames)
         {
             var containerClient = _blobServiceClient.GetBlobContainerClient(container);
-            using MemoryStream zipStream = new MemoryStream();
+            MemoryStream zipStream = new MemoryStream();
+
             using (ZipArchive zip = new ZipArchive(zipStream, ZipArchiveMode.Create, true))
             {
                 foreach (var fileName in fileNames)
@@ -172,10 +173,12 @@ namespace FestCover.Infrastructure.Storage
                     await blobDownloadInfo.Value.Content.CopyToAsync(entryStream);
                 }
             }
-            BlobClient zipBlobClient = containerClient.GetBlobClient(pathToDownload+".zip");
+
+            // Reset the stream position to the beginning before returning it
             zipStream.Position = 0;
-            await zipBlobClient.UploadAsync(zipStream);
-            return zipBlobClient.Uri.ToString();
+
+            return zipStream;
+
         }
     }
 }

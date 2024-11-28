@@ -8,6 +8,6 @@ namespace FestCover.Application.Common.Contracts
         Task<ErrorOr<Success>> RemoveFile(string path);
         Task<ErrorOr<Success>> RemoveContainer(string containerPath);
         Task<ErrorOr<long>> GetFolderSizeAsync(string path);
-        Task<ErrorOr<string>> GetDownloadImagesUrlAsync(List<string> fileNames,string pathToDownload);
+        Task<ErrorOr<MemoryStream>> GetDownloadImageAsync(List<string> fileNames);
     }
 }

@@ -93,6 +93,7 @@ export const AlbumForm = ({ submit, album, disableFields }: AlbumFormsType) => {
                       src={watch("albumPreview")}
                       className="img-fluid"
                       width={200}
+                      height={200}
                     ></img>
                   </div>
                   {watch("albumPreview") != "" &&

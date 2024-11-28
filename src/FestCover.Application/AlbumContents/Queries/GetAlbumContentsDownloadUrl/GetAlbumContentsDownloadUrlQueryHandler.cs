@@ -12,9 +12,10 @@ using FestCover.Domain.Common.DomainErrors;
 using FestCover.Application.Common.Contracts;
 using static System.Net.Mime.MediaTypeNames;
 using FestCover.Domain.Common;
+using FestCover.Application.Common.Models.Files;
 namespace FestCover.Application.AlbumContents.Queries.GetAlbumContentsDownloadUrl
 {
-    public class GetAlbumContentsDownloadUrlQueryHandler : IRequestHandler<GetAlbumContentsDownloadUrlQuery,ErrorOr<string>>
+    public class GetAlbumContentsDownloadUrlQueryHandler : IRequestHandler<GetAlbumContentsDownloadUrlQuery,ErrorOr<FileDownloadModel>>
     {
         private readonly IAlbumRepository _albumRepository;
         private readonly IAlbumContentRepository _albumContentRepository;
@@ -29,7 +30,7 @@ namespace FestCover.Application.AlbumContents.Queries.GetAlbumContentsDownloadUr
             _userService = userService;
 
         }
-        public async Task<ErrorOr<string>> Handle(GetAlbumContentsDownloadUrlQuery request, CancellationToken cancellationToken)
+        public async Task<ErrorOr<FileDownloadModel>> Handle(GetAlbumContentsDownloadUrlQuery request, CancellationToken cancellationToken)
         {
             var listAlbumIdResult = AlbumId.Create(request.AlbumId);
 
@@ -51,8 +52,9 @@ namespace FestCover.Application.AlbumContents.Queries.GetAlbumContentsDownloadUr
             });
 
             var fileName = Guid.NewGuid().ToString();
-            var downloadFilesUrl = await _storageService.GetDownloadImagesUrlAsync(fileNames,$"{album.UserId.Value.ToString()}/Downloads/{fileName}");
-            return downloadFilesUrl;
+            var filesDownloaded = await _storageService.GetDownloadImageAsync(fileNames);
+
+            return new FileDownloadModel(Guid.NewGuid().ToString()+".zip", "application/zip", filesDownloaded.Value);
 
         }
     }

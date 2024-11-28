@@ -224,11 +224,7 @@ export const AlbumDetailPage = () => {
 
   async function downloadImages() {
     const { data } = await albumDownloadUrlQuery.refetch();
-    fetch(data).then((response) => {
-      response.blob().then((blob) => {
-        saveAs(blob, crypto.randomUUID() + ".zip");
-      });
-    });
+    saveAs(data, crypto.randomUUID() + ".zip");
   }
   return (
     <>
