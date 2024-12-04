@@ -74,6 +74,19 @@ namespace FestCover.Domain.Albums
             
         }
 
+        public ErrorOr<Success> RemoveAlbumContent(AlbumContentId albumContentId)
+        {
+            var contentId = _albumContentIds.Where(a => a ==albumContentId).FirstOrDefault();
+            if(contentId is null)
+            {
+                return Error.NotFound(description: "Album Content Not Found");
+            }
+            else
+            {
+                _albumContentIds.Remove(contentId);
+                return Result.Success;
+            }
+        }
         public void SetUserId(UserId userId)
         {
             UserId= userId; 

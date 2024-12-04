@@ -22,6 +22,7 @@ namespace AfterLife.Infrastructure.Persistence.Identity
         private readonly FestCoverDbContext _context;
         private readonly IContentValidator _contenteService;
         private readonly SignInManager<User> _signInManager;
+        private readonly IPaymentService _paymentService;
         public IdentityService(
             UserManager<User> userManager,
             RoleManager<Role> roleManager,
@@ -29,7 +30,8 @@ namespace AfterLife.Infrastructure.Persistence.Identity
             ITokenClaimService tokenService,
             IStorageService storageService,
             FestCoverDbContext context,
-            IContentValidator contenteService
+            IContentValidator contenteService,
+            IPaymentService paymentService
             )
         {
             _userManager = userManager;
@@ -39,6 +41,7 @@ namespace AfterLife.Infrastructure.Persistence.Identity
             _context = context;
             _contenteService = contenteService;
             _signInManager = signInManager;
+            _paymentService = paymentService;
 
         }
 
@@ -57,6 +60,11 @@ namespace AfterLife.Infrastructure.Persistence.Identity
             user.RefreshToken = tokenResult.RefreshToken;
             user.RefreshTokenExpiryTime = DateTime.Now.AddDays(7);
             user.LastLoginTime = DateTime.Now;
+            if (String.IsNullOrEmpty(user.CustomerId))
+            {
+                var customerId = await _paymentService.CreateCustomer(user.UserName, user.Email);
+                user.CustomerId = customerId;
+            }
             await _userManager.UpdateAsync(user);
 
             //var spaceUsed = await _storageService.GetFolderSizeAsync($"{user.Id}/Albums/");
@@ -262,6 +270,11 @@ namespace AfterLife.Infrastructure.Persistence.Identity
             var user = await _userManager.FindByEmailAsync(email);
             if (signinResult.Succeeded)
             {
+                if(String.IsNullOrEmpty(user.CustomerId))
+                {
+                    var customerId = await _paymentService.CreateCustomer(user.UserName, user.Email);
+                    user.CustomerId = customerId;
+                }
                 var role = await _userManager.GetRolesAsync(user);
                 var roleName = role.FirstOrDefault();
                 var currentRole = await _roleManager.Roles.Where(r => r.Name == roleName).FirstOrDefaultAsync();
@@ -296,6 +309,12 @@ namespace AfterLife.Infrastructure.Persistence.Identity
                     {
                         return Error.Failure(description: "An error occurred while signing in");
                     }
+                }
+                if (String.IsNullOrEmpty(user.CustomerId))
+                {
+                    var customerId = await _paymentService.CreateCustomer(user.UserName, user.Email);
+                    user.CustomerId = customerId;
+                    await _userManager.UpdateAsync(user);
                 }
 
                 await _userManager.AddLoginAsync(user, info);

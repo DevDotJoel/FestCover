@@ -22,6 +22,7 @@ using System.Text;
 using System.Threading.Tasks;
 using FestCover.Infrastructure.Common.Services;
 using FestCover.Infrastructure.Content;
+using FestCover.Infrastructure.Payment;
 
 namespace FestCover.Infrastructure
 {
@@ -39,6 +40,7 @@ namespace FestCover.Infrastructure
 
             services.AddPersistance(configuration).AddAuth(configuration);
             services.AddScoped<IContentValidator, ContentValidator>();
+            services.AddScoped<IPaymentService, PaymentService>();
 
             return services;
         }

@@ -9,9 +9,11 @@ namespace FestCover.Application.AlbumContents.Commands.DeleteAlbumContent
     public class DeleteAlbumContentCommandHandler : IRequestHandler<DeleteAlbumContentCommand, ErrorOr<Success>>
     {
         private readonly IAlbumContentRepository _albumContentRepository;
-        public DeleteAlbumContentCommandHandler(IAlbumContentRepository albumContentRepository)
+        private readonly IAlbumRepository _albumRepository;
+        public DeleteAlbumContentCommandHandler(IAlbumContentRepository albumContentRepository,IAlbumRepository albumRepository)
         {
             _albumContentRepository = albumContentRepository;
+            _albumRepository = albumRepository;
         }
         public async Task<ErrorOr<Success>> Handle(DeleteAlbumContentCommand request, CancellationToken cancellationToken)
         {
@@ -26,7 +28,10 @@ namespace FestCover.Application.AlbumContents.Commands.DeleteAlbumContent
             }
 
             var albumContentToDelete= await _albumContentRepository.GetByIdAsync(deleteAlbumContentIdResult.Value,cancellationToken);
+            var album = await _albumRepository.GetByIdAsync(albumContentToDelete.AlbumId,cancellationToken);
+            album.RemoveAlbumContent(albumContentToDelete.Id);
             await _albumContentRepository.RemoveAsync(albumContentToDelete,cancellationToken);
+            await _albumRepository.UpdateAsync(album,cancellationToken);
             return Result.Success;
         }
     }
