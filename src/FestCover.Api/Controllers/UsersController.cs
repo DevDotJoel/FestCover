@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using FestCover.Contracts.Authentication;
 using MapsterMapper;
 using FestCover.Application.Common.Models.Auth;
+using FestCover.Contracts.Users;
 
 namespace FestCover.Api.Controllers
 {
@@ -39,6 +40,14 @@ namespace FestCover.Api.Controllers
             var userId = _userService.GetCurrentUserId();
             var result = await _identityService.UpdateUser(_mapper.Map<UpdateUserAuthModel>((request,userId)));
             return result.Match(_ => NoContent(), Problem);
+
+        }
+        [HttpPut("Subscription")]
+        public async Task<IActionResult> ChangeUserSubscription(UpdateUserSubscriptionRequest request)
+        {
+            var userId = _userService.GetCurrentUserId();
+            var result = await _identityService.ChangeUserSubscription(new UpdateUserSubscriptionModel(Guid.Parse(userId),request.SubscriptionType));
+            return result.Match(Ok, Problem);
 
         }
     }

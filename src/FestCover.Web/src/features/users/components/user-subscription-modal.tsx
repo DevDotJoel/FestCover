@@ -1,6 +1,7 @@
 import { Modal } from "react-bootstrap";
 
-import { AuthUserModel } from "../types";
+import { AuthUserModel, UpdateUserSubscriptionModel } from "../types";
+import { useUpdateUserSubscription } from "../api/user-update-subscription";
 export type AlbumShareModalProps = {
   user: AuthUserModel;
   show: boolean;
@@ -11,6 +12,15 @@ export const UserSubscriptionModal = ({
   user,
   handleClose,
 }: AlbumShareModalProps) => {
+  const updateUserSubscriptionMutation = useUpdateUserSubscription();
+  async function updateUserSubscription(subscriptionType: string) {
+    const userSubscription = {} as UpdateUserSubscriptionModel;
+    userSubscription.subscriptionType = subscriptionType;
+    const result = await updateUserSubscriptionMutation.mutateAsync(
+      userSubscription
+    );
+    window.location.href = result;
+  }
   return (
     <>
       <Modal
@@ -43,7 +53,10 @@ export const UserSubscriptionModal = ({
                         <div className="col">
                           <div></div>
                           <button
-                            disabled={user.subscriptionType === "None"}
+                            disabled={
+                              user.subscriptionType === "None" ||
+                              updateUserSubscriptionMutation.isPending
+                            }
                             className="btn btn-blue  rounded-5"
                           >
                             Choose plan
@@ -82,7 +95,13 @@ export const UserSubscriptionModal = ({
                       <div className="row">
                         <div className="col">
                           <button
-                            disabled={user.subscriptionType === "Basic"}
+                            onClick={async () => {
+                              await updateUserSubscription("Basic");
+                            }}
+                            disabled={
+                              user.subscriptionType === "Basic" ||
+                              updateUserSubscriptionMutation.isPending
+                            }
                             className="btn btn-blue  rounded-5"
                           >
                             Choose plan
@@ -126,7 +145,13 @@ export const UserSubscriptionModal = ({
                       <div className="row">
                         <div className="col">
                           <button
-                            disabled={user.subscriptionType === "Premium"}
+                            onClick={async () => {
+                              await updateUserSubscription("Premium");
+                            }}
+                            disabled={
+                              user.subscriptionType === "Premium" ||
+                              updateUserSubscriptionMutation.isPending
+                            }
                             className="btn btn-blue  rounded-5"
                           >
                             Choose plan

@@ -327,29 +327,73 @@ namespace AfterLife.Infrastructure.Persistence.Identity
             return Error.Failure(description: "An error occurred while signing in");
         }
 
-        public async Task<ErrorOr<string>> UpdateUserSubscription( UpdateUserSubscriptionModel updateUserSubscription)
+        public async Task<ErrorOr<string>> ChangeUserSubscription( UpdateUserSubscriptionModel updateUserSubscription)
         {
             var user = await _userManager.FindByIdAsync(updateUserSubscription.UserId.ToString());
             if (user == null)
                 return Error.Conflict(description: "User not found");
+    
+            var subscriptionToAdd = (UserSubscriptionType)Enum.Parse(typeof(UserSubscriptionType), updateUserSubscription.SubscriptionType, true);
 
-            var subscriptionToAdd = (UserSubscriptionType)updateUserSubscription.SubscriptionType;
+            var productId = "";
+            ErrorOr<string> result="";
 
-            switch (subscriptionToAdd)
+            switch (user.SubscriptionType)
             {
                 case UserSubscriptionType.None:
-                    return Error.Conflict(description: "User not found");
+                    if(subscriptionToAdd==UserSubscriptionType.Basic)
+                    {
+                        productId = await _paymentService.SearchProduct("Basic");
+                    }
+                    else if (subscriptionToAdd == UserSubscriptionType.Premium)
+                    {
+                        productId = await _paymentService.SearchProduct("Premium");
+                    }
+                    result =  await _paymentService.AddSubscription(user.CustomerId, productId);
+                    break;
+
                 case UserSubscriptionType.Basic:
+                    if (subscriptionToAdd == UserSubscriptionType.Premium)
+                    {
+                        productId = await _paymentService.SearchProduct("Premium");
+                    }
 
-                    var productId = await _paymentService.SearchProduct("Basic");
-                    
+                    result = await _paymentService.AddSubscription(user.CustomerId, productId);
+                    break;
 
+
+            }
+            return result;
+        }
+
+        public async Task<ErrorOr<Success>> UpdateUserSubscription(string customerId,string subscriptionId)
+        {
+            var user= await _userManager.Users.Where(u=>u.CustomerId== customerId).FirstOrDefaultAsync();
+            if (user == null)
+                return Error.Conflict(description: "User not found");
+
+            var productId= await _paymentService.GetProductIdBySubscriptionId(subscriptionId);
+            var product= await _paymentService.GetProductById(productId.Value);
+            switch(user.SubscriptionType) {
+
+                case UserSubscriptionType.None:
+                    if (product.Value == "Basic")
+                    {
+                        user.SubscriptionType = UserSubscriptionType.Basic;
+
+                    }
                     break;
-                case UserSubscriptionType.Premium:
-                    break;
-                default:
+
+                case UserSubscriptionType.Basic:
+                    if (product.Value == "Premium")
+                    {
+                        user.SubscriptionType = UserSubscriptionType.Premium;
+
+                    }
                     break;
             }
+            await _userManager.UpdateAsync(user);
+            return Result.Success;
         }
     }
 }

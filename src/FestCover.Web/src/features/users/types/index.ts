@@ -14,3 +14,6 @@ export interface UpdateAuthUserModel {
   password2?: string;
   file?: File;
 }
+export interface UpdateUserSubscriptionModel {
+  subscriptionType: string;
+}

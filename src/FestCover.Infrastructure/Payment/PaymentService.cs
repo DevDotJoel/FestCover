@@ -70,8 +70,10 @@ namespace FestCover.Infrastructure.Payment
                 // {CHECKOUT_SESSION_ID} is a string literal; do not change it!
                 // the actual Session ID is returned in the query parameter when your customer
                 // is redirected to the success page.
-                SuccessUrl = "https://example.com/success.html?session_id={CHECKOUT_SESSION_ID}",
-                CancelUrl = "https://example.com/canceled.html",
+                PaymentMethodTypes = new List<string> { "card" },
+                Customer =customer.Id,
+                SuccessUrl = $"{_config["WebApp:FrontendPublicUrl"]}/user/profile",
+                CancelUrl =$"{_config["WebApp:FrontendPublicUrl"]}/user/profile",
                 Mode = "subscription",
                 LineItems = new List<SessionLineItemOptions>
                   {
@@ -90,15 +92,84 @@ namespace FestCover.Infrastructure.Payment
 
         }
 
+        public async Task<ErrorOr<Success>> UpdateSubscription(string customerId, string productId)
+        {
+            var productService = new ProductService();
+            var product = await productService.GetAsync(productId);
+
+            if (product == null)
+            {
+                return Error.NotFound(description: $"Product with the id {productId} not found ");
+            }
+
+            var customerService = new CustomerService();
+            var customer = await customerService.GetAsync(customerId);
+            if (customer == null)
+            {
+                return Error.NotFound(description: $"Customer with the id {customerId} not found ");
+            }
+
+            var currentCustomerSubscription = customer.Subscriptions.FirstOrDefault();
+            if (currentCustomerSubscription == null)
+            {
+                return Error.NotFound(description: $"No active subscription found for customer {customerId}.");
+            }
+            var subscriptionService = new SubscriptionService();
+            var currentSubscription = await subscriptionService.GetAsync(currentCustomerSubscription.Id);
+
+            var currentSubscriptionItem = currentSubscription.Items.Data.FirstOrDefault();
+            if (currentSubscriptionItem == null)
+            {
+                return Error.NotFound(description: $"No subscription item found for subscription {currentCustomerSubscription.Id}.");
+            }
+
+            var options = new SubscriptionUpdateOptions
+            {
+                Items = new List<SubscriptionItemOptions>
+                {
+                    new SubscriptionItemOptions
+                    {
+                        Id = currentSubscriptionItem.Id, 
+                        Price = product.DefaultPriceId,  
+                    },
+                },
+                        ProrationBehavior = "create_prorations", // Ensure prorated billing
+                    };
+
+            var updatedSubscription = await subscriptionService.UpdateAsync(currentSubscription.Id, options);
+
+            return Result.Success;
+
+        }
         public async Task<string> SearchProduct(string name)
         {
             var options = new ProductSearchOptions
             {
-                Query = $"active:'true' AND name:'${name}'",
+                Query = $"active:'true' AND name~'{name}'",
             };
             var service = new ProductService();
             var product=await service.SearchAsync(options);
             return product.Data[0].Id;
+        }
+
+        public async Task<ErrorOr<string>> GetProductById(string productId)
+        {
+
+            var service = new ProductService();
+            var product= await service.GetAsync(productId);
+            if(product is null)
+            {
+                return Error.NotFound(description: "Product not found");
+            }
+            return product.Name;
+        }
+
+        public async Task<ErrorOr<string>> GetProductIdBySubscriptionId(string subscriptionId)
+        {
+            var subscriptionService = new SubscriptionService();
+            var subscription = await subscriptionService.GetAsync(subscriptionId);
+            var productId = subscription.Items.Data[0].Price.ProductId;
+            return productId;
         }
     }
 }

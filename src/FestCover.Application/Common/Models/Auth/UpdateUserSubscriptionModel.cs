@@ -8,6 +8,6 @@ namespace FestCover.Application.Common.Models.Auth
 {
    public record UpdateUserSubscriptionModel
    ( Guid UserId,
-     int SubscriptionType
+     string SubscriptionType
     );
 }
