@@ -1,10 +1,12 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { z } from "zod";
 import { useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FileImporter } from "../../../components/shared/file.importer";
 import { InputForm } from "../../../components/ui/forms/input-form";
 import { AuthUserModel } from "../types";
+import { SelectForm } from "../../../components/ui/forms/select-form";
+import { UserSubscriptionModal } from "./user-subscription-modal";
 const userProfileSchema = z
   .object({
     username: z.string().refine((s) => !s.includes(" "), {
@@ -69,10 +71,15 @@ export const UserProfileForm = ({
     control,
     name: "currentPassword",
   });
+  const [show, setShow] = useState(false);
+  const handleClose = () => {
+    setShow(false);
+  };
+  const handleShow = () => setShow(true);
   useEffect(() => {
     if (currentPassword === "") {
-      setValue("password", null);
-      setValue("password2", null);
+      setValue("password", "");
+      setValue("password2", "");
     }
   }, [currentPassword, setValue]);
   function getImage(files) {
@@ -145,6 +152,24 @@ export const UserProfileForm = ({
                         />
                       </div>
                     </div>
+                    <div className="row mt-3">
+                      <div className="col">
+                        <h3>
+                          <b>Subscription Type</b>
+                        </h3>
+                      </div>
+                    </div>
+                    <div className="row mt-2">
+                      <div className="col">
+                        <button
+                          onClick={handleShow}
+                          type="button"
+                          className="btn btn-blue"
+                        >
+                          {user.subscriptionType}
+                        </button>
+                      </div>
+                    </div>
                     {!user.externalAuth && (
                       <>
                         {" "}
@@ -212,6 +237,13 @@ export const UserProfileForm = ({
           </form>
         </div>
       </div>
+      {show && (
+        <UserSubscriptionModal
+          show={show}
+          user={user}
+          handleClose={handleClose}
+        />
+      )}
     </>
   );
 };

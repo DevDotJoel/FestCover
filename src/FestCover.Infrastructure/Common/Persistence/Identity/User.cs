@@ -14,5 +14,13 @@ namespace FestCover.Infrastructure.Common.Persistence.Identity
         public DateTime? RefreshTokenExpiryTime { get; set; }
         public DateTime? LastLoginTime { get; set; }
         public string? CustomerId { get; set; }
+        public UserSubscriptionType SubscriptionType { get; set; }
+    }
+
+    public enum UserSubscriptionType
+    {
+        None,
+        Basic,
+        Premium
     }
 }

@@ -37,8 +37,6 @@ namespace FestCover.Infrastructure.Common.Persistence
 
         public DbSet<Album> Albums { get; set; }
         public DbSet<AlbumContent> AlbumContents { get; set; }
-        public DbSet<Product> Products { get; set; }
-        public DbSet<UserProduct> UsersProducts { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

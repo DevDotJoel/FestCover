@@ -12,6 +12,7 @@ namespace FestCover.Application.Common.Models.Auth
        string Username,
        string Email,
        bool ExternalAuth,
+       string SubscriptionType,
        string? PictureUrl=null
     );
 

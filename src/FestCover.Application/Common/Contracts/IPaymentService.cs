@@ -10,5 +10,6 @@ namespace FestCover.Application.Common.Contracts
     {
         Task<string> CreateCustomer(string name, string email);
         Task UpdateCustomer(string id, string name, string email);
+        Task<string> SearchProduct(string name);
     }
 }

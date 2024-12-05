@@ -10,6 +10,7 @@ using FestCover.Infrastructure.Common.Persistence;
 using Microsoft.Azure.CognitiveServices.Vision.ComputerVision.Models;
 using Microsoft.AspNetCore.Authentication;
 using System.Security.Claims;
+using SixLabors.ImageSharp.Metadata.Profiles.Iptc;
 
 namespace AfterLife.Infrastructure.Persistence.Identity
 {
@@ -128,6 +129,7 @@ namespace AfterLife.Infrastructure.Persistence.Identity
                 Username: user.UserName,
                 Email: user.Email,
                 PictureUrl: user.PictureUrl,
+                SubscriptionType:user.SubscriptionType.ToString(),
                 ExternalAuth:!hasPassword
            );
             return currentUser;
@@ -323,6 +325,31 @@ namespace AfterLife.Infrastructure.Persistence.Identity
                 return tokenResult;
             }
             return Error.Failure(description: "An error occurred while signing in");
+        }
+
+        public async Task<ErrorOr<string>> UpdateUserSubscription( UpdateUserSubscriptionModel updateUserSubscription)
+        {
+            var user = await _userManager.FindByIdAsync(updateUserSubscription.UserId.ToString());
+            if (user == null)
+                return Error.Conflict(description: "User not found");
+
+            var subscriptionToAdd = (UserSubscriptionType)updateUserSubscription.SubscriptionType;
+
+            switch (subscriptionToAdd)
+            {
+                case UserSubscriptionType.None:
+                    return Error.Conflict(description: "User not found");
+                case UserSubscriptionType.Basic:
+
+                    var productId = await _paymentService.SearchProduct("Basic");
+                    
+
+                    break;
+                case UserSubscriptionType.Premium:
+                    break;
+                default:
+                    break;
+            }
         }
     }
 }

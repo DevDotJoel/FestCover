@@ -2,6 +2,7 @@ export interface AuthUserModel {
   id: string;
   email: string;
   username: string;
+  subscriptionType: string;
   pictureUrl?: string;
   externalAuth: boolean;
 }
