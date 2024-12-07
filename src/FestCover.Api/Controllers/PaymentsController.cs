@@ -22,8 +22,8 @@ namespace FestCover.Api.Controllers
 
         }
 
-        [HttpGet("success")]
-        public async Task<IActionResult> WebHook([FromQuery] string customerId,string productId)
+        [HttpPost("webhook")]
+        public async Task<IActionResult> WebHook()
         {
 
 

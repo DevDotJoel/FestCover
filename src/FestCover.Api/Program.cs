@@ -36,9 +36,13 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
     app.UseCors("frontend");
 }
+if (app.Environment.IsProduction())
+{
+   app.UseHttpsRedirection();
+}
 
 
-app.UseHttpsRedirection();
+
 app.UseAuthentication();
 app.UseAuthorization();
 
