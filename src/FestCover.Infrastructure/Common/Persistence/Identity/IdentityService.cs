@@ -366,7 +366,7 @@ namespace AfterLife.Infrastructure.Persistence.Identity
             return result;
         }
 
-        public async Task<ErrorOr<Success>> UpdateUserSubscription(string customerId,string subscriptionId)
+        public async Task<ErrorOr<Success>> UpdateUserSubscription(string customerId,string subscriptionId,DateTime date)
         {
             var user= await _userManager.Users.Where(u=>u.CustomerId== customerId).FirstOrDefaultAsync();
             if (user == null)
@@ -374,6 +374,7 @@ namespace AfterLife.Infrastructure.Persistence.Identity
 
             var productId= await _paymentService.GetProductIdBySubscriptionId(subscriptionId);
             var product= await _paymentService.GetProductById(productId.Value);
+            user.LastSubscriptionPayment = date;
             switch(user.SubscriptionType) {
 
                 case UserSubscriptionType.None:

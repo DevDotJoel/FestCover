@@ -15,6 +15,7 @@ namespace FestCover.Infrastructure.Common.Persistence.Identity
         public DateTime? LastLoginTime { get; set; }
         public string? CustomerId { get; set; }
         public UserSubscriptionType SubscriptionType { get; set; }
+        public DateTime? LastSubscriptionPayment { get; set; }
     }
 
     public enum UserSubscriptionType

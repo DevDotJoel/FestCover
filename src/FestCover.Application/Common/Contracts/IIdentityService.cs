@@ -20,6 +20,6 @@ namespace FestCover.Application.Common.Contracts
         Task<ErrorOr<TokenResultModel>> ExternalLoginAsycn();
 
         Task<ErrorOr<string>> ChangeUserSubscription( UpdateUserSubscriptionModel updateUserSubscription);
-        Task<ErrorOr<Success>> UpdateUserSubscription(string customerId, string subscriptionId);
+        Task<ErrorOr<Success>> UpdateUserSubscription(string customerId, string subscriptionId,DateTime subscriptionDate);
     }
 }

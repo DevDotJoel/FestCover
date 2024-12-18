@@ -39,10 +39,10 @@ namespace FestCover.Api.Controllers
                 return Problem();
             }
 
-            if (stripeEvent.Type == "invoice.payment_succeeded")
+            if (stripeEvent.Type == "customer.subscription.created" || stripeEvent.Type == "customer.subscription.updated")
             {
-                var invoice = stripeEvent.Data.Object as Invoice;
-                var result = await _identityService.UpdateUserSubscription(invoice.CustomerId, invoice.SubscriptionId);
+                var subscription = stripeEvent.Data.Object as Subscription;
+                var result = await _identityService.UpdateUserSubscription(subscription.CustomerId, subscription.Id, subscription.StartDate);
                 return result.Match( _ => Ok(), Problem);
             }
 
