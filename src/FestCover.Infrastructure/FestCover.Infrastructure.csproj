@@ -33,4 +33,8 @@
     <ProjectReference Include="..\FestCover.Domain\FestCover.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Common\Services\" />
+  </ItemGroup>
+
 </Project>

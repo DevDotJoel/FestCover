@@ -20,7 +20,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using FestCover.Infrastructure.Common.Services;
 using FestCover.Infrastructure.Content;
 using FestCover.Infrastructure.Payment;
 
