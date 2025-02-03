@@ -19,8 +19,11 @@ namespace FestCover.Infrastructure.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     AlbumId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Url = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Pending = table.Column<bool>(type: "bit", nullable: false),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     LastModifiedDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
@@ -36,9 +39,14 @@ namespace FestCover.Infrastructure.Migrations
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    AlbumUrlImage = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Url = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    BackgroundUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Key = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    AllowPublicUpload = table.Column<bool>(type: "bit", nullable: false),
+                    ReviewUploadedContent = table.Column<bool>(type: "bit", nullable: false),
+                    IsPublic = table.Column<bool>(type: "bit", nullable: false),
                     UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     LastModifiedDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
@@ -67,7 +75,12 @@ namespace FestCover.Infrastructure.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     RefreshToken = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PictureUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     RefreshTokenExpiryTime = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    LastLoginTime = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    CustomerId = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    SubscriptionType = table.Column<int>(type: "int", nullable: false),
+                    LastSubscriptionPayment = table.Column<DateTime>(type: "datetime2", nullable: true),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -225,8 +238,8 @@ namespace FestCover.Infrastructure.Migrations
 
             migrationBuilder.InsertData(
                 table: "Users",
-                columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "RefreshToken", "RefreshTokenExpiryTime", "SecurityStamp", "TwoFactorEnabled", "UserName" },
-                values: new object[] { new Guid("f69b50aa-de02-423b-abc4-0ba2fb3eb64d"), 0, "a988e8ad-823f-4198-8e41-7839db0ea114", "j141996@hotmail.com", true, false, null, "J141996@HOTMAIL.COM", "JOELFERREIRA", "AQAAAAIAAYagAAAAEM6QuozMvn+xyOyZmp4yR/j5JcFCQT7XRTRgNKy9dz0Ui/96Rj+HpkNwRvVhBTuQyQ==", "+351960180464", false, null, null, "9d0e99d1-af47-49b7-8e18-5dd09701e883", false, "JoelFerreira" });
+                columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "CustomerId", "Email", "EmailConfirmed", "LastLoginTime", "LastSubscriptionPayment", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "PictureUrl", "RefreshToken", "RefreshTokenExpiryTime", "SecurityStamp", "SubscriptionType", "TwoFactorEnabled", "UserName" },
+                values: new object[] { new Guid("f69b50aa-de02-423b-abc4-0ba2fb3eb64d"), 0, "93041655-7148-405a-a902-ed31bcfb2e38", null, "admin@hotmail.com", true, null, null, false, null, "ADMIN@HOTMAIL.COM", "ADMIN", "AQAAAAIAAYagAAAAEBsLTQkx53CXabklG0kvVBJZTDf3Qtc/9EvPKU9Krsxcwgy9ihGfDKUeqWb1AFGb1g==", "+351960180464", false, null, null, null, "ae343979-528f-4787-8014-8abcae91d563", 0, false, "ADMIN" });
 
             migrationBuilder.InsertData(
                 table: "UsersRoles",
