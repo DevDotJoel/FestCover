@@ -152,7 +152,7 @@ export const UserProfileForm = ({
                         />
                       </div>
                     </div>
-                    {/* <div className="row mt-3">
+                    <div className="row mt-3">
                       <div className="col">
                         <h3>
                           <b>Subscription Type</b>
@@ -169,7 +169,7 @@ export const UserProfileForm = ({
                           {user.subscriptionType}
                         </button>
                       </div>
-                    </div> */}
+                    </div>
                     {!user.externalAuth && (
                       <>
                         {" "}
