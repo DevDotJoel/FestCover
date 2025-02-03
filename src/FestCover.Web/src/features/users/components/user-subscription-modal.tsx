@@ -53,6 +53,9 @@ export const UserSubscriptionModal = ({
                         <div className="col">
                           <div></div>
                           <button
+                            onClick={async () => {
+                              await updateUserSubscription("None");
+                            }}
                             disabled={
                               user.subscriptionType === "None" ||
                               updateUserSubscriptionMutation.isPending

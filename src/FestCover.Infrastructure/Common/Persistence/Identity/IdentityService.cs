@@ -353,6 +353,7 @@ namespace AfterLife.Infrastructure.Persistence.Identity
                     break;
 
                 case UserSubscriptionType.Basic:
+
                     if (subscriptionToAdd == UserSubscriptionType.Premium)
                     {
                         productId = await _paymentService.SearchProduct("Premium");
@@ -360,7 +361,25 @@ namespace AfterLife.Infrastructure.Persistence.Identity
 
                     result = await _paymentService.AddSubscription(user.CustomerId, productId);
                     break;
+                case UserSubscriptionType.Premium:
+                    
+                    if (subscriptionToAdd == UserSubscriptionType.None)
+                    {
+                        productId = await _paymentService.SearchProduct("None");
+                        await _paymentService.AddSubscription(user.CustomerId, productId);
+                        user.SubscriptionType=subscriptionToAdd;
+                        user.LastSubscriptionPayment = DateTime.Now;
+                        await _userManager.UpdateAsync(user);
+                    }
+                    else if (subscriptionToAdd == UserSubscriptionType.Basic)
+                    {
+                        productId = await _paymentService.SearchProduct("Basic");
+                        result = await _paymentService.AddSubscription(user.CustomerId, productId);
 
+                    }
+                    
+
+                    break;
 
             }
             return result;
